@@ -3,13 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".view.view.Fragment.DayFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:text="HSSG1"
             android:textSize="25sp"
             android:id="@+id/total"
             app:layout_constraintRight_toRightOf="parent"
@@ -19,7 +17,6 @@
             android:layout_height="wrap_content">
         </TextView>
         <TextView
-            android:text="HSSG2"
             android:id="@+id/electric"
             android:textSize="25sp"
             android:layout_marginTop="10dp"
