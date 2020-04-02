@@ -1,0 +1,122 @@
+{
+  "project_info": {
+    "project_number": "86640122893",
+    "firebase_url": "https://luxremote-zm.firebaseio.com",
+    "project_id": "luxremote-zm",
+    "storage_bucket": "luxremote-zm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86640122893:android:c7d8d780c64e6642828944",
+        "android_client_info": {
+          "package_name": "com.example.controlandmonitorlight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86640122893-baphiuu6137kcb8eqk4beob692orhfol.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.controlandmonitorlight",
+            "certificate_hash": "473d72d87c8d985b04b693fc426a010078c693af"
+          }
+        },
+        {
+          "client_id": "86640122893-2puaubbho92qaed3hlvj687msbsunh97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0dcAbGu6Y5i-QmWtX1smyws8BdGMueQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86640122893-2puaubbho92qaed3hlvj687msbsunh97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86640122893:android:6b032a6d353a7343828944",
+        "android_client_info": {
+          "package_name": "com.example.firebasemvvm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86640122893-772q6l7qh5cjuubjfl29kc8c532lsrgh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.firebasemvvm",
+            "certificate_hash": "473d72d87c8d985b04b693fc426a010078c693af"
+          }
+        },
+        {
+          "client_id": "86640122893-2puaubbho92qaed3hlvj687msbsunh97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0dcAbGu6Y5i-QmWtX1smyws8BdGMueQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86640122893-2puaubbho92qaed3hlvj687msbsunh97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:86640122893:android:59aeeb75a1ae24c4828944",
+        "android_client_info": {
+          "package_name": "com.zettabytes.luxremote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "86640122893-4o5bdgb877u2ppg1g6tt7mb26qmav2hs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zettabytes.luxremote",
+            "certificate_hash": "26dbe44bebfbd173b27aea7b92e769058275f437"
+          }
+        },
+        {
+          "client_id": "86640122893-2puaubbho92qaed3hlvj687msbsunh97.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt0dcAbGu6Y5i-QmWtX1smyws8BdGMueQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "86640122893-2puaubbho92qaed3hlvj687msbsunh97.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
