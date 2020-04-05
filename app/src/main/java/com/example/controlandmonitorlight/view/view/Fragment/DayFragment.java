@@ -7,14 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.controlandmonitorlight.R;
-import com.example.controlandmonitorlight.model.Static;
+import com.example.controlandmonitorlight.model.RoomStatic;
 import com.example.controlandmonitorlight.viewmodel.MonitorViewModel;
 
 /**
@@ -41,10 +40,10 @@ public class DayFragment extends Fragment {
         monitorViewModel = ViewModelProviders.of(DayFragment.this).get(MonitorViewModel.class);
         int id = 1 ;
         monitorViewModel.getData(id);
-        monitorViewModel.data.observe(this, new Observer<Static>() {
+        monitorViewModel.data.observe(this, new Observer<RoomStatic>() {
             @Override
-            public void onChanged(Static aStatic) {
-                mTotal.setText(aStatic.getTotalWatt()+"");
+            public void onChanged(RoomStatic aRoomStatic) {
+                mTotal.setText(aRoomStatic.getTotalWatt()+"");
             }
         });
         return view;

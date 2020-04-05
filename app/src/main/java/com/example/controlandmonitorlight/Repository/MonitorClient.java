@@ -1,6 +1,6 @@
 package com.example.controlandmonitorlight.Repository;
 
-import com.example.controlandmonitorlight.model.Static;
+import com.example.controlandmonitorlight.model.RoomStatic;
 
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -24,7 +24,7 @@ public class MonitorClient {
         return INSTANCE ;
     }
 
-    public Call<Static> getStatic(int id ) {
+    public Call<RoomStatic> getStatic(int id ) {
         return  this.monitorInterface.getStatic(id);
     }
 }

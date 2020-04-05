@@ -1,9 +1,9 @@
 package com.example.controlandmonitorlight.model;
 
-public class Static {
+public class RoomStatic {
     private int totalWatt ;
 
-    public Static(int totalWatt) {
+    public RoomStatic(int totalWatt) {
         this.totalWatt = totalWatt;
     }
 
