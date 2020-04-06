@@ -12,17 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.MainActivity;
 import com.example.controlandmonitorlight.databinding.DataBinding;
-import com.example.controlandmonitorlight.model.Introduction;
+import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 
 import java.util.List;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-    List<Introduction> list ;
+    List<Room> list ;
     Context mContext ;
     LayoutInflater layoutInflater ;
     Comunication click ;
-    public CustomAdapter(List<Introduction> list , MainActivity click) {
+    public CustomAdapter(List<Room> list , MainActivity click) {
         this.list = list;
         this.click = click ;
     }
@@ -39,8 +39,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Introduction introduction = list.get(position);
-        holder.bind(introduction);
+        Room room = list.get(position);
+        holder.bind(room);
         holder.dataBinding.card1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,9 +62,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             this.dataBinding = itemView ;
         }
 
-        public void bind(Introduction introduction)
+        public void bind(Room room)
         {
-            this.dataBinding.setData(introduction);
+            this.dataBinding.setData(room);
         }
         public DataBinding getDataBinding()
         {

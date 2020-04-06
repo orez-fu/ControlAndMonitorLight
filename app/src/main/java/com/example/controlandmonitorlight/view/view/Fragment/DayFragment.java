@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.controlandmonitorlight.R;
-import com.example.controlandmonitorlight.model.Static;
+import com.example.controlandmonitorlight.model.DeviceStatic;
+import com.example.controlandmonitorlight.model.RoomStatic;
+import com.example.controlandmonitorlight.viewmodel.DeviceStaticViewModel;
 import com.example.controlandmonitorlight.viewmodel.MonitorViewModel;
 
 /**
@@ -31,7 +33,7 @@ public class DayFragment extends Fragment {
         // Required empty public constructor
     }
     MonitorViewModel monitorViewModel ;
-
+    DeviceStaticViewModel deviceStaticViewModel;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -39,12 +41,22 @@ public class DayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_day, container, false);
         mTotal = view.findViewById(R.id.total);
         monitorViewModel = ViewModelProviders.of(DayFragment.this).get(MonitorViewModel.class);
+        deviceStaticViewModel = ViewModelProviders.of(DayFragment.this).get(DeviceStaticViewModel.class);
+        int id1 = 1 ;
+        deviceStaticViewModel.getData(id1);
+        deviceStaticViewModel.deviceData.observe(this, new Observer<DeviceStatic>() {
+            @Override
+            public void onChanged(DeviceStatic deviceStatic) {
+                Log.d("co","abc");
+                mTotal.setText(deviceStatic.getTotalWalt()+" "+deviceStatic.getTimeOn());
+            }
+        });
         int id = 1 ;
         monitorViewModel.getData(id);
-        monitorViewModel.data.observe(this, new Observer<Static>() {
+        monitorViewModel.data.observe(this, new Observer<RoomStatic>() {
             @Override
-            public void onChanged(Static aStatic) {
-                mTotal.setText(aStatic.getTotalWatt()+"");
+            public void onChanged(RoomStatic aRoomStatic) {
+                //mTotal.setText(aRoomStatic.getTotalWatt()+"");
             }
         });
         return view;

@@ -3,7 +3,7 @@
     <data class="DeviceBinding">
         <variable
             name="data"
-            type="com.example.controlandmonitorlight.model.Devices" />
+            type="com.example.controlandmonitorlight.model.ObjectDevices" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -33,7 +33,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:imagesrc="@{data.Images}"
+                    android:src="@drawable/light"
                     android:id="@+id/image_icon"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
@@ -46,7 +46,7 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="@{data.Name}"
+                        android:text="@{data.name}"
                         android:id="@+id/name_devices"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -54,16 +54,11 @@
                         android:textSize="30sp"></TextView>
 
                     <TextView
-                        android:text="@{data.Value}"
+                        android:text="@{data.getStatusDevices()}"
                         android:id="@+id/value"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"></TextView>
 
-                    <TextView
-                        android:text="@{data.Status}"
-                        android:id="@+id/status"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></TextView>
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

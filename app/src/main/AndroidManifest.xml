@@ -17,10 +17,9 @@
             android:name=".view.view.Activity.StaticActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-            android:name=".view.view.Activity.DeviceControlActivity"
-            android:parentActivityName=".view.view.Activity.KidRoomActivity" />
+            android:name=".view.view.Activity.DeviceControlActivity" />
         <activity
-            android:name=".view.view.Activity.KidRoomActivity"
+            android:name=".view.view.Activity.RoomActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

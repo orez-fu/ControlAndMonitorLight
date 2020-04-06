@@ -18,7 +18,7 @@ import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.adapter.CustomDataAdapter;
 import com.example.controlandmonitorlight.adapter.CustomDevicesAdapter;
 import com.example.controlandmonitorlight.model.Data;
-import com.example.controlandmonitorlight.model.Devices;
+import com.example.controlandmonitorlight.model.ObjectDevices;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 import com.example.controlandmonitorlight.viewmodel.DataViewModel;
 import com.example.controlandmonitorlight.viewmodel.DevicesViewModel;
@@ -30,7 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
-public class KidRoomActivity extends AppCompatActivity implements Comunication {
+public class RoomActivity extends AppCompatActivity implements Comunication {
 
     Toolbar toolbar ;
     RecyclerView recyclerViewData ;
@@ -39,35 +39,43 @@ public class KidRoomActivity extends AppCompatActivity implements Comunication {
     CustomDevicesAdapter customDevicesAdapter;
     DataViewModel viewModel ;
     DevicesViewModel devicesViewModel ;
+    String title ;
+    String id ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kid_room);
+        Intent intent = getIntent();
+        title = intent.getStringExtra("NameTitle") ;
+        id = intent.getStringExtra("Id");
         Mapping();
-        initToolbar();
+        initToolbar(title);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
-        LoadingData();
+        devicesViewModel = ViewModelProviders.of(this).get(DevicesViewModel.class) ;
+        LoadingData(id);
+        devicesViewModel.LoadDevicesFireBase(id);
+
         viewModel.getData().observe(this, new Observer<List<Data>>() {
             @Override
             public void onChanged(List<Data> data) {
 
                 initRecyclerviewData(data);
+
             }
         });
 
-        devicesViewModel = ViewModelProviders.of(this).get(DevicesViewModel.class) ;
+
         devicesViewModel.setData();
         // Log.d("size = ","2");
 
-        devicesViewModel.getData().observe(this, new Observer<List<Devices>>() {
+        devicesViewModel.getData().observe(this, new Observer<List<ObjectDevices>>() {
             @Override
-            public void onChanged(List<Devices> devices) {
-                //  Toast.makeText(getApplicationContext(),""+devices.get(0).getName(),Toast.LENGTH_SHORT).show();
-                initRecyclerviewDevices(devices);
+            public void onChanged(List<ObjectDevices> objectDevices) {
+                initRecyclerviewDevices(objectDevices);
+
             }
         });
-
 
 
     }
@@ -80,18 +88,18 @@ public class KidRoomActivity extends AppCompatActivity implements Comunication {
         recyclerViewData.setAdapter(customDataAdapterData);
 
     }
-    void initRecyclerviewDevices(List<Devices> data )
+    void initRecyclerviewDevices(List<ObjectDevices> data )
     {
         customDevicesAdapter = new CustomDevicesAdapter(data,this) ;
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,RecyclerView.VERTICAL,false);
         recyclerViewRoom.setLayoutManager(layoutManager);
         recyclerViewRoom.setAdapter(customDevicesAdapter);
     }
-    void initToolbar()
+    void initToolbar(String title)
     {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("KitRoom");
+        getSupportActionBar().setTitle(title);
     }
     void Mapping()
     {
@@ -106,14 +114,15 @@ public class KidRoomActivity extends AppCompatActivity implements Comunication {
         if(position == 0 )
         {
             Intent intent =  new Intent(this, DeviceControlActivity.class);
+            intent.putExtra("NameTitle",title);
+            intent.putExtra("Id",id);
             startActivity(intent);
         }
     }
-    public void LoadingData()
+    public void LoadingData(String id )
     {
-        // nó ko vào ham ondatachange
-        Log.d("key = ","xyz");
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("rooms").child("00001").child("devices");
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("rooms").child(id);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -123,7 +132,6 @@ public class KidRoomActivity extends AppCompatActivity implements Comunication {
                 String value = humidity+" "+lux+" "+ temperature;
                 viewModel.setData(value);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.d("error = ",databaseError.getMessage());
