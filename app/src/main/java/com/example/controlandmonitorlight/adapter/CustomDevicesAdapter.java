@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.databinding.DeviceBinding;
-import com.example.controlandmonitorlight.model.Devices;
-import com.example.controlandmonitorlight.view.view.Activity.KidRoomActivity;
+import com.example.controlandmonitorlight.model.ObjectDevices;
+import com.example.controlandmonitorlight.view.view.Activity.RoomActivity;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 
 import java.util.List;
 
 public class CustomDevicesAdapter extends RecyclerView.Adapter<CustomDevicesAdapter.ViewHolder> {
 
-    List<Devices> list ;
+    List<ObjectDevices> list ;
     Context mContext ;
     Comunication listener = null ;
     LayoutInflater layoutInflater ;
-    public CustomDevicesAdapter(List<Devices> list, KidRoomActivity listener) {
+    public CustomDevicesAdapter(List<ObjectDevices> list, RoomActivity listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -38,7 +38,7 @@ public class CustomDevicesAdapter extends RecyclerView.Adapter<CustomDevicesAdap
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Devices devices = list.get(position);
+        ObjectDevices devices = list.get(position);
         holder.bind(devices);
         holder.deviceBinding.card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +59,7 @@ public class CustomDevicesAdapter extends RecyclerView.Adapter<CustomDevicesAdap
             super(itemView.getRoot());
             this.deviceBinding = itemView ;
         }
-        public void bind(Devices devices ){
+        public void bind(ObjectDevices devices ){
             this.deviceBinding.setData(devices);
         }
         public DeviceBinding getDeviceBinding(){

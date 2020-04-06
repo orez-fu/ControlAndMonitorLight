@@ -7,6 +7,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface DeviceInterface {
-    @GET()
+    @GET("static/device/{id}")
     Call<DeviceStatic> getDeviceStatic(@Path("id") int id );
 }

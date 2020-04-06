@@ -11,7 +11,6 @@
         tools:context=".MainActivity">
 
         <TextView
-            android:text="HI ABC"
             android:layout_marginTop="20dp"
             android:id="@+id/title"
             android:textSize="25sp"

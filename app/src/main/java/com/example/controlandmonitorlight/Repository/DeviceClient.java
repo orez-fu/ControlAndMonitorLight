@@ -7,9 +7,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DeviceClient  {
-    private String BASE_URL = "";
+    private String BASE_URL = "https://us-central1-luxremote-zm.cloudfunctions.net/webApi/api/v1/";
     private static DeviceInterface deviceInterface ;
-    private DeviceClient Instance ;
+    private static DeviceClient Instance ;
 
     public DeviceClient(){
         Retrofit retrofit = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
@@ -17,14 +17,14 @@ public class DeviceClient  {
         deviceInterface = retrofit.create(DeviceInterface.class);
     }
 
-    public DeviceClient getInstance() {
+    public static DeviceClient getInstance() {
         if (Instance == null){
             Instance = new DeviceClient();
         }
         return Instance ;
     }
-    public Call<DeviceStatic> getDeviceStatic(int id)
+    public Call<DeviceStatic> getDeviceStatic(int id )
     {
-        return deviceInterface.getDeviceStatic(id);
+        return this.deviceInterface.getDeviceStatic(id);
     }
 }

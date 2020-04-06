@@ -1,20 +1,20 @@
 package com.example.controlandmonitorlight.model;
 
 public class DeviceStatic {
-    private float totalWalt ;
+    private double totalWatt ;
     private long  timeOn ;
 
-    public DeviceStatic(float totalWalt, long timeOn) {
-        this.totalWalt = totalWalt;
+    public DeviceStatic(double totalWalt, long timeOn) {
+        this.totalWatt = totalWalt;
         this.timeOn = timeOn;
     }
 
-    public float getTotalWalt() {
-        return totalWalt;
+    public double getTotalWalt() {
+        return totalWatt;
     }
 
-    public void setTotalWalt(float totalWalt) {
-        this.totalWalt = totalWalt;
+    public void setTotalWalt(double totalWalt) {
+        this.totalWatt = totalWalt;
     }
 
     public long getTimeOn() {
