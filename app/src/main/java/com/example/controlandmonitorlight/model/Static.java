@@ -1,17 +1,17 @@
 package com.example.controlandmonitorlight.model;
 
 public class Static {
-    private int totalWalt ;
+    private int totalWatt ;
 
-    public Static(int totalWalt) {
-        this.totalWalt = totalWalt;
+    public Static(int totalWatt) {
+        this.totalWatt = totalWatt;
     }
 
-    public int getTotalWalt() {
-        return totalWalt;
+    public int getTotalWatt() {
+        return totalWatt;
     }
 
-    public void setTotalWalt(int totalWalt) {
-        this.totalWalt = totalWalt;
+    public void setTotalWatt(int totalWatt) {
+        this.totalWatt = totalWatt;
     }
 }
