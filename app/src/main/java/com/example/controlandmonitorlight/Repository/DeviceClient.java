@@ -1,5 +1,7 @@
 package com.example.controlandmonitorlight.Repository;
 
+import android.util.Log;
+
 import com.example.controlandmonitorlight.model.DeviceStatic;
 
 import retrofit2.Call;
@@ -18,13 +20,15 @@ public class DeviceClient  {
     }
 
     public static DeviceClient getInstance() {
+
         if (Instance == null){
+
             Instance = new DeviceClient();
         }
         return Instance ;
     }
-    public Call<DeviceStatic> getDeviceStatic(int id )
+    public Call<DeviceStatic> getDeviceStatic(int id , String during )
     {
-        return this.deviceInterface.getDeviceStatic(id);
+        return this.deviceInterface.getDeviceStatic(id,during);
     }
 }

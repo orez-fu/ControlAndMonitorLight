@@ -1,20 +1,28 @@
 package com.example.controlandmonitorlight.model;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class DeviceStatic {
     private double totalWatt ;
     private long  timeOn ;
+    private List<Consumption> records;
 
-    public DeviceStatic(double totalWalt, long timeOn) {
-        this.totalWatt = totalWalt;
-        this.timeOn = timeOn;
+    public DeviceStatic() {
     }
 
-    public double getTotalWalt() {
+    public DeviceStatic(double totalWatt, long timeOn,  List<Consumption> records) {
+        this.totalWatt = totalWatt;
+        this.timeOn = timeOn;
+        this.records = records;
+    }
+
+    public double getTotalWatt() {
         return totalWatt;
     }
 
-    public void setTotalWalt(double totalWalt) {
-        this.totalWatt = totalWalt;
+    public void setTotalWatt(double totalWatt) {
+        this.totalWatt = totalWatt;
     }
 
     public long getTimeOn() {
@@ -23,5 +31,13 @@ public class DeviceStatic {
 
     public void setTimeOn(long timeOn) {
         this.timeOn = timeOn;
+    }
+
+    public List<Consumption> getRecords() {
+        return records;
+    }
+
+    public void setRecords( List<Consumption> records) {
+        this.records = records;
     }
 }
