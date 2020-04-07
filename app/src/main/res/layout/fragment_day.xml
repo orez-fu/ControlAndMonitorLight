@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:id="@+id/total"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -18,14 +18,20 @@
         </TextView>
         <TextView
             android:id="@+id/electric"
-            android:textSize="25sp"
-            android:layout_marginTop="10dp"
+            android:textSize="20sp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/total"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
+        <TextView
+            android:textSize="15sp"
+            android:id="@+id/txt_metadata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/electric"
+            app:layout_constraintLeft_toLeftOf="parent"></TextView>
         <com.github.mikephil.charting.charts.LineChart
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

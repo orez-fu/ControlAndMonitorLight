@@ -1,10 +1,14 @@
 package com.example.controlandmonitorlight.model;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class ObjectDevices {
     private String id ;
     private String status ;
     private String name ;
     private String type ;
+
     public ObjectDevices() {
     }
 
