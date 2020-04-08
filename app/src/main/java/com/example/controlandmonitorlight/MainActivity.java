@@ -15,6 +15,7 @@ import com.example.controlandmonitorlight.adapter.CustomAdapter;
 import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.model.User;
 import com.example.controlandmonitorlight.view.view.Activity.RoomActivity;
+import com.example.controlandmonitorlight.view.view.Activity.SettingActivity;
 import com.example.controlandmonitorlight.view.view.Activity.StaticActivity;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 import com.example.controlandmonitorlight.viewmodel.IntroductionViewModel;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements Comunication {
                         startActivity(intent);
                         break;
                     case R.id.settings:
-                        Toast.makeText(getApplicationContext(),"Settings",Toast.LENGTH_SHORT).show();
+                         intent = new Intent(MainActivity.this, SettingActivity.class);
                         break;
                 }
             }
