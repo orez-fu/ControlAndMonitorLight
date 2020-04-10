@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements Comunication {
                         break;
                     case R.id.settings:
                          intent = new Intent(MainActivity.this, SettingActivity.class);
+                         startActivity(intent);
                         break;
                 }
             }
