@@ -1,5 +1,6 @@
 package com.example.controlandmonitorlight.adapter;
 
+import android.app.AlarmManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,8 +8,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.R;
@@ -23,23 +22,6 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
     private OnItemClickListener listener;
 
     private List<Timer> mTimers;
-//
-//    private static final DiffUtil.ItemCallback<Timer> DIFF_CALLBACK = new DiffUtil.ItemCallback<Timer>() {
-//        @Override
-//        public boolean areItemsTheSame(@NonNull Timer oldItem, @NonNull Timer newItem) {
-//            return oldItem.getId().equals(newItem.getId());
-//        }
-//
-//        @Override
-//        public boolean areContentsTheSame(@NonNull Timer oldItem, @NonNull Timer newItem) {
-//            return oldItem.getStatus() == newItem.getStatus() &&
-//                    oldItem.getType().equals(newItem.getType()) &&
-//                    oldItem.getHour() == newItem.getHour() &&
-//                    oldItem.getMinute() == newItem.getMinute() &&
-//                    oldItem.getLabel().equals(newItem.getLabel()) &&
-//                    oldItem.getRepeat().equals(newItem.getRepeat());
-//        }
-//    };
 
     public TimerAdapter(List<Timer> mList) {
         this.mTimers = mList;
@@ -68,15 +50,6 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
             holder.switchCompat.setChecked(false);
         }
 
-        holder.switchCompat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RealtimeFirebaeRepository.getInstance()
-                        .toggleStatusTimer(1,
-                                mTimers.get(position).getId(),
-                                holder.switchCompat.isChecked() ? Timer.STATUS_ON : Timer.STATUS_OFF);
-            }
-        });
     }
 
     @Override
@@ -103,6 +76,20 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
                     int position = getAdapterPosition();
                     if(listener != null && position != RecyclerView.NO_POSITION) {
                         listener.onItemClick(mTimers.get(position));
+                    }
+                }
+            });
+
+            switchCompat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int position = getAdapterPosition();
+                    if(listener != null && position != RecyclerView.NO_POSITION) {
+
+                        RealtimeFirebaeRepository.getInstance()
+                                .toggleStatusTimer(1,
+                                        mTimers.get(position).getId(),
+                                        switchCompat.isChecked() ? Timer.STATUS_ON : Timer.STATUS_OFF);
                     }
                 }
             });

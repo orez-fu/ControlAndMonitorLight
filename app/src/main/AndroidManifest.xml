@@ -11,7 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.view.Activity.AddEditTimerActivity"
+        <activity android:name=".view.view.Activity.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.view.Activity.AddEditTimerActivity"
             android:parentActivityName=".view.view.Activity.DeviceControlActivity" />
         <activity
             android:name=".view.view.Activity.StaticActivity"
@@ -23,12 +31,10 @@
             android:name=".view.view.Activity.KidRoomActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+
+        <receiver android:name=".boardcast.TimerReceiver" />
     </application>
 
 </manifest>

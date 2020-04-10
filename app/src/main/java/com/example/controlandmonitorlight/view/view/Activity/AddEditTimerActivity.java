@@ -4,6 +4,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.example.controlandmonitorlight.R;
+import com.example.controlandmonitorlight.boardcast.TimerReceiver;
 import com.example.controlandmonitorlight.model.Timer;
 
 import java.util.Calendar;
@@ -113,20 +117,36 @@ public class AddEditTimerActivity extends AppCompatActivity {
         mStatus = 1;
         mType = Timer.TYPE_ON;
 
-        Intent intent = new Intent();
-        intent.putExtra(EXTRA_HOUR, mHour);
-        intent.putExtra(EXTRA_MINUTE, mMinute);
-        intent.putExtra(EXTRA_TYPE, mType);
-        intent.putExtra(EXTRA_STATUS, mStatus);
-        intent.putExtra(EXTRA_REPEAT, mRepeat);
-        intent.putExtra(EXTRA_LABEL, mLabel);
+        Intent data = new Intent();
+        data.putExtra(EXTRA_HOUR, mHour);
+        data.putExtra(EXTRA_MINUTE, mMinute);
+        data.putExtra(EXTRA_TYPE, mType);
+        data.putExtra(EXTRA_STATUS, mStatus);
+        data.putExtra(EXTRA_REPEAT, mRepeat);
+        data.putExtra(EXTRA_LABEL, mLabel);
 
         String id = getIntent().getStringExtra(EXTRA_ID);
         if(id != null) {
-            intent.putExtra(EXTRA_ID, id);
+            data.putExtra(EXTRA_ID, id);
+        } else {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent alarmIntent = new Intent(this, TimerReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, alarmIntent, 0);
+
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.HOUR_OF_DAY, mHour);
+            c.set(Calendar.MINUTE, mMinute);
+            c.set(Calendar.SECOND, 0);
+
+            if(c.before(Calendar.getInstance())) {
+                c.add(Calendar.DATE, 1);
+            }
+
+            alarmManager.setExact(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
         }
 
-        setResult(RESULT_OK, intent);
+
+        setResult(RESULT_OK, data);
         finish();
     }
 
