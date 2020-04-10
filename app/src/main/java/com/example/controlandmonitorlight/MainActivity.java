@@ -3,83 +3,80 @@ package com.example.controlandmonitorlight;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.controlandmonitorlight.adapter.CustomAdapter;
-import com.example.controlandmonitorlight.model.Introduction;
-import com.example.controlandmonitorlight.view.view.Activity.KidRoomActivity;
-import com.example.controlandmonitorlight.view.view.Activity.LoginActivity;
+import com.example.controlandmonitorlight.model.Room;
+import com.example.controlandmonitorlight.model.User;
+import com.example.controlandmonitorlight.view.view.Activity.RoomActivity;
+import com.example.controlandmonitorlight.view.view.Activity.SettingActivity;
 import com.example.controlandmonitorlight.view.view.Activity.StaticActivity;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 import com.example.controlandmonitorlight.viewmodel.IntroductionViewModel;
-import com.google.firebase.auth.FirebaseAuth;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Comunication {
-    private final String TAG = "MAIN_ACTIVITY";
 
-    private FirebaseAuth mAuth;
-
-    RecyclerView recyclerView;
-    ChipNavigationBar chipNavigationBar;
-    CustomAdapter customAdapter;
-
+    RecyclerView recyclerView ;
+    ChipNavigationBar chipNavigationBar ;
+    CustomAdapter customAdapter ;
+    TextView mTitle ;
+    List<Room> mListRoom = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
-
-
-        Mapping();
-        if (savedInstanceState == null) {
-            chipNavigationBar.setItemSelected(R.id.home, true);
+        Mapping() ;
+        if(savedInstanceState == null){
+            chipNavigationBar.setItemSelected(R.id.home,true);
         }
 
         IntroductionViewModel viewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
         //initRecycleView();
         viewModel.SetData();
         //viewModel.clicked(this);
-        viewModel.getIntro().observe(this, new Observer<List<Introduction>>() {
+        viewModel.LoadDataFireBase(this);
+        viewModel.LoadTitle();
+        viewModel.title.observe(this, new Observer<User>() {
             @Override
-            public void onChanged(List<Introduction> introductions) {
+            public void onChanged(User user) {
+                mTitle.setText(user.getName()+"");
+            }
+        });
+        viewModel.getIntro().observe(this, new Observer<List<Room>>() {
+            @Override
+            public void onChanged(List<Room> rooms) {
                 //Toast.makeText(getApplicationContext(),""+"oke",Toast.LENGTH_SHORT).show();
-                initRecycleView(introductions);
+                mListRoom = rooms;
+                initRecycleView(rooms);
             }
         });
         eventNavigationBar();
     }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if(mAuth.getCurrentUser() == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
-    }
-
-    void Mapping() {
+    void Mapping()
+    {
         chipNavigationBar = findViewById(R.id.navigation);
         recyclerView = findViewById(R.id.recycle);
+        mTitle = findViewById(R.id.title);
     }
-
-    void initRecycleView(List<Introduction> list) {
-        customAdapter = new CustomAdapter(list, this);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+    void initRecycleView(List<Room> list)
+    {
+        customAdapter = new CustomAdapter(list,this);
+        LinearLayoutManager layoutManager= new LinearLayoutManager(this,RecyclerView.VERTICAL,false) ;
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(customAdapter);
     }
-
-    public void eventNavigationBar() {
+    public  void eventNavigationBar()
+    {
         chipNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
@@ -87,25 +84,27 @@ public class MainActivity extends AppCompatActivity implements Comunication {
                 switch (i) {
 
                     case R.id.static1:
-                        intent = new Intent(MainActivity.this, StaticActivity.class);
+                        intent = new Intent(MainActivity.this,StaticActivity.class);
                         startActivity(intent);
                         break;
                     case R.id.settings:
-                        Toast.makeText(getApplicationContext(), "Settings", Toast.LENGTH_SHORT).show();
+                         intent = new Intent(MainActivity.this, SettingActivity.class);
                         break;
                 }
             }
         });
     }
-
     @Override
     public void setOnClickedItem(int position) {
-        if (position == 0) {
-            Intent intent = new Intent(this, KidRoomActivity.class);
-            intent.putExtra("NameTitle", "KidRoom");
+        if (position == 0)
+        {
+            Intent intent = new Intent(this, RoomActivity.class);
+            intent.putExtra("NameTitle",mListRoom.get(position).getName()) ;
+            intent.putExtra("Id",mListRoom.get(position).getId());
             startActivity(intent);
         }
-        if (position == 1) {
+        if(position == 1 )
+        {
 
         }
     }

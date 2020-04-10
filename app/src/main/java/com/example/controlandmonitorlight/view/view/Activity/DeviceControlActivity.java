@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.adapter.ViewpagerAdapter;
@@ -16,7 +18,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private ViewpagerAdapter mViewPagerAdapter;
     private TabLayout mTabLayout;
-
+    String title , id ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,8 +26,21 @@ public class DeviceControlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_device_control);
 
         mToolbar = findViewById(R.id.toolbar);
+        Intent intent = getIntent();
+        title = intent.getStringExtra("NameTitle");
+        id = intent.getStringExtra("Id");
         initToolbar();
         setViewPager();
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DeviceControlActivity.this,RoomActivity.class);
+                intent.putExtra("NameTitle",title);
+                intent.putExtra("Id",id);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void setViewPager() {
