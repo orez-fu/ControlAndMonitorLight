@@ -1,7 +1,11 @@
 package com.example.controlandmonitorlight.model;
 
+import android.text.format.Time;
+import android.util.Log;
+
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class DeviceStatic {
     private double totalWatt ;
@@ -15,6 +19,7 @@ public class DeviceStatic {
         this.totalWatt = totalWatt;
         this.timeOn = timeOn;
         this.records = records;
+
     }
 
     public double getTotalWatt() {

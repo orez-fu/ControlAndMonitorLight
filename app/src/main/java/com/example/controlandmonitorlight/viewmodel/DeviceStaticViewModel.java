@@ -8,7 +8,12 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.controlandmonitorlight.Repository.DeviceClient;
+import com.example.controlandmonitorlight.model.Consumption;
 import com.example.controlandmonitorlight.model.DeviceStatic;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,10 +23,12 @@ public class DeviceStaticViewModel extends ViewModel {
 
     public MutableLiveData<DeviceStatic> deviceData = new MutableLiveData<>();
     public DeviceClient deviceClient;
-    public void getData(int id, String during , final Context context )
+    DeviceStatic deviceStatic;
+    List<Consumption> a = new ArrayList<>();
+    public void getData(int id, Map<String, String> parameters , final Context context )
     {
-        Log.d("abc","212121");
-        deviceClient.getInstance().getDeviceStatic(id, during).enqueue(new Callback<DeviceStatic>() {
+        deviceStatic = new DeviceStatic(1,1,a);
+        deviceClient.getInstance().getDeviceStatic(id, parameters).enqueue(new Callback<DeviceStatic>() {
             @Override
             public void onResponse(Call<DeviceStatic> call, Response<DeviceStatic> response) {
 
