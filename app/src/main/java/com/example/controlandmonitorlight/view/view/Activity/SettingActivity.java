@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.controlandmonitorlight.MainActivity;
 import com.example.controlandmonitorlight.R;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -227,5 +228,13 @@ public class SettingActivity extends AppCompatActivity {
             });
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
