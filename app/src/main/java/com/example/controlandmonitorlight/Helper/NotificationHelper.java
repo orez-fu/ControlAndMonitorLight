@@ -17,7 +17,7 @@ public class NotificationHelper extends ContextWrapper {
 
     private NotificationManager mManager;
 
-    private NotificationHelper(Context base) {
+    public NotificationHelper(Context base) {
         super(base);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createChannel();
