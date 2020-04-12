@@ -30,7 +30,6 @@
             android:name=".view.view.Activity.RoomActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".MainActivity">
-
         </activity>
     </application>
 

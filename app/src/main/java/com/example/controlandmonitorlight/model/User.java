@@ -1,27 +1,31 @@
 package com.example.controlandmonitorlight.model;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class User {
-    private String id ;
+    private String email ;
     private String name ;
-    private String password;
-    private String username ;
+    private Map<String, Boolean> rooms;
+    private String id ;
 
     public User() {
     }
 
-    public User(String id, String name, String password, String username) {
-        this.id = id;
+    public User(String email, String name, Map<String, Boolean> rooms, String id) {
+        this.email = email;
         this.name = name;
-        this.password = password;
-        this.username = username;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
+        this.rooms = rooms;
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getName() {
@@ -32,19 +36,19 @@ public class User {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
+    public Map<String, Boolean> getRooms() {
+        return rooms;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRooms(Map<String, Boolean> rooms) {
+        this.rooms = rooms;
     }
 
-    public String getUsername() {
-        return username;
+    public String getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(String id) {
+        this.id = id;
     }
 }
