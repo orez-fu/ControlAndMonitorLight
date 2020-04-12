@@ -39,7 +39,6 @@
             android:parentActivityName=".MainActivity"
             tools:ignore="InnerclassSeparator" />
         <activity android:name=".MainActivity">
-
         </activity>
         <service android:name=".services.MyFirebaseMessagingService"
             tools:ignore="ExportedService">

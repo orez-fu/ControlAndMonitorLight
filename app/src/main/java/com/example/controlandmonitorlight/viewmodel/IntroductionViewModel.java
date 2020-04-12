@@ -6,12 +6,14 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.model.User;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,13 +34,28 @@ public class IntroductionViewModel extends ViewModel {
     {
        this.intro.setValue(list);
     }
-    public void LoadTitle(){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users").child("00001");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void LoadTitle(final Context context){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+        reference.child("users").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 User user = dataSnapshot.getValue(User.class);
-                title.setValue(user);
+                title.postValue(user);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
             }
 
             @Override

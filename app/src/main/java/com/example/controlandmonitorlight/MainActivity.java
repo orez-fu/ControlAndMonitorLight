@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements Comunication {
         viewModel.SetData();
         //viewModel.clicked(this);
         viewModel.LoadDataFireBase(this);
-        viewModel.LoadTitle();
+        viewModel.LoadTitle(this);
         viewModel.title.observe(this, new Observer<User>() {
             @Override
             public void onChanged(User user) {
