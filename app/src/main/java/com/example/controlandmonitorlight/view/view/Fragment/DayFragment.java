@@ -1,9 +1,12 @@
 package com.example.controlandmonitorlight.view.view.Fragment;
 import android.os.Bundle;
+import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,10 +20,14 @@ import com.example.controlandmonitorlight.model.DeviceStatic;
 import com.example.controlandmonitorlight.model.RoomStatic;
 import com.example.controlandmonitorlight.viewmodel.DeviceStaticViewModel;
 import com.example.controlandmonitorlight.viewmodel.MonitorViewModel;
+import com.github.mikephil.charting.charts.LineChart;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +41,9 @@ public class DayFragment extends Fragment {
     TextView mTotal;
     TextView mTimeOn ;
     TextView mTimeNow;
+    ImageView mCanlender ;
+    LineChart lineChart;
+    Map<String, String> parameters = new HashMap<>();
     public DayFragment() {
         // Required empty public constructor
     }
@@ -47,11 +57,17 @@ public class DayFragment extends Fragment {
         mTotal = view.findViewById(R.id.total);
         mTimeNow= view.findViewById(R.id.txt_metadata);
         mTimeOn = view.findViewById(R.id.electric);
+        mCanlender = view.findViewById(R.id.calender);
         monitorViewModel = ViewModelProviders.of(DayFragment.this).get(MonitorViewModel.class);
         deviceStaticViewModel = ViewModelProviders.of(DayFragment.this).get(DeviceStaticViewModel.class);
         int id1 = 1 ;
-
-        deviceStaticViewModel.getData(id1, DeviceInterface.DAY,getContext());
+        Time today = new Time(Time.getCurrentTimezone());
+        today.setToNow();
+        this.parameters.put("day",today.monthDay+"");
+        this.parameters.put("month",today.month+1+"");
+        this.parameters.put("year",today.year+"");
+        System.out.println(Arrays.asList(parameters));
+        deviceStaticViewModel.getData(id1,parameters ,getContext());
         Log.d("co","abc");
         deviceStaticViewModel.deviceData.observe(this, new Observer<DeviceStatic>() {
             @Override
