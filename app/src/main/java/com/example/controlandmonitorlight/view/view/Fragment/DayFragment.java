@@ -6,20 +6,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.Repository.DeviceInterface;
+import com.example.controlandmonitorlight.adapter.CustomDateManagement;
 import com.example.controlandmonitorlight.model.DeviceStatic;
 import com.example.controlandmonitorlight.model.RoomStatic;
 import com.example.controlandmonitorlight.viewmodel.DeviceStaticViewModel;
 import com.example.controlandmonitorlight.viewmodel.MonitorViewModel;
+import com.example.controlandmonitorlight.viewmodel.TimeManagement;
 import com.github.mikephil.charting.charts.LineChart;
 
 import java.text.SimpleDateFormat;
@@ -32,7 +37,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DayFragment extends Fragment {
+public class DayFragment extends Fragment implements TimeManagement {
 
     public static final String TITLE = "Day";
     public static DayFragment newInstance() {
@@ -42,6 +47,7 @@ public class DayFragment extends Fragment {
     TextView mTimeOn ;
     TextView mTimeNow;
     ImageView mCanlender ;
+    TextView mTextOptionsTime;
     LineChart lineChart;
     Map<String, String> parameters = new HashMap<>();
     public DayFragment() {
@@ -58,6 +64,7 @@ public class DayFragment extends Fragment {
         mTimeNow= view.findViewById(R.id.txt_metadata);
         mTimeOn = view.findViewById(R.id.electric);
         mCanlender = view.findViewById(R.id.calender);
+        mTextOptionsTime = view.findViewById(R.id.text_time);
         monitorViewModel = ViewModelProviders.of(DayFragment.this).get(MonitorViewModel.class);
         deviceStaticViewModel = ViewModelProviders.of(DayFragment.this).get(DeviceStaticViewModel.class);
         int id1 = 1 ;
@@ -93,5 +100,24 @@ public class DayFragment extends Fragment {
         });
         return view;
     }
+    public void PickDate() {
+        mCanlender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragment customDateManagement= new CustomDateManagement(DayFragment.this);
+                customDateManagement.setCancelable(false);
+                customDateManagement.show(getFragmentManager(),"SCHEDULE");
+            }
+        });
+    }
 
+    @Override
+    public void onSetTime(TimePicker view, int hourOfDay, int minute) {
+
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        mTextOptionsTime.setText(String.valueOf(dayOfMonth)+"/"+String.valueOf(month)+"/"+String.valueOf(year));
+    }
 }
