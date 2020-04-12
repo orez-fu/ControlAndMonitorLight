@@ -55,6 +55,7 @@ public class TimerFragment extends Fragment {
     private DatabaseReference reference;
     private String deviceId;
     private String roomId;
+    private String roomName;
 
     public static TimerFragment newInstance() {
         return new TimerFragment();
@@ -80,6 +81,7 @@ public class TimerFragment extends Fragment {
         Intent intent = getActivity().getIntent();
         deviceId = intent.getStringExtra(KEY_DEVICE_ID);
         roomId = intent.getStringExtra(KEY_ROOM_ID);
+        roomName = intent.getStringExtra(KEY_ROOM_NAME);
 
         reference = FirebaseDatabase.getInstance().getReference();
 
@@ -131,6 +133,7 @@ public class TimerFragment extends Fragment {
                             intent.putExtra(AddEditTimerActivity.EXTRA_LABEL, timer.getLabel());
                             intent.putExtra(KEY_ROOM_ID, roomId);
                             intent.putExtra(KEY_DEVICE_ID, deviceId);
+                            intent.putExtra(KEY_ROOM_NAME, roomName);
 
                             startActivityForResult(intent, EDIT_TIMER_REQUEST);
                         }
@@ -158,6 +161,7 @@ public class TimerFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), AddEditTimerActivity.class);
                 intent.putExtra(KEY_ROOM_ID, roomId);
                 intent.putExtra(KEY_DEVICE_ID, deviceId);
+                intent.putExtra(KEY_ROOM_NAME, roomName);
 
                 startActivityForResult(intent, ADD_TIMER_REQUEST);
             }

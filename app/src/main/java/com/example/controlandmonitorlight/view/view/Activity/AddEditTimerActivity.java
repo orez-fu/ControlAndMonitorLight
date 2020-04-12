@@ -25,6 +25,7 @@ import com.example.controlandmonitorlight.model.Timer;
 import java.util.Calendar;
 
 import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_ID;
+import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_NAME;
 import static com.example.controlandmonitorlight.view.view.Activity.RoomActivity.KEY_DEVICE_ID;
 
 
@@ -58,6 +59,7 @@ public class AddEditTimerActivity extends AppCompatActivity {
     private int mStatus;
     private String roomId;
     private String deviceId;
+    private String roomName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class AddEditTimerActivity extends AppCompatActivity {
         }
         deviceId = intent.getStringExtra(KEY_DEVICE_ID);
         roomId = intent.getStringExtra(KEY_ROOM_ID);
+        roomName = intent.getStringExtra(KEY_ROOM_NAME);
 
         mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +104,7 @@ public class AddEditTimerActivity extends AppCompatActivity {
                 intentBack.putExtra(KEY_ROOM_ID, roomId);
                 intentBack.putExtra(KEY_DEVICE_ID, deviceId);
                 intentBack.putExtra(DeviceControlActivity.EXTRA_PAGER, 1);
+                intentBack.putExtra(KEY_ROOM_NAME, roomName);
 
                 startActivity(intentBack);
                 finish();
@@ -147,6 +151,7 @@ public class AddEditTimerActivity extends AppCompatActivity {
         data.putExtra(EXTRA_STATUS, mStatus);
         data.putExtra(EXTRA_REPEAT, mRepeat);
         data.putExtra(EXTRA_LABEL, mLabel);
+        data.putExtra(KEY_ROOM_NAME, roomName);
         data.putExtra(KEY_ROOM_ID, roomId);
         data.putExtra(KEY_DEVICE_ID, deviceId);
         data.putExtra(DeviceControlActivity.EXTRA_PAGER, 1);

@@ -44,8 +44,8 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
     ParameterRoomAdapter customDevicesAdapter;
     DataViewModel viewModel;
     DevicesViewModel devicesViewModel;
-    String title;
-    String roomId;
+    private String title;
+    private String roomId;
 
     List<DeviceModel> devices;
 
@@ -54,14 +54,20 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kid_room);
         Intent intent = getIntent();
+
         title = intent.getStringExtra(KEY_ROOM_NAME);
         roomId = intent.getStringExtra(KEY_ROOM_ID);
+
         Mapping();
-        initToolbar(title);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(title);
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
         devicesViewModel = ViewModelProviders.of(this).get(DevicesViewModel.class);
         loadingData(roomId);
+
         devicesViewModel.LoadDevicesFireBase(roomId);
 
         viewModel.getData().observe(this, new Observer<List<DeviceDataModel>>() {
@@ -73,7 +79,6 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
 
 
         devicesViewModel.setData();
-        // Log.d("size = ","2");
 
         devicesViewModel.getData().observe(this, new Observer<List<DeviceModel>>() {
             @Override
@@ -102,12 +107,6 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         recyclerViewRoom.setAdapter(customDevicesAdapter);
     }
 
-    void initToolbar(String title) {
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(title);
-    }
-
     void Mapping() {
         toolbar = findViewById(R.id.toolbar);
         recyclerViewData = findViewById(R.id.recycledata);
@@ -130,6 +129,7 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                title = dataSnapshot.child("name").getValue(String.class);
                 String humidity = dataSnapshot.child("humidity").getValue(String.class);
                 String lux = dataSnapshot.child("lux").getValue(String.class);
                 String temperature = dataSnapshot.child("temperature").getValue(String.class);

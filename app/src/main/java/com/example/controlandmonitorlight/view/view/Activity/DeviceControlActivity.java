@@ -25,7 +25,7 @@ public class DeviceControlActivity extends AppCompatActivity {
     private TabLayout mTabLayout;
 
     // Data variables
-    String title, id;
+    private String title, id;
     private int pagerPosition;
 
     @Override
@@ -38,6 +38,7 @@ public class DeviceControlActivity extends AppCompatActivity {
         Intent intent = getIntent();
         title = intent.getStringExtra(KEY_ROOM_NAME);
         id = intent.getStringExtra(KEY_ROOM_ID);
+
         if(intent.hasExtra(EXTRA_PAGER)) {
             pagerPosition = intent.getIntExtra(EXTRA_PAGER, 0);
         } else {
@@ -53,6 +54,7 @@ public class DeviceControlActivity extends AppCompatActivity {
                 Intent intent = new Intent(DeviceControlActivity.this, RoomActivity.class);
                 intent.putExtra(KEY_ROOM_NAME, title);
                 intent.putExtra(KEY_ROOM_ID, id);
+
                 startActivity(intent);
                 finish();
             }
