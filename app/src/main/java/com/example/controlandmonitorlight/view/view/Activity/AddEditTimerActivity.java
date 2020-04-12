@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -22,6 +23,9 @@ import com.example.controlandmonitorlight.boardcast.TimerReceiver;
 import com.example.controlandmonitorlight.model.Timer;
 
 import java.util.Calendar;
+
+import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_ID;
+import static com.example.controlandmonitorlight.view.view.Activity.RoomActivity.KEY_DEVICE_ID;
 
 
 public class AddEditTimerActivity extends AppCompatActivity {
@@ -45,19 +49,21 @@ public class AddEditTimerActivity extends AppCompatActivity {
     private TimePicker timePicker;
     private TextView mTimeDisplay;
 
-    // Data variables
+    // DeviceDataModel variables
     private int mHour;
     private int mMinute;
     private String mRepeat;
     private String mLabel;
     private String mType;
     private int mStatus;
+    private String roomId;
+    private String deviceId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_edit_timer);
-//
+
         mToolbar = findViewById(R.id.add_toolbar);
 
         edtLabel = findViewById(R.id.edt_label);
@@ -75,7 +81,7 @@ public class AddEditTimerActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if(intent.hasExtra(EXTRA_ID)) {
             initToolbar("Update Timer");
             timePicker.setHour(intent.getIntExtra(EXTRA_HOUR, 0));
@@ -84,6 +90,23 @@ public class AddEditTimerActivity extends AppCompatActivity {
         } else {
             initToolbar("Add Timer");
         }
+        deviceId = intent.getStringExtra(KEY_DEVICE_ID);
+        roomId = intent.getStringExtra(KEY_ROOM_ID);
+
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentBack = new Intent(AddEditTimerActivity.this, DeviceControlActivity.class);
+                intentBack.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intentBack.putExtra(KEY_ROOM_ID, roomId);
+                intentBack.putExtra(KEY_DEVICE_ID, deviceId);
+                intentBack.putExtra(DeviceControlActivity.EXTRA_PAGER, 1);
+
+                startActivity(intentBack);
+                finish();
+            }
+        });
+
     }
 
     public void initToolbar(String title) {
@@ -124,6 +147,9 @@ public class AddEditTimerActivity extends AppCompatActivity {
         data.putExtra(EXTRA_STATUS, mStatus);
         data.putExtra(EXTRA_REPEAT, mRepeat);
         data.putExtra(EXTRA_LABEL, mLabel);
+        data.putExtra(KEY_ROOM_ID, roomId);
+        data.putExtra(KEY_DEVICE_ID, deviceId);
+        data.putExtra(DeviceControlActivity.EXTRA_PAGER, 1);
 
         String id = getIntent().getStringExtra(EXTRA_ID);
         if(id != null) {

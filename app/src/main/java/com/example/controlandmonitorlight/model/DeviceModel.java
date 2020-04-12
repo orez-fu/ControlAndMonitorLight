@@ -3,16 +3,19 @@ package com.example.controlandmonitorlight.model;
 import java.util.HashMap;
 import java.util.List;
 
-public class ObjectDevices {
+public class DeviceModel {
+    public static final String STATUS_ON = "1";
+    public static final String STATUS_OFF = "0";
+
     private String id ;
     private String status ;
     private String name ;
     private String type ;
 
-    public ObjectDevices() {
+    public DeviceModel() {
     }
 
-    public ObjectDevices(String id, String status, String name, String type) {
+    public DeviceModel(String id, String status, String name, String type) {
         this.id = id;
         this.status = status;
         this.name = name;

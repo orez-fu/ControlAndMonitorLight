@@ -11,20 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.view.Activity.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".view.view.Activity.StaticActivity">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".view.view.Activity.SettingActivity"></activity>
         <activity
             android:name=".view.view.Activity.AddEditTimerActivity"
             android:parentActivityName=".view.view.Activity.DeviceControlActivity" />
         <activity
-            android:name=".view.view.Activity.StaticActivity"
-            android:parentActivityName=".MainActivity" />
+            android:name=".view.view.Activity.LoginActivity"
+            android:parentActivityName=".MainActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".view.view.Activity.DeviceControlActivity" />
         <activity
             android:name=".view.view.Activity.RoomActivity"

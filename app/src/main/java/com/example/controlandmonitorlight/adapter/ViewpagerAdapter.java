@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.controlandmonitorlight.view.view.Fragment.ControlFragment;
-import com.example.controlandmonitorlight.view.view.Fragment.TimeFragment;
+import com.example.controlandmonitorlight.view.view.Fragment.TimerFragment;
 
 public class ViewpagerAdapter extends FragmentStatePagerAdapter {
     private static int TAB_COUNT = 2;
@@ -24,7 +24,7 @@ public class ViewpagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return ControlFragment.newInstance();
             case 1:
-                return TimeFragment.newInstance();
+                return TimerFragment.newInstance();
         }
         return null;
     }
@@ -40,7 +40,7 @@ public class ViewpagerAdapter extends FragmentStatePagerAdapter {
             case 0:
                 return ControlFragment.TITLE;
             case 1:
-                return TimeFragment.TITLE;
+                return TimerFragment.TITLE;
         }
         return super.getPageTitle(position);
     }
