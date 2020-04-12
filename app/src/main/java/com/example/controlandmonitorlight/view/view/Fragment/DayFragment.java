@@ -98,6 +98,7 @@ public class DayFragment extends Fragment implements TimeManagement {
 
             }
         });
+        PickDate();
         return view;
     }
     public void PickDate() {

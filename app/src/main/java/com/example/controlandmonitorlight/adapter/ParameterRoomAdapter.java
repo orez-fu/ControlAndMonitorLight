@@ -1,4 +1,4 @@
-/*CustomDevicesAdapter*/
+/*ParameterRoomAdapter*/
 package com.example.controlandmonitorlight.adapter;
 
 import android.content.Context;
@@ -10,19 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.databinding.DeviceBinding;
-import com.example.controlandmonitorlight.model.ObjectDevices;
+import com.example.controlandmonitorlight.model.DeviceModel;
 import com.example.controlandmonitorlight.view.view.Activity.RoomActivity;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 
 import java.util.List;
 
-public class CustomDevicesAdapter extends RecyclerView.Adapter<CustomDevicesAdapter.ViewHolder> {
+public class ParameterRoomAdapter extends RecyclerView.Adapter<ParameterRoomAdapter.ViewHolder> {
 
-    List<ObjectDevices> list ;
+    List<DeviceModel> list ;
     Context mContext ;
     Comunication listener = null ;
     LayoutInflater layoutInflater ;
-    public CustomDevicesAdapter(List<ObjectDevices> list, RoomActivity listener) {
+    public ParameterRoomAdapter(List<DeviceModel> list, RoomActivity listener) {
         this.list = list;
         this.listener = listener;
     }
@@ -38,7 +38,7 @@ public class CustomDevicesAdapter extends RecyclerView.Adapter<CustomDevicesAdap
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        ObjectDevices devices = list.get(position);
+        DeviceModel devices = list.get(position);
         holder.bind(devices);
         holder.deviceBinding.card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +59,7 @@ public class CustomDevicesAdapter extends RecyclerView.Adapter<CustomDevicesAdap
             super(itemView.getRoot());
             this.deviceBinding = itemView ;
         }
-        public void bind(ObjectDevices devices ){
+        public void bind(DeviceModel devices ){
             this.deviceBinding.setData(devices);
         }
         public DeviceBinding getDeviceBinding(){

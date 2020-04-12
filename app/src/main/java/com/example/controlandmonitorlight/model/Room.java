@@ -1,26 +1,22 @@
 package com.example.controlandmonitorlight.model;
 
-import android.view.View;
-import android.widget.ImageView;
-
-import androidx.databinding.BindingAdapter;
-
 import java.util.HashMap;
-import java.util.List;
 
 public class Room {
-    private HashMap<String,ObjectDevices> devices ;
+    private HashMap<String, DeviceModel> devices ;
     private String humidity ;
     private String id ;
     private String lux ;
     private String name ;
     private String temperature;
     private String userId ;
+    private int notification;
+
     public Room() {
 
     }
 
-    public Room(HashMap<String,ObjectDevices> devices, String humidity, String id, String lux, String name, String temperature, String userId) {
+    public Room(HashMap<String, DeviceModel> devices, String humidity, String id, String lux, String name, String temperature, String userId, int notification) {
         this.devices = devices;
         this.humidity = humidity;
         this.id = id;
@@ -30,11 +26,11 @@ public class Room {
         this.userId = userId;
     }
 
-    public HashMap<String,ObjectDevices> getDevices() {
+    public HashMap<String, DeviceModel> getDevices() {
         return devices;
     }
 
-    public void setDevices(HashMap<String,ObjectDevices> devices) {
+    public void setDevices(HashMap<String, DeviceModel> devices) {
         this.devices = devices;
     }
 
@@ -84,5 +80,9 @@ public class Room {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public int getNotification() {
+        return notification;
     }
 }

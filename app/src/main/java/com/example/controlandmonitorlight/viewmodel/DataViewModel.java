@@ -1,22 +1,19 @@
 /*viewmodel*/
 package com.example.controlandmonitorlight.viewmodel;
 
-import android.util.Log;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.controlandmonitorlight.R;
-import com.example.controlandmonitorlight.model.Data;
-import com.example.controlandmonitorlight.utils.ConvertString;
+import com.example.controlandmonitorlight.model.DeviceDataModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataViewModel extends ViewModel {
 
-    private MutableLiveData<List<Data>> data = new MutableLiveData<>() ;
-    public MutableLiveData<List<Data>> getData()
+    private MutableLiveData<List<DeviceDataModel>> data = new MutableLiveData<>() ;
+    public MutableLiveData<List<DeviceDataModel>> getData()
     {
         return  data ;
     }
@@ -41,10 +38,10 @@ public class DataViewModel extends ViewModel {
         String humidity = words[0];
         String temperature= words[1];
         String light = words[2];
-        List<Data> d = new ArrayList<>();
-        d.add(new Data(humidity,"Humidity", R.drawable.water)) ;
-        d.add(new Data(temperature,"Temp", R.drawable.temperature)) ;
-        d.add(new Data(light,"Light", R.drawable.light)) ;
+        List<DeviceDataModel> d = new ArrayList<>();
+        d.add(new DeviceDataModel(humidity,"Humidity", R.drawable.water)) ;
+        d.add(new DeviceDataModel(temperature,"Temp", R.drawable.temperature)) ;
+        d.add(new DeviceDataModel(light,"Light", R.drawable.light)) ;
         this.data.setValue(d);
     }
 }

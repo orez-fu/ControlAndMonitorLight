@@ -1,4 +1,4 @@
-/* model */ /* Data*/
+/* model */ /* DeviceDataModel*/
 package com.example.controlandmonitorlight.model;
 
 import android.view.View;
@@ -6,12 +6,12 @@ import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
-public class Data {
+public class DeviceDataModel {
     private String Value ;
     private String Type  ;
     private int Images ;
 
-    public Data(String value, String type, int images) {
+    public DeviceDataModel(String value, String type, int images) {
         this.Value = value;
         this.Type = type;
         this.Images = images;

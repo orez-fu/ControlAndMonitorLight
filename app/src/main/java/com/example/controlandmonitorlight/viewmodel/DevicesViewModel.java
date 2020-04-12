@@ -5,8 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.controlandmonitorlight.R;
-import com.example.controlandmonitorlight.model.ObjectDevices;
+import com.example.controlandmonitorlight.model.DeviceModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DevicesViewModel extends ViewModel {
-    private MutableLiveData<List<ObjectDevices>> data = new MutableLiveData<>();
-    public MutableLiveData<List<ObjectDevices>> getData()
+    private MutableLiveData<List<DeviceModel>> data = new MutableLiveData<>();
+    public MutableLiveData<List<DeviceModel>> getData()
     {
         return  data ;
     }
-    public List<ObjectDevices> mListDevices = new ArrayList<>() ;
+    public List<DeviceModel> mListDevices = new ArrayList<>() ;
     public void setData()
     {
        data.setValue(mListDevices);
@@ -36,7 +35,7 @@ public class DevicesViewModel extends ViewModel {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild("devices")){
                     for (DataSnapshot snapshot : dataSnapshot.child("devices").getChildren()){
-                        ObjectDevices device = snapshot.getValue(ObjectDevices.class);
+                        DeviceModel device = snapshot.getValue(DeviceModel.class);
                         mListDevices.add(device);
                     }
                     data.postValue(mListDevices);

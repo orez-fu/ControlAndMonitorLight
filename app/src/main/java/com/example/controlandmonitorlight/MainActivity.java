@@ -19,13 +19,18 @@ import com.example.controlandmonitorlight.view.view.Activity.SettingActivity;
 import com.example.controlandmonitorlight.view.view.Activity.StaticActivity;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 import com.example.controlandmonitorlight.viewmodel.IntroductionViewModel;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements Comunication {
+    public static final String KEY_ROOM_ID = "com.example.controlandmonitorlight.KEY_ROOM_ID";
+    public static final String KEY_ROOM_NAME = "com.example.controlandmonitorlight.KEY_ROOM_NAME";
 
+    FirebaseUser mUser;
     RecyclerView recyclerView ;
     ChipNavigationBar chipNavigationBar ;
     CustomAdapter customAdapter ;
@@ -35,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements Comunication {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+
         Mapping() ;
         if(savedInstanceState == null){
             chipNavigationBar.setItemSelected(R.id.home,true);
@@ -45,17 +52,10 @@ public class MainActivity extends AppCompatActivity implements Comunication {
         viewModel.SetData();
         //viewModel.clicked(this);
         viewModel.LoadDataFireBase(this);
-        viewModel.LoadTitle(this);
-        viewModel.title.observe(this, new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                mTitle.setText(user.getName()+"");
-            }
-        });
         viewModel.getIntro().observe(this, new Observer<List<Room>>() {
             @Override
             public void onChanged(List<Room> rooms) {
-                //Toast.makeText(getApplicationContext(),""+"oke",Toast.LENGTH_SHORT).show();
+                mTitle.setText(mUser.getDisplayName());
                 mListRoom = rooms;
                 initRecycleView(rooms);
             }
@@ -97,16 +97,9 @@ public class MainActivity extends AppCompatActivity implements Comunication {
     }
     @Override
     public void setOnClickedItem(int position) {
-        if (position == 0)
-        {
             Intent intent = new Intent(this, RoomActivity.class);
-            intent.putExtra("NameTitle",mListRoom.get(position).getName()) ;
-            intent.putExtra("Id",mListRoom.get(position).getId());
+            intent.putExtra(KEY_ROOM_NAME, mListRoom.get(position).getName()) ;
+            intent.putExtra(KEY_ROOM_ID, mListRoom.get(position).getId());
             startActivity(intent);
-        }
-        if(position == 1 )
-        {
-
-        }
     }
 }

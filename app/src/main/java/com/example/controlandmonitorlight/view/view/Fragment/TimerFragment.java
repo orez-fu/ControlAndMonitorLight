@@ -33,9 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_ID;
+import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_NAME;
+import static com.example.controlandmonitorlight.view.view.Activity.RoomActivity.KEY_DEVICE_ID;
 
 
-public class TimeFragment extends Fragment {
+public class TimerFragment extends Fragment {
     private static final String TAG = "TIMER_FRAGMENT";
 
     public static final String TITLE = "Schedule";
@@ -47,15 +50,18 @@ public class TimeFragment extends Fragment {
     private RecyclerView recyclerView;
     private TimerAdapter timerAdapter;
 
-    // Data variables
-    List<Timer> timers;
-    DatabaseReference reference;
+    // DeviceDataModel variables
+    private List<Timer> timers;
+    private DatabaseReference reference;
+    private String deviceId;
+    private String roomId;
+    private String roomName;
 
-    public static TimeFragment newInstance() {
-        return new TimeFragment();
+    public static TimerFragment newInstance() {
+        return new TimerFragment();
     }
 
-    public TimeFragment() {
+    public TimerFragment() {
         // Required empty public constructor
     }
 
@@ -71,6 +77,12 @@ public class TimeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_timer, container, false);
 
+
+        Intent intent = getActivity().getIntent();
+        deviceId = intent.getStringExtra(KEY_DEVICE_ID);
+        roomId = intent.getStringExtra(KEY_ROOM_ID);
+        roomName = intent.getStringExtra(KEY_ROOM_NAME);
+
         reference = FirebaseDatabase.getInstance().getReference();
 
         recyclerView = rootView.findViewById(R.id.rcv_timer);
@@ -83,7 +95,7 @@ public class TimeFragment extends Fragment {
 
     private void loadingData() {
         if(reference != null) {
-            Query query = reference.child("timer").child(String.valueOf(1));
+            Query query = reference.child("timer").child(deviceId);
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -119,6 +131,9 @@ public class TimeFragment extends Fragment {
                             intent.putExtra(AddEditTimerActivity.EXTRA_REPEAT, timer.getRepeat());
                             intent.putExtra(AddEditTimerActivity.EXTRA_TYPE, timer.getType());
                             intent.putExtra(AddEditTimerActivity.EXTRA_LABEL, timer.getLabel());
+                            intent.putExtra(KEY_ROOM_ID, roomId);
+                            intent.putExtra(KEY_DEVICE_ID, deviceId);
+                            intent.putExtra(KEY_ROOM_NAME, roomName);
 
                             startActivityForResult(intent, EDIT_TIMER_REQUEST);
                         }
@@ -144,6 +159,10 @@ public class TimeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddEditTimerActivity.class);
+                intent.putExtra(KEY_ROOM_ID, roomId);
+                intent.putExtra(KEY_DEVICE_ID, deviceId);
+                intent.putExtra(KEY_ROOM_NAME, roomName);
+
                 startActivityForResult(intent, ADD_TIMER_REQUEST);
             }
         });
