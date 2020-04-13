@@ -1,7 +1,7 @@
 package com.example.controlandmonitorlight.repositories;
 
 
-import com.example.controlandmonitorlight.model.Timer;
+import com.example.controlandmonitorlight.model.TimerModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,7 +40,7 @@ public class RealtimeFirebaeRepository {
         });
     }
 
-    public void addNewTimer(int deviceId, Timer timer) {
+    public void addNewTimer(int deviceId, TimerModel timer) {
         String key = reference.child("timer")
                 .child(String.valueOf(deviceId))
                 .push().getKey();
@@ -52,7 +52,7 @@ public class RealtimeFirebaeRepository {
         reference.updateChildren(childUpdates);
     }
 
-    public void updateTimer(int deviceId, String key, Timer timer) {
+    public void updateTimer(int deviceId, String key, TimerModel timer) {
         Map<String, Object> postValues = timer.toMap(key);
 
         Map<String, Object> childUpdates = new HashMap<>();

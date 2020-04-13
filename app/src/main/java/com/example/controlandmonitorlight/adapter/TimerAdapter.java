@@ -1,6 +1,5 @@
 package com.example.controlandmonitorlight.adapter;
 
-import android.app.AlarmManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.R;
-import com.example.controlandmonitorlight.model.Timer;
+import com.example.controlandmonitorlight.model.TimerModel;
 import com.example.controlandmonitorlight.repositories.RealtimeFirebaeRepository;
 
 
@@ -21,9 +20,9 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
     private final String TAG = "TIMER_ADAPTER";
     private OnItemClickListener listener;
 
-    private List<Timer> mTimers;
+    private List<TimerModel> mTimers;
 
-    public TimerAdapter(List<Timer> mList) {
+    public TimerAdapter(List<TimerModel> mList) {
         this.mTimers = mList;
     }
 
@@ -38,15 +37,15 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        Timer currentTimer = mTimers.get(position);
+        TimerModel currentTimer = mTimers.get(position);
 
         holder.txtLabel.setText(currentTimer.getLabel());
         holder.txtTime.setText(currentTimer.getTime());
-        if(currentTimer.getStatus() == Timer.STATUS_ON) {
-            holder.txtStatus.setText(Timer.STRING_ON);
+        if(currentTimer.getStatus() == TimerModel.STATUS_ON) {
+            holder.txtStatus.setText(TimerModel.STRING_ON);
             holder.switchCompat.setChecked(true);
         } else {
-            holder.txtStatus.setText(Timer.STRING_OFF);
+            holder.txtStatus.setText(TimerModel.STRING_OFF);
             holder.switchCompat.setChecked(false);
         }
 
@@ -89,7 +88,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
                         RealtimeFirebaeRepository.getInstance()
                                 .toggleStatusTimer(1,
                                         mTimers.get(position).getId(),
-                                        switchCompat.isChecked() ? Timer.STATUS_ON : Timer.STATUS_OFF);
+                                        switchCompat.isChecked() ? TimerModel.STATUS_ON : TimerModel.STATUS_OFF);
                     }
                 }
             });
@@ -97,7 +96,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
     }
 
     public interface OnItemClickListener {
-        void onItemClick(Timer timer);
+        void onItemClick(TimerModel timer);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {

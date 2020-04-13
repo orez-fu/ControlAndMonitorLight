@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class Timer {
+public class TimerModel {
     public static final int STATUS_ON = 1;
     public static final int STATUS_OFF = 0;
     public static final String STRING_ON = "On";
@@ -31,11 +31,15 @@ public class Timer {
 
     private int status;
 
-    public Timer() {
+    private String roomId;
+    private String deviceId;
+
+
+    public TimerModel() {
 
     }
 
-    public Timer(String id, int hour, int minute, String repeat, String label, String type, int status) {
+    public TimerModel(String id, int hour, int minute, String repeat, String label, String type, int status) {
         this.id = id;
         this.hour = hour;
         this.minute = minute;
@@ -45,7 +49,19 @@ public class Timer {
         this.status = status;
     }
 
-    public Timer(int hour, int minute, String repeat, String label, String type, int status) {
+    public TimerModel(int hour, int minute, String repeat, String label, String type, int status) {
+        this.hour = hour;
+        this.minute = minute;
+        this.repeat = repeat;
+        this.label = label;
+        this.type = type;
+        this.status = status;
+    }
+
+
+    public TimerModel(String roomId, String deviceId, int hour, int minute, String repeat, String label, String type, int status) {
+        this.roomId = roomId;
+        this.deviceId = deviceId;
         this.hour = hour;
         this.minute = minute;
         this.repeat = repeat;
@@ -82,6 +98,14 @@ public class Timer {
         return status;
     }
 
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
     public String getTime() {
         return String.valueOf(hour) + ":" + String.valueOf(minute);
     }
@@ -96,6 +120,8 @@ public class Timer {
         result.put("repeat", repeat);
         result.put("status", status);
         result.put("type", type);
+        result.put("roomId", roomId);
+        result.put("deviceId", deviceId);
 
         return result;
     }
