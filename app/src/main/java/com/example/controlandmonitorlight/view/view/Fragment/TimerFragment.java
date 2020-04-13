@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.adapter.TimerAdapter;
 import com.example.controlandmonitorlight.model.TimerModel;
-import com.example.controlandmonitorlight.repositories.RealtimeFirebaeRepository;
+import com.example.controlandmonitorlight.repositories.RealtimeFirebaseRepository;
 import com.example.controlandmonitorlight.view.view.Activity.AddEditTimerActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -33,9 +33,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static android.app.Activity.RESULT_OK;
+import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_ID;
+import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_NAME;
+import static com.example.controlandmonitorlight.view.view.Activity.RoomActivity.KEY_DEVICE_ID;
 
 
-public class TimeFragment extends Fragment {
+public class TimerFragment extends Fragment {
     private static final String TAG = "TIMER_FRAGMENT";
 
     public static final String TITLE = "Schedule";
@@ -47,15 +50,18 @@ public class TimeFragment extends Fragment {
     private RecyclerView recyclerView;
     private TimerAdapter timerAdapter;
 
-    // Data variables
-    List<TimerModel> timers;
-    DatabaseReference reference;
+    // DeviceDataModel variables
+    private List<TimerModel> timers;
+    private DatabaseReference reference;
+    private String deviceId;
+    private String roomId;
+    private String roomName;
 
-    public static TimeFragment newInstance() {
-        return new TimeFragment();
+    public static TimerFragment newInstance() {
+        return new TimerFragment();
     }
 
-    public TimeFragment() {
+    public TimerFragment() {
         // Required empty public constructor
     }
 
@@ -71,6 +77,12 @@ public class TimeFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_timer, container, false);
 
+
+        Intent intent = getActivity().getIntent();
+        deviceId = intent.getStringExtra(KEY_DEVICE_ID);
+        roomId = intent.getStringExtra(KEY_ROOM_ID);
+        roomName = intent.getStringExtra(KEY_ROOM_NAME);
+
         reference = FirebaseDatabase.getInstance().getReference();
 
         recyclerView = rootView.findViewById(R.id.rcv_timer);
@@ -83,18 +95,19 @@ public class TimeFragment extends Fragment {
 
     private void loadingData() {
         if(reference != null) {
-            Query query = reference.child("timer").child(String.valueOf(1));
+            Query query = reference.child("timer").child(deviceId);
             query.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     timers = new ArrayList<>();
                     for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
+                        Log.d(TAG, snapshot.toString());
                         Log.d(TAG, snapshot.getValue(TimerModel.class).getLabel() + ": " + snapshot.getValue(TimerModel.class).getTime());
                         timers.add(snapshot.getValue(TimerModel.class));
                     }
                     timerAdapter = new TimerAdapter(timers);
                     recyclerView.setAdapter(timerAdapter);
-
+//
                     new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
                         @Override
                         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -103,10 +116,13 @@ public class TimeFragment extends Fragment {
 
                         @Override
                         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                            Toast.makeText(getContext(), "Note deleted " + String.valueOf(direction), Toast.LENGTH_SHORT).show();
+                            int position = viewHolder.getAdapterPosition();
+                            RealtimeFirebaseRepository.getInstance().deleteTimer(timers.get(position).getDeviceId(), timers.get(position).getId());
+                            timers.remove(viewHolder.getAdapterPosition());
+                            timerAdapter.notifyDataSetChanged();
                         }
                     }).attachToRecyclerView(recyclerView);
-
+//
                     timerAdapter.setOnItemClickListener(new TimerAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(TimerModel timer) {
@@ -118,6 +134,9 @@ public class TimeFragment extends Fragment {
                             intent.putExtra(AddEditTimerActivity.EXTRA_REPEAT, timer.getRepeat());
                             intent.putExtra(AddEditTimerActivity.EXTRA_TYPE, timer.getType());
                             intent.putExtra(AddEditTimerActivity.EXTRA_LABEL, timer.getLabel());
+                            intent.putExtra(KEY_ROOM_ID, roomId);
+                            intent.putExtra(KEY_DEVICE_ID, deviceId);
+                            intent.putExtra(KEY_ROOM_NAME, roomName);
 
                             startActivityForResult(intent, EDIT_TIMER_REQUEST);
                         }
@@ -143,6 +162,10 @@ public class TimeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddEditTimerActivity.class);
+                intent.putExtra(KEY_ROOM_ID, roomId);
+                intent.putExtra(KEY_DEVICE_ID, deviceId);
+                intent.putExtra(KEY_ROOM_NAME, roomName);
+
                 startActivityForResult(intent, ADD_TIMER_REQUEST);
             }
         });
@@ -160,8 +183,8 @@ public class TimeFragment extends Fragment {
             String type = data.getStringExtra(AddEditTimerActivity.EXTRA_TYPE);
             int status = data.getIntExtra(AddEditTimerActivity.EXTRA_STATUS, 0);
 
-            RealtimeFirebaeRepository.getInstance().addNewTimer(1,
-                    new TimerModel(hour, minute, repeat, label, type, status));
+            RealtimeFirebaseRepository.getInstance().addNewTimer(deviceId,
+                    new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
 
         } else if (EDIT_TIMER_REQUEST == requestCode && RESULT_OK == resultCode) {
             String id = data.getStringExtra(AddEditTimerActivity.EXTRA_ID);
@@ -177,8 +200,8 @@ public class TimeFragment extends Fragment {
             String type = data.getStringExtra(AddEditTimerActivity.EXTRA_TYPE);
             int status = data.getIntExtra(AddEditTimerActivity.EXTRA_STATUS, 0);
 
-            RealtimeFirebaeRepository.getInstance().updateTimer(1, id,
-                    new TimerModel(hour, minute, repeat, label, type, status));
+            RealtimeFirebaseRepository.getInstance().updateTimer(deviceId, id,
+                    new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
             Toast.makeText(getActivity(), "Note updated", Toast.LENGTH_SHORT).show();
 
         }

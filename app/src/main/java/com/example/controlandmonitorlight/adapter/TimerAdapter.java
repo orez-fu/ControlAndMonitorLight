@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.TimerModel;
-import com.example.controlandmonitorlight.repositories.RealtimeFirebaeRepository;
+import com.example.controlandmonitorlight.repositories.RealtimeFirebaseRepository;
 
 
 import java.util.List;
@@ -85,7 +85,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
                     int position = getAdapterPosition();
                     if(listener != null && position != RecyclerView.NO_POSITION) {
 
-                        RealtimeFirebaeRepository.getInstance()
+                        RealtimeFirebaseRepository.getInstance()
                                 .toggleStatusTimer(1,
                                         mTimers.get(position).getId(),
                                         switchCompat.isChecked() ? TimerModel.STATUS_ON : TimerModel.STATUS_OFF);

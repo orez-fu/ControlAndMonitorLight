@@ -3,7 +3,7 @@
     <data class="DeviceBinding">
         <variable
             name="data"
-            type="com.example.controlandmonitorlight.model.ObjectDevices" />
+            type="com.example.controlandmonitorlight.model.DeviceModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"

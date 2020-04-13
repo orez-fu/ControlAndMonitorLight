@@ -1,4 +1,4 @@
-/*CustomDataAdapter*/
+/*RoomDeviceAdapter*/
 package com.example.controlandmonitorlight.adapter;
 
 import android.content.Context;
@@ -9,18 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.databinding.DataNew;
-import com.example.controlandmonitorlight.model.Data;
+import com.example.controlandmonitorlight.model.DeviceDataModel;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 
 import java.util.List;
 
-public class CustomDataAdapter extends RecyclerView.Adapter<CustomDataAdapter.ViewHolder> {
-    List<Data> list;
+public class RoomDeviceAdapter extends RecyclerView.Adapter<RoomDeviceAdapter.ViewHolder> {
+    List<DeviceDataModel> list;
     Context mContext;
     LayoutInflater layoutInflater;
     Comunication click;
 
-    public CustomDataAdapter(List<Data> list, Context mContext) {
+    public RoomDeviceAdapter(List<DeviceDataModel> list, Context mContext) {
         this.list = list;
         this.mContext = mContext;
     }
@@ -37,7 +37,7 @@ public class CustomDataAdapter extends RecyclerView.Adapter<CustomDataAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Data introduction = list.get(position);
+        DeviceDataModel introduction = list.get(position);
         holder.bind(introduction);
     }
 
@@ -54,7 +54,7 @@ public class CustomDataAdapter extends RecyclerView.Adapter<CustomDataAdapter.Vi
             this.dataBinding = itemView;
         }
 
-        public void bind(Data intro) {
+        public void bind(DeviceDataModel intro) {
             this.dataBinding.setData(intro);
         }
 
