@@ -3,6 +3,7 @@ package com.example.controlandmonitorlight.view.view.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -10,16 +11,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.adapter.RoomDeviceAdapter;
 import com.example.controlandmonitorlight.adapter.ParameterRoomAdapter;
 import com.example.controlandmonitorlight.model.DeviceDataModel;
 import com.example.controlandmonitorlight.model.DeviceModel;
+import com.example.controlandmonitorlight.model.Room;
+import com.example.controlandmonitorlight.repositories.RealtimeFirebaseRepository;
+import com.example.controlandmonitorlight.repositories.RealtimeRepository;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 import com.example.controlandmonitorlight.viewmodel.DataViewModel;
 import com.example.controlandmonitorlight.viewmodel.DevicesViewModel;
@@ -28,6 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.List;
 
@@ -37,6 +42,8 @@ import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_NAME;
 public class RoomActivity extends AppCompatActivity implements Comunication {
 
     public static final String KEY_DEVICE_ID = "com.example.controlandmonitorlight.view.view.Activity.KEY_DEVICE_ID";
+
+    // UI variables
     Toolbar toolbar;
     RecyclerView recyclerViewData;
     RecyclerView recyclerViewRoom;
@@ -44,8 +51,12 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
     ParameterRoomAdapter customDevicesAdapter;
     DataViewModel viewModel;
     DevicesViewModel devicesViewModel;
+    private SwitchCompat switchCompat;
+
+    // Data variables
     private String title;
     private String roomId;
+    private Integer hasNotification;
 
     List<DeviceModel> devices;
 
@@ -58,7 +69,7 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         title = intent.getStringExtra(KEY_ROOM_NAME);
         roomId = intent.getStringExtra(KEY_ROOM_ID);
 
-        Mapping();
+        mapping();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -89,6 +100,18 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
             }
         });
 
+        switchCompat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(switchCompat.isChecked()) {
+                    RealtimeFirebaseRepository.getInstance().updateNotificationAtRoom(roomId, Room.NOTIFICATION_YES);
+                    FirebaseMessaging.getInstance().subscribeToTopic(roomId);
+                } else {
+                    RealtimeFirebaseRepository.getInstance().updateNotificationAtRoom(roomId, Room.NOTIFICATION_NO);
+                    FirebaseMessaging.getInstance().unsubscribeFromTopic(roomId);
+                }
+            }
+        });
 
     }
 
@@ -107,10 +130,11 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         recyclerViewRoom.setAdapter(customDevicesAdapter);
     }
 
-    void Mapping() {
+    void mapping() {
         toolbar = findViewById(R.id.toolbar);
         recyclerViewData = findViewById(R.id.recycledata);
         recyclerViewRoom = findViewById(R.id.recycleroom);
+        switchCompat = findViewById(R.id.switch_notification);
     }
 
     @Override
@@ -122,8 +146,7 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         startActivity(intent);
     }
 
-    public void loadingData(String roomId) {
-
+    public void loadingData(final String roomId) {
         DatabaseReference reference = FirebaseDatabase.getInstance()
                 .getReference("rooms").child(roomId);
         reference.addValueEventListener(new ValueEventListener() {
@@ -134,6 +157,15 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
                 String lux = dataSnapshot.child("lux").getValue(String.class);
                 String temperature = dataSnapshot.child("temperature").getValue(String.class);
                 String value = humidity + " " + temperature + " " + lux;
+                hasNotification = dataSnapshot.child("notification").getValue(Integer.class);
+                Log.d("ROOM_ACTIVITY", dataSnapshot.toString());
+                Log.d("ROOM_ACTIVITY", "" + hasNotification);
+
+                switchCompat.setChecked(hasNotification.equals(Room.NOTIFICATION_YES));
+                if(hasNotification.equals(Room.NOTIFICATION_YES)) {
+                    FirebaseMessaging.getInstance().subscribeToTopic(roomId);
+                }
+
                 viewModel.setData(value);
             }
 

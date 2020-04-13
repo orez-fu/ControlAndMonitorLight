@@ -20,7 +20,7 @@ import android.widget.TimePicker;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.boardcast.TimerReceiver;
-import com.example.controlandmonitorlight.model.Timer;
+import com.example.controlandmonitorlight.model.TimerModel;
 
 import java.util.Calendar;
 
@@ -140,9 +140,9 @@ public class AddEditTimerActivity extends AppCompatActivity {
 
     public void saveTimer() {
         mLabel = edtLabel.getText().toString();
-        mRepeat = Timer.REPEAT_ONCE;
+        mRepeat = TimerModel.REPEAT_ONCE;
         mStatus = 1;
-        mType = Timer.TYPE_ON;
+        mType = TimerModel.TYPE_ON;
 
         Intent data = new Intent();
         data.putExtra(EXTRA_HOUR, mHour);

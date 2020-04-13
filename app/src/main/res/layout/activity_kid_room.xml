@@ -19,6 +19,13 @@
                 android:layout_height="wrap_content">
 
             </androidx.appcompat.widget.Toolbar>
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switch_notification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="Allow receive notification"
+                android:textSize="18sp" />
             <androidx.recyclerview.widget.RecyclerView
                 android:background="#ff8a65"
                 android:id="@+id/recycledata"

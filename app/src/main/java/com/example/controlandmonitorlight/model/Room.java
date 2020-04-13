@@ -3,6 +3,9 @@ package com.example.controlandmonitorlight.model;
 import java.util.HashMap;
 
 public class Room {
+    public static final Integer NOTIFICATION_YES = 1;
+    public static final Integer NOTIFICATION_NO = 0;
+
     private HashMap<String, DeviceModel> devices ;
     private String humidity ;
     private String id ;
