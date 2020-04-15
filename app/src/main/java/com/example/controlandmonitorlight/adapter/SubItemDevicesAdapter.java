@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.controlandmonitorlight.R;
+import com.example.controlandmonitorlight.model.DeviceModel;
 
 import java.util.List;
 
 public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAdapter.ViewHolder> {
 
-    List<String> devices ;
+    List<DeviceModel> devices ;
 
-    public SubItemDevicesAdapter(List<String> devices) {
+    public SubItemDevicesAdapter(List<DeviceModel> devices) {
         this.devices = devices;
     }
 
@@ -30,7 +31,7 @@ public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.nameDevice.setText(devices.get(position));
+        holder.nameDevice.setText(devices.get(position).getName());
     }
 
     @Override

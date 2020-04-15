@@ -42,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_ROOM_ID = "com.example.controlandmonitorlight.KEY_ROOM_ID";
     public static final String KEY_ROOM_NAME = "com.example.controlandmonitorlight.KEY_ROOM_NAME";
 
-    FirebaseUser mUser;
-    BottomNavigationView bottomNav;
-    FragmentManager fragmentManager ;
-    RecyclerView recyclerView ;
-    TextView mName , mTitle ;
-    CircleImageView imageUser ;
-    List<Room> mListRoom = new ArrayList<>();
+    private FirebaseUser mUser;
+    private BottomNavigationView bottomNav;
+    private FragmentManager fragmentManager ;
+    private RecyclerView recyclerView ;
+    private TextView mName , mTitle ;
+    private CircleImageView imageUser ;
+    private List<Room> mListRoom = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         finishAndRemoveTask();
     }
+
 
 
 }
