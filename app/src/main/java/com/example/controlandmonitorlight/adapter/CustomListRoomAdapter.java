@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -12,20 +13,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.controlandmonitorlight.R;
+import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.viewmodel.RoomInterface;
 
 import java.util.List;
 
 public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAdapter.ViewHolder> {
 
-    private List<String> nameRooms;
+    private List<Room> nameRooms;
     Context mContext ;
     private RoomInterface click;
 
     public void setClick(RoomInterface click){
         this.click = click;
     }
-    public CustomListRoomAdapter(List<String> nameRooms, Context mContext) {
+    public CustomListRoomAdapter(List<Room> nameRooms, Context mContext) {
         this.nameRooms = nameRooms;
         this.mContext = mContext;
     }
@@ -39,10 +41,11 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.titleRooms.setText(nameRooms.get(position));
+        holder.titleRooms.setText(nameRooms.get(position).getName());
         holder.itemCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(mContext,""+holder.getAdapterPosition(),Toast.LENGTH_SHORT).show();
                 click.setOnclickItem(holder.getAdapterPosition());
             }
         });
