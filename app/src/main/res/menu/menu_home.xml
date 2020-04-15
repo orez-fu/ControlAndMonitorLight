@@ -9,7 +9,7 @@
     <item android:id="@+id/static1"
         app:cnb_textColor="#000000"
         android:title="Static"></item>
-    <item android:id="@+id/settings"
+    <item android:id="@+id/profile"
         android:icon="@drawable/ic_settings_black_24dp"
         app:cnb_textColor="#000000"
         android:title="Settings"></item>

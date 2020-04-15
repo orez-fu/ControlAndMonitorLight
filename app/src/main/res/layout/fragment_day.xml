@@ -37,7 +37,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginTop="10dp"
-            android:weightSum="4"
+            android:weightSum="7"
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/txt_metadata"
             android:id="@+id/linearlayout"
@@ -51,8 +51,9 @@
                 android:layout_height="match_parent">
             </ImageView>
             <TextView
+                android:layout_gravity="center"
                 android:id="@+id/text_time"
-                android:layout_weight="3"
+                android:layout_weight="6"
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
             </TextView>
@@ -71,12 +72,11 @@
             android:layout_height="match_parent">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:orientation="vertical"
-                android:layout_marginLeft="25dp"
                 android:id="@+id/text_total"
                 android:background="@drawable/circle"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/text_timeOn"
                 android:layout_width="150dp"
                 android:layout_height="150dp">
                 <TextView
@@ -91,13 +91,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/text_timeOn"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginStart="56dp"
                 android:background="@drawable/circle"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/text_total"
-                app:layout_constraintTop_toTopOf="@+id/text_total">
+                app:layout_constraintTop_toTopOf="parent">
                 <TextView
                     android:id="@+id/timeOn"
                     app:layout_constraintBottom_toBottomOf="parent"

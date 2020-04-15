@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) {
         if(user != null) {
             startActivity(new Intent(this, MainActivity.class));
+            finish();
         }
     }
 
@@ -97,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                                 progressDialog.dismiss();
                             }
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            finish();
                         } else {
                             if(progressDialog.isShowing()) {
                                 progressDialog.dismiss();
