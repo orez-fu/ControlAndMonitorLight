@@ -53,6 +53,7 @@ public class IntroductionViewModel extends ViewModel {
                     Log.d("INTRODUCTION", snapshot.getKey());
                     DatabaseReference reference1 = FirebaseDatabase.getInstance()
                             .getReference("rooms").child(roomId);
+                    list.clear();
                     reference1.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

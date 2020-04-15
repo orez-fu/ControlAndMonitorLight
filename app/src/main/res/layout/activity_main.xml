@@ -3,55 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="#ff8a65"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
-
-        <TextView
-            android:layout_marginTop="20dp"
-            android:id="@+id/title"
-            android:textSize="25sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-        </TextView>
-        <TextView
-            android:text="Welcome to samsung"
-            android:textSize="15sp"
-            android:id="@+id/hello"
-            app:layout_constraintTop_toBottomOf="@+id/title"
+        android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:text="USER NAME"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <TextView
+                    android:id="@+id/txt_title"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="10dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_name"
+                    android:text="This is section"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                </TextView>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/profile_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="#FF000000"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-        </TextView>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle"
+        <FrameLayout
+            android:id="@+id/fragment_place"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/navigation"
+            android:layout_height="match_parent"
+            android:layout_marginTop="72dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/hello">
+            app:layout_constraintTop_toBottomOf="@+id/card">
 
-        </androidx.recyclerview.widget.RecyclerView>
-        <com.ismaeldivita.chipnavigation.ChipNavigationBar
+        </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
             android:background="@drawable/background"
             android:id="@+id/navigation"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
+            app:menu="@menu/menu_home"
+            app:itemTextAppearanceActive="@style/BottomNavigationView.Active"
+            app:itemTextAppearanceInactive="@style/BottomNavigationView"
             android:layout_height="50dp"
-            app:cnb_menuResource="@menu/menu_home"
             android:layout_width="match_parent">
-        </com.ismaeldivita.chipnavigation.ChipNavigationBar>
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </FrameLayout>
