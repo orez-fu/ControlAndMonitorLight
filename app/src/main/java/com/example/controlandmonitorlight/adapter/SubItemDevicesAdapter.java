@@ -24,7 +24,7 @@ public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_devices,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_static_devices,parent,false);
         return new ViewHolder(view);
     }
 

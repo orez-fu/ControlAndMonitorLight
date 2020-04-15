@@ -1,5 +1,6 @@
 package com.example.controlandmonitorlight.view.view.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +21,6 @@ import java.util.List;
 public class HomeFragment extends Fragment implements RoomInterface {
 
 
-    private String mParam1;
-    private String mParam2;
     private RecyclerView rListRooms;
     private List<String> nameRooms = new ArrayList<>() ;
     public HomeFragment() {
@@ -48,6 +47,5 @@ public class HomeFragment extends Fragment implements RoomInterface {
 
     @Override
     public void setOnclickItem(int position) {
-        Toast.makeText(getContext(), ""+position, Toast.LENGTH_SHORT).show();
     }
 }

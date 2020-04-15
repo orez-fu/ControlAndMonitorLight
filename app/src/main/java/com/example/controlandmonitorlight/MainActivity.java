@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.controlandmonitorlight.adapter.CustomAdapter;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.model.User;
 import com.example.controlandmonitorlight.view.view.Activity.LoginActivity;
@@ -36,6 +36,8 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_ROOM_ID = "com.example.controlandmonitorlight.KEY_ROOM_ID";
     public static final String KEY_ROOM_NAME = "com.example.controlandmonitorlight.KEY_ROOM_NAME";
@@ -44,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNav;
     FragmentManager fragmentManager ;
     RecyclerView recyclerView ;
-    CustomAdapter customAdapter ;
-    TextView mTitle ;
+    TextView mName , mTitle ;
+    CircleImageView imageUser ;
     List<Room> mListRoom = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,22 +64,26 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_place,new HomeFragment()).commit();
+        mName.setText(mUser.getDisplayName());
+        /*
+            IntroductionViewModel viewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
+            viewModel.SetData();
+            viewModel.LoadDataFireBase(this);
+            viewModel.getIntro().observe(this, new Observer<List<Room>>() {
+                @Override
+                public void onChanged(List<Room> rooms) {
 
-        IntroductionViewModel viewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
-        //initRecycleView();
-        viewModel.SetData();
-        //viewModel.clicked(this);
-        viewModel.LoadDataFireBase(this);
-        viewModel.getIntro().observe(this, new Observer<List<Room>>() {
-            @Override
-            public void onChanged(List<Room> rooms) {
-                mTitle.setText(mUser.getDisplayName());
-                mListRoom = rooms;
-            }
-        });
+                }
+            });
+
+        */
+
 
     }
     void Mapping(){
+        imageUser = findViewById(R.id.profile_image);
+        mTitle = findViewById(R.id.txt_title);
+        mName = findViewById(R.id.txt_name);
         bottomNav = findViewById(R.id.navigation);
     }
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -1,4 +1,5 @@
 /* adapter */
+/*
 package com.example.controlandmonitorlight.adapter;
 
 
@@ -11,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.controlandmonitorlight.MainActivity;
-import com.example.controlandmonitorlight.databinding.DataBinding;
+import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.viewmodel.Comunication;
 
@@ -22,19 +23,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     Context mContext ;
     LayoutInflater layoutInflater ;
     Comunication click ;
-    public CustomAdapter(List<Room> list , MainActivity click) {
+    public CustomAdapter(List<Room> list , Comunication click) {
         this.list = list;
         this.click = click ;
     }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(layoutInflater == null)
-        {
-            layoutInflater = LayoutInflater.from(parent.getContext());
-        }
-        DataBinding dataBinding = DataBinding.inflate(layoutInflater,parent,false);
-        return new ViewHolder(dataBinding);
+       View view = LayoutInflater.from(parent.getContext()).inflate(R.lay.)
+        return new ViewHolder(view);
     }
 
     @Override
@@ -72,3 +69,5 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         }
     }
 }
+
+ */
