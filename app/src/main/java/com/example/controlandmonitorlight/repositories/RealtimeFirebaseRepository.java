@@ -3,13 +3,19 @@ package com.example.controlandmonitorlight.repositories;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.controlandmonitorlight.model.TimerModel;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
 
 public class RealtimeFirebaseRepository {
     private static final String TAG = "REALTIME_REPOSITORY";
@@ -63,6 +69,7 @@ public class RealtimeFirebaseRepository {
         reference.updateChildren(childUpdates);
     }
 
+
     public void deleteTimer(String deviceId, String timerId) {
         Log.d(TAG, "Timer ID: " + timerId);
         reference.child("timer").child(deviceId).child(timerId).removeValue();
@@ -71,4 +78,5 @@ public class RealtimeFirebaseRepository {
     public void updateNotificationAtRoom(String roomId, Integer stateNotification) {
         reference.child("rooms").child(roomId).child("notification").setValue(stateNotification);
     }
+
 }
