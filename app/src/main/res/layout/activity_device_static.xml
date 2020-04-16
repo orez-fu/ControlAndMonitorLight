@@ -24,12 +24,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="280dp"
             android:layout_height="280dp">
-        <TextView
-            android:textSize="25dp"
-            android:text="Date: 15/04/2020"
-            android:drawableLeft="@drawable/icon_schedule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+      
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.github.mikephil.charting.charts.LineChart
