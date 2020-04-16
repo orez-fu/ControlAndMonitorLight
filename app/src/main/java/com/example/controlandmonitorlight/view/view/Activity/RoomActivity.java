@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.adapter.RoomDeviceAdapter;
@@ -77,6 +78,8 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
 
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
         devicesViewModel = ViewModelProviders.of(this).get(DevicesViewModel.class);
+        Log.d("roomId",roomId) ;
+        Toast.makeText(getApplicationContext(),""+roomId,Toast.LENGTH_SHORT).show();
         loadingData(roomId);
 
         devicesViewModel.LoadDevicesFireBase(roomId);
