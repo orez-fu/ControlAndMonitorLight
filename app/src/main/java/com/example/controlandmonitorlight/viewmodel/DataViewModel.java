@@ -35,13 +35,13 @@ public class DataViewModel extends ViewModel {
         }
         words[dem] = temp;
         dem++;
-        String humidity = words[0];
-        String temperature= words[1];
-        String light = words[2];
+        String humidity = words[0]+"%";
+        String temperature= words[1]+"°C";
+        String light = words[2]+ " lux";
         List<DeviceDataModel> d = new ArrayList<>();
-        d.add(new DeviceDataModel(humidity,"Humidity", R.drawable.water)) ;
-        d.add(new DeviceDataModel(temperature,"Temp", R.drawable.temperature)) ;
-        d.add(new DeviceDataModel(light,"Light", R.drawable.light)) ;
+        d.add(new DeviceDataModel(humidity,"Humidity", R.drawable.icon_humi)) ;
+        d.add(new DeviceDataModel(temperature,"Temp", R.drawable.icon_temp)) ;
+        d.add(new DeviceDataModel(light,"Light", R.drawable.icon_lux)) ;
         this.data.setValue(d);
     }
 }

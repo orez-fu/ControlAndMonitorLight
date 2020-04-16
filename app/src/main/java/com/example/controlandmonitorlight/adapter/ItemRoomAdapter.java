@@ -1,6 +1,7 @@
 package com.example.controlandmonitorlight.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,16 +27,15 @@ import java.util.List;
 public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHolder> {
 
     private List<Room> Name ;
-    private List<DeviceModel> nameDevices ;
+    private List<DeviceModel> nameDevices  = new ArrayList<>();
     private Context context ;
     private List<String> Devices;
     private DevicesViewModel devicesViewModel ;
     private SubItemDevicesAdapter subItemDevicesAdapter;
-    private String id ;
-    public ItemRoomAdapter(List<Room> name, Context context,String id  ) {
+
+    public ItemRoomAdapter(List<Room> name, Context context  ) {
         this.Name = name;
         this.context = context;
-        this.id = id ;
     }
 
     @NonNull
@@ -46,7 +46,8 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        Log.d("name=",Name.get(position).getName()) ;
         holder.nameRoom.setText(Name.get(position).getName());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL,false);
         holder.recyclerView.setLayoutManager(layoutManager);
@@ -54,20 +55,24 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
         nameDevices = new ArrayList<>();
         nameDevices.clear();
         devicesViewModel = ViewModelProviders.of((FragmentActivity) context).get(DevicesViewModel.class);
-        devicesViewModel.setData();
-        devicesViewModel.LoadDevicesFireBase(id);
+        //devicesViewModel.setData();
+        devicesViewModel.LoadDevicesFireBase(Name.get(position).getId());
         devicesViewModel.getData().observe((LifecycleOwner) context, new Observer<List<DeviceModel>>() {
             @Override
             public void onChanged(List<DeviceModel> deviceModels) {
+                Log.d("nameDevices = ", deviceModels.size()+"");
                 nameDevices = deviceModels;
+                subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices) ;
+                holder.recyclerView.setAdapter(subItemDevicesAdapter);
             }
         });
-        subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices) ;
-        holder.recyclerView.setAdapter(subItemDevicesAdapter);
-    }
 
+
+
+    }
     @Override
     public int getItemCount() {
+        Log.d("namesize - " , Name.size()+"");
         return Name.size();
     }
 

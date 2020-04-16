@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.MainActivity;
 import com.example.controlandmonitorlight.R;
 import com.google.android.gms.tasks.Continuation;
@@ -33,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class SettingActivity extends AppCompatActivity {
     private final String TAG = "SETTING_ACTIVITY";
@@ -111,6 +114,7 @@ public class SettingActivity extends AppCompatActivity {
                 Log.d(TAG, "URL: " + user.getPhotoUrl().toString());
                 Glide.with(this)
                         .load(user.getPhotoUrl().toString())
+                        .apply(RequestOptions.circleCropTransform())
                         .into(imgView);
             }
             if (user.getDisplayName() != null) {
@@ -139,7 +143,6 @@ public class SettingActivity extends AppCompatActivity {
 
     private void saveUserInformation() {
         String displayName = edtName.getText().toString();
-
         if (displayName.isEmpty()) {
             edtName.setError("Name required");
             edtName.requestFocus();
