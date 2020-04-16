@@ -27,12 +27,13 @@ import java.util.List;
 public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHolder> {
 
     private List<Room> Name ;
-    private List<DeviceModel> nameDevices ;
+    private List<DeviceModel> nameDevices  = new ArrayList<>();
     private Context context ;
     private List<String> Devices;
     private DevicesViewModel devicesViewModel ;
     private SubItemDevicesAdapter subItemDevicesAdapter;
-    public ItemRoomAdapter(List<Room> name, Context context) {
+
+    public ItemRoomAdapter(List<Room> name, Context context  ) {
         this.Name = name;
         this.context = context;
     }
@@ -45,7 +46,8 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        Log.d("name=",Name.get(position).getName()) ;
         holder.nameRoom.setText(Name.get(position).getName());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL,false);
         holder.recyclerView.setLayoutManager(layoutManager);
@@ -53,29 +55,24 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
         nameDevices = new ArrayList<>();
         nameDevices.clear();
         devicesViewModel = ViewModelProviders.of((FragmentActivity) context).get(DevicesViewModel.class);
-        devicesViewModel.setData();
+        //devicesViewModel.setData();
         devicesViewModel.LoadDevicesFireBase(Name.get(position).getId());
-        Log.d("nameDevices",nameDevices.size() + "") ;
-        subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices);
-        holder.recyclerView.setAdapter(subItemDevicesAdapter);
-
-
-        /*
         devicesViewModel.getData().observe((LifecycleOwner) context, new Observer<List<DeviceModel>>() {
-
             @Override
             public void onChanged(List<DeviceModel> deviceModels) {
+                Log.d("nameDevices = ", deviceModels.size()+"");
                 nameDevices = deviceModels;
+                subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices) ;
+                holder.recyclerView.setAdapter(subItemDevicesAdapter);
             }
         });
-        subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices) ;
-        holder.recyclerView.setAdapter(subItemDevicesAdapter);
 
-         */
+
+
     }
-
     @Override
     public int getItemCount() {
+        Log.d("namesize - " , Name.size()+"");
         return Name.size();
     }
 

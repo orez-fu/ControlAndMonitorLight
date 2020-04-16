@@ -65,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_place,new HomeFragment()).commit();
-        //mName.setText(mUser.getDisplayName());
+        mName.setText("Hi, "+mUser.getDisplayName()+" !");
+        imageUser.setImageURI(mUser.getPhotoUrl());
         /*
             IntroductionViewModel viewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
             viewModel.SetData();

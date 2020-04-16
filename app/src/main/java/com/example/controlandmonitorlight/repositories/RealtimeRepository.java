@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.controlandmonitorlight.model.Timer;
+import com.example.controlandmonitorlight.model.TimerModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,8 +21,8 @@ public class RealtimeRepository {
 
     private static RealtimeRepository instance;
 
-    private List<Timer> listTimers = new ArrayList<>();
-    private MutableLiveData<List<Timer>> timers = new MutableLiveData<>();
+    private List<TimerModel> listTimers = new ArrayList<>();
+    private MutableLiveData<List<TimerModel>> timers = new MutableLiveData<>();
 
 
     public static RealtimeRepository getInstance() {
@@ -33,7 +33,7 @@ public class RealtimeRepository {
         return instance;
     }
 
-    public MutableLiveData<List<Timer>> getTimers() {
+    public MutableLiveData<List<TimerModel>> getTimers() {
        if(listTimers.size() == 0) {
            loadTimers();
        }
@@ -51,8 +51,8 @@ public class RealtimeRepository {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
                     Log.d(TAG, snapshot.toString());
-                    Log.d(TAG, snapshot.getValue(Timer.class).getLabel() + ": " + snapshot.getValue(Timer.class).getTime());
-                    listTimers.add(snapshot.getValue(Timer.class));
+                    Log.d(TAG, snapshot.getValue(TimerModel.class).getLabel() + ": " + snapshot.getValue(TimerModel.class).getTime());
+                    listTimers.add(snapshot.getValue(TimerModel.class));
                 }
 
                 timers.postValue(listTimers);

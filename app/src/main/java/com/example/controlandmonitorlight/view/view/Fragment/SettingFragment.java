@@ -132,6 +132,7 @@ public class SettingFragment extends Fragment {
                 Log.d(TAG, "URL: " + user.getPhotoUrl().toString());
                 Glide.with(this)
                         .load(user.getPhotoUrl().toString())
+                        .apply(RequestOptions.circleCropTransform())
                         .into(imgView);
             }
             if (user.getDisplayName() != null) {

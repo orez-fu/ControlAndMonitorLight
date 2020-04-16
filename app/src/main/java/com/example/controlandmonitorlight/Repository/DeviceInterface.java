@@ -1,6 +1,7 @@
 package com.example.controlandmonitorlight.Repository;
 
 import com.example.controlandmonitorlight.model.DeviceStatic;
+import com.example.controlandmonitorlight.model.StaticModel;
 
 import java.util.Map;
 
@@ -15,4 +16,7 @@ public interface DeviceInterface {
     String WEEK = "week";
     @GET("static/device/{id}")
     Call<DeviceStatic> getDeviceStatic(@Path("id") int id,@QueryMap Map<String, String> parameters );
+
+    @GET("static/user/{id}")
+    Call<StaticModel> getStaticModel(@Path("id") String id, @QueryMap Map <String, String> parameters);
 }

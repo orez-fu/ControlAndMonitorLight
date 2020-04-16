@@ -29,6 +29,7 @@ public class DevicesViewModel extends ViewModel {
 
     public void LoadDevicesFireBase(String id  )
     {
+        mListDevices.clear();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("rooms").child(id);
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -37,7 +38,6 @@ public class DevicesViewModel extends ViewModel {
                     for (DataSnapshot snapshot : dataSnapshot.child("devices").getChildren()){
                         DeviceModel device = snapshot.getValue(DeviceModel.class);
                         mListDevices.add(device);
-                       // modelList.add(device);
                     }
                     data.postValue(mListDevices);
                 }
