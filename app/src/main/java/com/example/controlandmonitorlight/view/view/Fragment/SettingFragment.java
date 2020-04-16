@@ -14,17 +14,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.view.view.Activity.LoginActivity;
-import com.example.controlandmonitorlight.view.view.Activity.SettingActivity;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -37,6 +36,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+
+import www.sanju.motiontoast.MotionToast;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,7 +56,6 @@ public class SettingFragment extends Fragment {
     private Button btnSave;
     private Uri uriProfileImage;
     private ProgressBar progressBar;
-    private TextView txtVerified;
     private Button btnLogout;
 
     private String profileImageUrl;
@@ -79,7 +79,6 @@ public class SettingFragment extends Fragment {
         btnSave = view.findViewById(R.id.btn_save);
         btnLogout = view.findViewById(R.id.btn_logout);
         progressBar = view.findViewById(R.id.progress_bar);
-        txtVerified = view.findViewById(R.id.txt_verified);
 
         loadUserInformation();
 
@@ -127,8 +126,9 @@ public class SettingFragment extends Fragment {
 
         if (user != null) {
             if (user.getPhotoUrl() != null) {
-                Log.d(TAG, "URL: " + user.getPhotoUrl().toString());
+                profileImageUrl = user.getPhotoUrl().toString();
                 Glide.with(this)
+                        .load(profileImageUrl)
                         .load(user.getPhotoUrl().toString())
                         .apply(RequestOptions.circleCropTransform())
                         .into(imgView);
@@ -136,23 +136,6 @@ public class SettingFragment extends Fragment {
             if (user.getDisplayName() != null) {
                 Log.d(TAG, "Name: " + user.getDisplayName());
                 edtName.setText(user.getDisplayName());
-            }
-
-            if (user.isEmailVerified()) {
-                txtVerified.setText("Email Verified");
-            } else {
-                txtVerified.setText("Email Not Verified(Click to verify)");
-                txtVerified.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                //Toast.makeText(SettingActivity.this, "Verification Email Sent", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                });
             }
         }
     }
@@ -178,10 +161,26 @@ public class SettingFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                //Toast.makeText(SettingActivity.this, "Profile updated", Toast.LENGTH_SHORT).show();
+                                MotionToast.Companion.createColorToast(getActivity(),"Profile updating completed!",
+                                        MotionToast.Companion.getTOAST_SUCCESS(),
+                                        MotionToast.Companion.getGRAVITY_BOTTOM(),
+                                        MotionToast.Companion.getLONG_DURATION(),
+                                        ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+                            } else {
+                                MotionToast.Companion.createColorToast(getActivity(),"Profile updating failed!",
+                                        MotionToast.Companion.getTOAST_ERROR(),
+                                        MotionToast.Companion.getGRAVITY_BOTTOM(),
+                                        MotionToast.Companion.getLONG_DURATION(),
+                                        ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
                             }
                         }
                     });
+        } else {
+            MotionToast.Companion.createColorToast(getActivity(),"No information is changed",
+                    MotionToast.Companion.getTOAST_INFO(),
+                    MotionToast.Companion.getGRAVITY_BOTTOM(),
+                    MotionToast.Companion.getLONG_DURATION(),
+                    ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
         }
     }
 
