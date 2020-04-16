@@ -42,13 +42,11 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
         holder.txtLabel.setText(currentTimer.getLabel());
         holder.txtTime.setText(currentTimer.getTime());
         if(currentTimer.getStatus() == TimerModel.STATUS_ON) {
-            holder.txtStatus.setText(TimerModel.STRING_ON);
             holder.switchCompat.setChecked(true);
         } else {
-            holder.txtStatus.setText(TimerModel.STRING_OFF);
             holder.switchCompat.setChecked(false);
         }
-
+        holder.txtAction.setText(currentTimer.getType().concat("  |  " + currentTimer.getRepeat()));
     }
 
     @Override
@@ -60,13 +58,13 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
         TextView txtTime;
         TextView txtLabel;
         SwitchCompat switchCompat;
-        TextView txtStatus;
+        TextView txtAction;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtTime = itemView.findViewById(R.id.txt_time_display);
             txtLabel = itemView.findViewById(R.id.txt_label_display);
-            txtStatus = itemView.findViewById(R.id.txt_status);
+            txtAction = itemView.findViewById(R.id.txt_action);
             switchCompat = itemView.findViewById(R.id.switch_compat);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -86,7 +84,7 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
                     if(listener != null && position != RecyclerView.NO_POSITION) {
 
                         RealtimeFirebaseRepository.getInstance()
-                                .toggleStatusTimer(1,
+                                .toggleStatusTimer(mTimers.get(position).getDeviceId(),
                                         mTimers.get(position).getId(),
                                         switchCompat.isChecked() ? TimerModel.STATUS_ON : TimerModel.STATUS_OFF);
                     }

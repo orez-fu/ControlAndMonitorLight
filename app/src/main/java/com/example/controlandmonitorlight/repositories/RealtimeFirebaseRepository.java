@@ -29,9 +29,9 @@ public class RealtimeFirebaseRepository {
         return instance;
     }
 
-    public void toggleStatusTimer(int deviceId, String key, int value) {
+    public void toggleStatusTimer(String deviceId, String key, int value) {
         reference.child("timer")
-                .child(String.valueOf(deviceId))
+                .child(deviceId)
                 .child(key)
                 .child("status")
                 .setValue(value).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -46,7 +46,6 @@ public class RealtimeFirebaseRepository {
         String key = reference.child("timer")
                 .child(String.valueOf(deviceId))
                 .push().getKey();
-
         Map<String, Object> postValues = timer.toMap(key);
 
         Map<String, Object> childUpdates = new HashMap<>();
