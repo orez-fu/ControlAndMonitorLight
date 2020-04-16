@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.DeviceModel;
 import com.example.controlandmonitorlight.model.Room;
+import com.example.controlandmonitorlight.model.RoomStatic;
+import com.example.controlandmonitorlight.model.RoomStaticModel;
 import com.example.controlandmonitorlight.viewmodel.DevicesViewModel;
 
 import java.util.ArrayList;
@@ -26,15 +28,12 @@ import java.util.List;
 
 public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHolder> {
 
-    private List<Room> Name ;
-    private List<DeviceModel> nameDevices  = new ArrayList<>();
+    private List<RoomStaticModel> mListRoom = new ArrayList<>(); // danh sach phong
     private Context context ;
-    private List<String> Devices;
-    private DevicesViewModel devicesViewModel ;
+
     private SubItemDevicesAdapter subItemDevicesAdapter;
 
-    public ItemRoomAdapter(List<Room> name, Context context  ) {
-        this.Name = name;
+    public ItemRoomAdapter(Context context  ) {
         this.context = context;
     }
 
@@ -47,33 +46,21 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Log.d("name=",Name.get(position).getName()) ;
-        holder.nameRoom.setText(Name.get(position).getName());
+        //Log.d("name=",Name.get(position).getName()) ;
+        holder.nameRoom.setText(mListRoom.get(position).getRoomId());
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL,false);
         holder.recyclerView.setLayoutManager(layoutManager);
         holder.recyclerView.setHasFixedSize(true);
-        nameDevices = new ArrayList<>();
-        nameDevices.clear();
-        devicesViewModel = ViewModelProviders.of((FragmentActivity) context).get(DevicesViewModel.class);
-        //devicesViewModel.setData();
-        devicesViewModel.LoadDevicesFireBase(Name.get(position).getId());
-        devicesViewModel.getData().observe((LifecycleOwner) context, new Observer<List<DeviceModel>>() {
-            @Override
-            public void onChanged(List<DeviceModel> deviceModels) {
-                Log.d("nameDevices = ", deviceModels.size()+"");
-                nameDevices = deviceModels;
-                subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices) ;
-                holder.recyclerView.setAdapter(subItemDevicesAdapter);
-            }
-        });
 
-
-
+        Log.d("STATIC_ADAPTER", "Size: " + mListRoom.get(position).getDevices().size());
+        subItemDevicesAdapter = new SubItemDevicesAdapter(mListRoom.get(position).getDevices(),context);
+        holder.recyclerView.setAdapter(subItemDevicesAdapter);
     }
+
     @Override
     public int getItemCount() {
-        Log.d("namesize - " , Name.size()+"");
-        return Name.size();
+        return mListRoom.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -85,5 +72,10 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
             numberTotalWalt = itemView.findViewById(R.id.total_walt);
             recyclerView = itemView.findViewById(R.id.child_item_devices);
         }
+    }
+
+    public void setRoomStaticList(List<RoomStaticModel> roomStaticList) {
+        this.mListRoom = roomStaticList;
+        notifyDataSetChanged();
     }
 }
