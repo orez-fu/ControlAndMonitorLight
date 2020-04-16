@@ -26,5 +26,6 @@ public class DeviceStaticActivity extends AppCompatActivity {
 //        DeviceStaticModel rules = gson.fromGson(gson, type);
         DeviceStaticModel deviceStaticModel = gson.fromJson(gson1, type);
         Log.d("DEVICE_STATIC", deviceStaticModel.getDeviceId());
+        //tesst
     }
 }
