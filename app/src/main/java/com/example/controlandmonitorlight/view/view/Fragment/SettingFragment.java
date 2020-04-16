@@ -21,6 +21,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.view.view.Activity.LoginActivity;
 import com.google.android.gms.tasks.Continuation;
@@ -128,6 +129,8 @@ public class SettingFragment extends Fragment {
                 profileImageUrl = user.getPhotoUrl().toString();
                 Glide.with(this)
                         .load(profileImageUrl)
+                        .load(user.getPhotoUrl().toString())
+                        .apply(RequestOptions.circleCropTransform())
                         .into(imgView);
             }
             if (user.getDisplayName() != null) {

@@ -20,19 +20,30 @@
 
             </androidx.appcompat.widget.Toolbar>
             <androidx.appcompat.widget.SwitchCompat
+                android:elevation="15dp"
                 android:id="@+id/switch_notification"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="15dp"
                 android:text="Allow receive notification"
                 android:textSize="18sp" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:background="#ff8a65"
-                android:id="@+id/recycledata"
+            <LinearLayout
+                android:orientation="vertical"
+                android:background="#FAFAFA"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-            </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:background="@drawable/bg_itemdata"
+                    android:elevation="15dp"
+                    android:layout_margin="15dp"
+                    android:id="@+id/recycledata"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </androidx.recyclerview.widget.RecyclerView>
+            </LinearLayout>
+
             <androidx.recyclerview.widget.RecyclerView
+                android:background="#FAFAFA"
                 android:layout_marginTop="10dp"
                 android:id="@+id/recycleroom"
                 android:layout_width="match_parent"
