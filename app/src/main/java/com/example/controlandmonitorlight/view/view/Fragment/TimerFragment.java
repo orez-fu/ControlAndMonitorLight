@@ -1,10 +1,13 @@
 package com.example.controlandmonitorlight.view.view.Fragment;
 
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,12 +19,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.controlandmonitorlight.MainActivity;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.adapter.TimerAdapter;
 import com.example.controlandmonitorlight.model.TimerModel;
 import com.example.controlandmonitorlight.repositories.RealtimeFirebaseRepository;
 import com.example.controlandmonitorlight.view.view.Activity.AddEditTimerActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,6 +36,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+import www.sanju.motiontoast.MotionToast;
 
 import static android.app.Activity.RESULT_OK;
 import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_ID;
@@ -117,9 +125,31 @@ public class TimerFragment extends Fragment {
                         @Override
                         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                             final int position = viewHolder.getAdapterPosition();
-                            RealtimeFirebaseRepository.getInstance().deleteTimer(timers.get(position).getDeviceId(), timers.get(position).getId());
+                            final String deviceId = timers.get(position).getDeviceId();
+                            final TimerModel deletedTimer = timers.get(position);
+
+                            RealtimeFirebaseRepository.getInstance().deleteTimer(deviceId, timers.get(position).getId());
                             timers.remove(viewHolder.getAdapterPosition());
+
+                            Snackbar.make(getView(), deletedTimer.getLabel(), Snackbar.LENGTH_LONG)
+                                    .setAction("Undo", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            RealtimeFirebaseRepository.getInstance().addNewTimer(deviceId, deletedTimer);
+                                        }
+                                    }).show();
+
                             timerAdapter.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                            new RecyclerViewSwipeDecorator.Builder(getContext(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                                    .addSwipeLeftActionIcon(R.drawable.ic_delete_black_24dp)
+                                    .create()
+                                    .decorate();
+                            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
                         }
                     }).attachToRecyclerView(recyclerView);
 //
@@ -185,6 +215,11 @@ public class TimerFragment extends Fragment {
 
             RealtimeFirebaseRepository.getInstance().addNewTimer(deviceId,
                     new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
+            MotionToast.Companion.createColorToast(getActivity(),"Note adding completed!",
+                    MotionToast.Companion.getTOAST_SUCCESS(),
+                    MotionToast.Companion.getGRAVITY_BOTTOM(),
+                    MotionToast.Companion.getLONG_DURATION(),
+                    ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
 
         } else if (EDIT_TIMER_REQUEST == requestCode && RESULT_OK == resultCode) {
             String id = data.getStringExtra(AddEditTimerActivity.EXTRA_ID);
@@ -202,7 +237,11 @@ public class TimerFragment extends Fragment {
 
             RealtimeFirebaseRepository.getInstance().updateTimer(deviceId, id,
                     new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
-            Toast.makeText(getActivity(), "Note updated", Toast.LENGTH_SHORT).show();
+            MotionToast.Companion.createColorToast(getActivity(),"Note updated!",
+                    MotionToast.Companion.getTOAST_SUCCESS(),
+                    MotionToast.Companion.getGRAVITY_BOTTOM(),
+                    MotionToast.Companion.getLONG_DURATION(),
+                    ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
 
         }
     }

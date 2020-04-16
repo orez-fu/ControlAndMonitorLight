@@ -29,6 +29,7 @@
         <activity
             android:name=".view.view.Activity.SettingActivity"
             tools:ignore="InnerclassSeparator" />
+
         <activity
             android:name=".view.view.Activity.AddEditTimerActivity"
             android:parentActivityName=".view.view.Activity.DeviceControlActivity"
