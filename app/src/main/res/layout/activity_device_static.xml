@@ -24,7 +24,7 @@
             app:layout_constraintRight_toRightOf="parent"
             android:layout_width="280dp"
             android:layout_height="280dp">
-      
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.github.mikephil.charting.charts.LineChart
