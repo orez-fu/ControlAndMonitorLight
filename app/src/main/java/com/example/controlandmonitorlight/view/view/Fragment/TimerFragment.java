@@ -116,7 +116,7 @@ public class TimerFragment extends Fragment {
 
                         @Override
                         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                            int position = viewHolder.getAdapterPosition();
+                            final int position = viewHolder.getAdapterPosition();
                             RealtimeFirebaseRepository.getInstance().deleteTimer(timers.get(position).getDeviceId(), timers.get(position).getId());
                             timers.remove(viewHolder.getAdapterPosition());
                             timerAdapter.notifyDataSetChanged();

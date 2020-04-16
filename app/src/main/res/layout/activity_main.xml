@@ -20,7 +20,7 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:id="@+id/txt_name"
-                    android:text="USER NAME"
+                    android:text="HI, USER NAME !"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     android:textStyle="bold"
@@ -34,7 +34,7 @@
                     android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_name"
-                    android:text="This is section"
+                    android:text="Welcome to Samsung Home"
                     android:textSize="15sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">

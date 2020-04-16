@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.DeviceModel;
@@ -36,7 +38,8 @@ public class ControlFragment extends Fragment {
     int deviceStatus;
 
     // UI variables
-    Button buttonLed;
+    ImageButton buttonLed;
+    ImageView imgLight;
 
     public static ControlFragment newInstance() {
         return new ControlFragment();
@@ -65,7 +68,7 @@ public class ControlFragment extends Fragment {
 //        deviceId = "device-id-0002";
 
         buttonLed = view.findViewById(R.id.buttonLed);
-
+        imgLight = view.findViewById(R.id.img_light);
         loadingData();
 
         return view;
@@ -90,21 +93,25 @@ public class ControlFragment extends Fragment {
                 temp = status;
                 deviceStatus = Integer.parseInt(temp);
                 if (deviceStatus == 0) {
-                    buttonLed.setBackgroundColor(Color.BLACK);
+                    imgLight.setImageResource(R.drawable.light_off);
+                    buttonLed.setBackgroundResource(R.drawable.buttonoff);
 
                 } else {
-                    buttonLed.setBackgroundColor(Color.BLUE);
+                    imgLight.setImageResource(R.drawable.light_on);
+                    buttonLed.setBackgroundResource(R.drawable.buttonon);
 
                 }
                 buttonLed.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (deviceStatus == 0) {
-                            buttonLed.setBackgroundColor(Color.BLACK);
+                            imgLight.setImageResource(R.drawable.light_off);
+                            buttonLed.setBackgroundResource(R.drawable.buttonoff);
                             sendDataa(DeviceModel.STATUS_ON);
                             deviceStatus = 1;
                         } else {
-                            buttonLed.setBackgroundColor(Color.BLUE);
+                            imgLight.setImageResource(R.drawable.light_on);
+                            buttonLed.setBackgroundResource(R.drawable.buttonon);
                             sendDataa(DeviceModel.STATUS_OFF);
                             deviceStatus = 0;
                         }

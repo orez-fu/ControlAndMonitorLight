@@ -89,7 +89,7 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         });
 
 
-        devicesViewModel.setData();
+       // devicesViewModel.setData();
 
         devicesViewModel.getData().observe(this, new Observer<List<DeviceModel>>() {
             @Override

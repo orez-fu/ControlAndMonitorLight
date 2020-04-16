@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.view.view.Activity.LoginActivity;
 import com.example.controlandmonitorlight.view.view.Activity.SettingActivity;
@@ -129,6 +130,7 @@ public class SettingFragment extends Fragment {
                 Log.d(TAG, "URL: " + user.getPhotoUrl().toString());
                 Glide.with(this)
                         .load(user.getPhotoUrl().toString())
+                        .apply(RequestOptions.circleCropTransform())
                         .into(imgView);
             }
             if (user.getDisplayName() != null) {
