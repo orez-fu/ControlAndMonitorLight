@@ -39,7 +39,7 @@ public class IntroductionViewModel extends ViewModel {
        this.intro.setValue(list);
     }
 
-    public void LoadDataFireBase(final Context context)
+    public void LoadDataFireBase()
     {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

@@ -50,8 +50,7 @@ public class HomeFragment extends Fragment implements RoomInterface {
 
         introductionViewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
         introductionViewModel.SetData();
-        introductionViewModel.LoadDataFireBase(getContext());
-
+        introductionViewModel.LoadDataFireBase();
 
         introductionViewModel.getIntro().observe(this, new Observer<List<Room>>() {
             @Override

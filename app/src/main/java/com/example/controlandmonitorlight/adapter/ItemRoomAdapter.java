@@ -1,6 +1,7 @@
 package com.example.controlandmonitorlight.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +32,9 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
     private List<String> Devices;
     private DevicesViewModel devicesViewModel ;
     private SubItemDevicesAdapter subItemDevicesAdapter;
-    private String id ;
-    public ItemRoomAdapter(List<Room> name, Context context,String id  ) {
+    public ItemRoomAdapter(List<Room> name, Context context) {
         this.Name = name;
         this.context = context;
-        this.id = id ;
     }
 
     @NonNull
@@ -55,8 +54,15 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
         nameDevices.clear();
         devicesViewModel = ViewModelProviders.of((FragmentActivity) context).get(DevicesViewModel.class);
         devicesViewModel.setData();
-        devicesViewModel.LoadDevicesFireBase(id);
+        devicesViewModel.LoadDevicesFireBase(Name.get(position).getId());
+        Log.d("nameDevices",nameDevices.size() + "") ;
+        subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices);
+        holder.recyclerView.setAdapter(subItemDevicesAdapter);
+
+
+        /*
         devicesViewModel.getData().observe((LifecycleOwner) context, new Observer<List<DeviceModel>>() {
+
             @Override
             public void onChanged(List<DeviceModel> deviceModels) {
                 nameDevices = deviceModels;
@@ -64,6 +70,8 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
         });
         subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices) ;
         holder.recyclerView.setAdapter(subItemDevicesAdapter);
+
+         */
     }
 
     @Override
