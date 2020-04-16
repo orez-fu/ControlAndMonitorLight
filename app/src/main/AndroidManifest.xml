@@ -38,7 +38,9 @@
             android:name=".view.view.Activity.RoomActivity"
             android:parentActivityName=".MainActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            >
         </activity>
         <service android:name=".services.MyFirebaseMessagingService"
             tools:ignore="ExportedService">
