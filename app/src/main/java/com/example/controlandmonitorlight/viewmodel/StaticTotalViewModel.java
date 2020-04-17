@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.controlandmonitorlight.Repository.DeviceClient;
 import com.example.controlandmonitorlight.model.StaticModel;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,9 +18,15 @@ import retrofit2.Response;
 
 public class StaticTotalViewModel extends ViewModel {
     public MutableLiveData<StaticModel> dataStatic = new MutableLiveData<>();
+    public MutableLiveData<Calendar> mCalendar = new MutableLiveData<>();
 
     public void getStaticData(String userId, int day, int month, int year){
         Log.d("STATIC_FRAGMENT", "Start call api for user: " + userId);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month-1, day);
+        mCalendar.setValue(calendar);
+
         Map< String, String > parameter = new HashMap<>();
         parameter.put("day", String.valueOf(day));
         parameter.put("month", String.valueOf(month));

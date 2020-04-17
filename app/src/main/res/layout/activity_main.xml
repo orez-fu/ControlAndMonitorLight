@@ -46,8 +46,8 @@
                     android:id="@+id/profile_image"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FF000000"/>
+
+                    />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 

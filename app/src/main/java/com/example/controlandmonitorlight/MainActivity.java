@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.view.view.Fragment.HomeFragment;
 import com.example.controlandmonitorlight.view.view.Fragment.SettingFragment;
@@ -51,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_place,new HomeFragment()).commit();
         mName.setText("Hi, "+mUser.getDisplayName()+" !");
-        imageUser.setImageURI(mUser.getPhotoUrl());
+        Glide.with(this)
+                .load(mUser.getPhotoUrl().toString())
+                .apply(RequestOptions.circleCropTransform())
+                .into(imageUser);
         /*
             IntroductionViewModel viewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
             viewModel.SetData();
