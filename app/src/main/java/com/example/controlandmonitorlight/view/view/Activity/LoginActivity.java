@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.controlandmonitorlight.MainActivity;
 import com.example.controlandmonitorlight.R;
+import com.example.controlandmonitorlight.utils.LoadingDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -30,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtEmail;
     private EditText edtPassword;
     private Button btnLogin;
-
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,8 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-        progressDialog = new ProgressDialog(this);
+//        progressDialog = new ProgressDialog(this);
+        loadingDialog = new LoadingDialog(LoginActivity.this);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -86,22 +88,29 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        progressDialog.setMessage("Please wait...");
-        progressDialog.show();
+//        progressDialog.setMessage("Please wait...");
+//        progressDialog.show();
+        loadingDialog.startLoadingDialog();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
-                            if(progressDialog.isShowing()) {
-                                progressDialog.dismiss();
+//                            if(progressDialog.isShowing()) {
+//                                progressDialog.dismiss();
+//                            }
+                            if(loadingDialog.isShowing()) {
+                                loadingDialog.dismissDialog();
                             }
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         } else {
-                            if(progressDialog.isShowing()) {
-                                progressDialog.dismiss();
+//                            if(progressDialog.isShowing()) {
+//                                progressDialog.dismiss();
+//                            }
+                            if(loadingDialog.isShowing()) {
+                                loadingDialog.dismissDialog();
                             }
                             Log.d(TAG, task.getException().getMessage());
                             Toast.makeText(getApplicationContext(), "Email or Password wrong!", Toast.LENGTH_SHORT).show();
