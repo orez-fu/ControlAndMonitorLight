@@ -19,71 +19,69 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.DeviceModel;
 import com.example.controlandmonitorlight.model.Room;
+import com.example.controlandmonitorlight.model.RoomStatic;
+import com.example.controlandmonitorlight.model.RoomStaticModel;
 import com.example.controlandmonitorlight.viewmodel.DevicesViewModel;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHolder> {
 
-    private List<Room> Name ;
-    private List<DeviceModel> nameDevices  = new ArrayList<>();
-    private Context context ;
-    private List<String> Devices;
-    private DevicesViewModel devicesViewModel ;
+    private List<RoomStaticModel> mListRoom = new ArrayList<>(); // danh sach phong
+    private Context context;
+    private Calendar mCalendar;
+
     private SubItemDevicesAdapter subItemDevicesAdapter;
 
-    public ItemRoomAdapter(List<Room> name, Context context  ) {
-        this.Name = name;
+    public ItemRoomAdapter(Context context) {
         this.context = context;
+        this.mCalendar = Calendar.getInstance();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_room,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_room, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Log.d("name=",Name.get(position).getName()) ;
-        holder.nameRoom.setText(Name.get(position).getName());
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL,false);
+        holder.nameRoom.setText(mListRoom.get(position).getRoomId());
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         holder.recyclerView.setLayoutManager(layoutManager);
         holder.recyclerView.setHasFixedSize(true);
-        nameDevices = new ArrayList<>();
-        nameDevices.clear();
-        devicesViewModel = ViewModelProviders.of((FragmentActivity) context).get(DevicesViewModel.class);
-        //devicesViewModel.setData();
-        devicesViewModel.LoadDevicesFireBase(Name.get(position).getId());
-        devicesViewModel.getData().observe((LifecycleOwner) context, new Observer<List<DeviceModel>>() {
-            @Override
-            public void onChanged(List<DeviceModel> deviceModels) {
-                Log.d("nameDevices = ", deviceModels.size()+"");
-                nameDevices = deviceModels;
-                subItemDevicesAdapter = new SubItemDevicesAdapter(nameDevices) ;
-                holder.recyclerView.setAdapter(subItemDevicesAdapter);
-            }
-        });
 
+        Log.d("FIX_PASS_DAY", "On Room Adapter: " + mCalendar.toString());
 
-
+        subItemDevicesAdapter = new SubItemDevicesAdapter(mListRoom.get(position).getDevices(), context);
+        subItemDevicesAdapter.setDeviceStatic(mListRoom.get(position).getDevices(), mCalendar);
+        holder.recyclerView.setAdapter(subItemDevicesAdapter);
     }
+
     @Override
     public int getItemCount() {
-        Log.d("namesize - " , Name.size()+"");
-        return Name.size();
+        return mListRoom.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView nameRoom , numberTotalWalt ;
-        RecyclerView recyclerView ;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView nameRoom, numberTotalWalt;
+        RecyclerView recyclerView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameRoom = itemView.findViewById(R.id.room);
             numberTotalWalt = itemView.findViewById(R.id.total_walt);
             recyclerView = itemView.findViewById(R.id.child_item_devices);
         }
+    }
+
+    public void setRoomStaticList(List<RoomStaticModel> roomStaticList, Calendar calendar) {
+        this.mListRoom = roomStaticList;
+        this.mCalendar = calendar;
+        notifyDataSetChanged();
     }
 }

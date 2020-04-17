@@ -37,6 +37,8 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import www.sanju.motiontoast.MotionToast;
 
 import static android.app.Activity.RESULT_OK;
@@ -52,7 +54,7 @@ public class SettingFragment extends Fragment {
     private final int CHOOSE_IMAGE_ID = 101;
 
     private EditText edtName;
-    private ImageView imgView;
+    private CircleImageView imgView;
     private Button btnSave;
     private Uri uriProfileImage;
     private ProgressBar progressBar;
@@ -199,7 +201,10 @@ public class SettingFragment extends Fragment {
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uriProfileImage);
-                imgView.setImageBitmap(bitmap);
+                Glide.with(this)
+                        .load(bitmap)
+                        .apply(RequestOptions.circleCropTransform())
+                        .into(imgView);
 
                 uploadImageToFirebaseStorage();
             } catch (IOException e) {

@@ -112,10 +112,6 @@ public class DayFragment extends Fragment implements TimeManagement {
         });
     }
 
-    @Override
-    public void onSetTime(TimePicker view, int hourOfDay, int minute) {
-
-    }
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

@@ -4,37 +4,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:elevation="0dp"
+    android:orientation="vertical"
     tools:context=".view.view.Activity.DeviceStaticActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/round_device_static"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/round_device_static"
+        android:elevation="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/add_toolbar">
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="26/04/2020"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txt_hours_minute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20h 30'"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/txt_total_watt"
+            app:layout_constraintTop_toBottomOf="@id/txt_date" />
+
+        <TextView
+            android:id="@+id/txt_total_watt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20 Wh"
+            android:textSize="20sp"
+            app:layout_constraintLeft_toRightOf="@id/txt_hours_minute"
+
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_date" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
+        android:layout_width="360dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/background_chart"
+        android:elevation="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/round_device_static" />
+
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/add_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/round_device_static"
-            android:background="@drawable/round_device_static"
-            android:elevation="20dp"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/add_toolbar"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="280dp"
-            android:layout_height="280dp">
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.github.mikephil.charting.charts.LineChart
-            android:elevation="20dp"
-            android:background="@drawable/background_chart"
-            android:layout_marginTop="30dp"
-            app:layout_constraintTop_toBottomOf="@id/round_device_static"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="360dp"
-            android:layout_height="250dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
