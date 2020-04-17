@@ -31,6 +31,8 @@ public class IntroductionViewModel extends ViewModel {
         return intro;
     }
     public List<Room> list = new ArrayList<>();
+    public MutableLiveData<Integer> progress = new MutableLiveData<>(0);
+
     public List<StaticModel> staticModelList;
 
     public void SetData()
