@@ -34,6 +34,8 @@ public class IntroductionViewModel extends ViewModel {
         return intro;
     }
     public List<Room> list = new ArrayList<>();
+    public MutableLiveData<Integer> progress = new MutableLiveData<>(0);
+
     public void SetData()
     {
        this.intro.setValue(list);
