@@ -10,18 +10,15 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.Room;
-import com.example.controlandmonitorlight.model.User;
+import com.example.controlandmonitorlight.model.StaticModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +33,15 @@ public class IntroductionViewModel extends ViewModel {
     public List<Room> list = new ArrayList<>();
     public MutableLiveData<Integer> progress = new MutableLiveData<>(0);
 
+    public List<StaticModel> staticModelList;
+
     public void SetData()
     {
+
        this.intro.setValue(list);
     }
 
-    public void LoadDataFireBase(final Context context)
+    public void LoadDataFireBase()
     {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

@@ -22,12 +22,12 @@ public class DevicesViewModel extends ViewModel {
         return  data ;
     }
     public List<DeviceModel> mListDevices = new ArrayList<>() ;
-    //public void setData()
+    public void setData()
     {
        data.setValue(mListDevices);
     }
 
-    public void LoadDevicesFireBase(String id )
+    public void LoadDevicesFireBase(String id  )
     {
         mListDevices.clear();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("rooms").child(id);
@@ -35,14 +35,11 @@ public class DevicesViewModel extends ViewModel {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.hasChild("devices")){
-
                     for (DataSnapshot snapshot : dataSnapshot.child("devices").getChildren()){
                         DeviceModel device = snapshot.getValue(DeviceModel.class);
                         mListDevices.add(device);
-                        //data.postValue(mListDevices);
-                        data.setValue(mListDevices);
                     }
-
+                    data.postValue(mListDevices);
                 }
             }
 
