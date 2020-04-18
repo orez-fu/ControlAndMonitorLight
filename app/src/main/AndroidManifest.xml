@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.controlandmonitorlight">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
     <application
         android:name=".services.App"
         android:allowBackup="true"
@@ -16,9 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
+
         <activity android:name=".view.view.Activity.DeviceStaticActivity"></activity>
+
         <activity
-            android:name=".MainActivity"
+            android:name=".view.view.Activity.LoginActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,14 +24,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".view.view.Activity.SettingActivity"
-            tools:ignore="InnerclassSeparator" />
 
         <activity
             android:name=".view.view.Activity.AddEditTimerActivity"
             android:parentActivityName=".view.view.Activity.DeviceControlActivity"
             tools:ignore="InnerclassSeparator" />
+
         <activity
             android:name=".view.view.Activity.StaticActivity"
             android:parentActivityName=".MainActivity"
@@ -45,7 +41,11 @@
             android:name=".view.view.Activity.RoomActivity"
             android:parentActivityName=".MainActivity"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".view.view.Activity.LoginActivity"></activity>
+
+
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan|stateHidden"></activity>
 
         <service
             android:name=".services.MyFirebaseMessagingService"
@@ -55,5 +55,9 @@
             </intent-filter>
         </service>
     </application>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

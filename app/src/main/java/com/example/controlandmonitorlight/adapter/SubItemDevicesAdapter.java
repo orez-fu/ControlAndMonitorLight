@@ -19,21 +19,26 @@ import com.example.controlandmonitorlight.model.DeviceStaticModel;
 import com.example.controlandmonitorlight.view.view.Activity.DeviceStaticActivity;
 import com.google.gson.Gson;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAdapter.ViewHolder> {
 
-    private List<DeviceStaticModel> devices ;
-    private final Context mContext ;
-    public SubItemDevicesAdapter(List<DeviceStaticModel> devices, Context context ) {
+    private List<DeviceStaticModel> devices;
+    private final Context mContext;
+    private Calendar mCalendar;
+
+    public SubItemDevicesAdapter(List<DeviceStaticModel> devices, Context context) {
         this.devices = devices;
         this.mContext = context;
+        this.mCalendar = Calendar.getInstance();
+
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_static_devices,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_static_devices, parent, false);
         return new ViewHolder(view);
     }
 
@@ -49,6 +54,9 @@ public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAd
                 Gson gson = new Gson();
                 Intent intent = new Intent(mContext, DeviceStaticActivity.class);
                 intent.putExtra("rules", gson.toJson(devices.get(position)));
+                intent.putExtra("EXTRA_DAY", mCalendar.get(Calendar.DAY_OF_MONTH));
+                intent.putExtra("EXTRA_MONTH", mCalendar.get(Calendar.MONTH)+1);
+                intent.putExtra("EXTRA_YEAR", mCalendar.get(Calendar.YEAR));
                 mContext.startActivity(intent);
             }
         });
@@ -59,9 +67,10 @@ public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAd
         return devices.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView nameDevice, totalWalt,timeOn ;
-        CardView cardView ;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView nameDevice, totalWalt, timeOn;
+        CardView cardView;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameDevice = itemView.findViewById(R.id.txt_name);
@@ -71,8 +80,9 @@ public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAd
         }
     }
 
-    public void setDeviceStatic(List<DeviceStaticModel> devices){
-        this.devices = devices ;
+    public void setDeviceStatic(List<DeviceStaticModel> devices, Calendar calendar) {
+        this.devices = devices;
+        this.mCalendar = calendar;
         notifyDataSetChanged();
     }
 }

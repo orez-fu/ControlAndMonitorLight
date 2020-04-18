@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment;
 
 public interface TimeManagement {
 
-    void onSetTime(TimePicker view, int hourOfDay, int minute);
     void onDateSet(DatePicker view, int year, int month, int dayOfMonth);
 
 }
