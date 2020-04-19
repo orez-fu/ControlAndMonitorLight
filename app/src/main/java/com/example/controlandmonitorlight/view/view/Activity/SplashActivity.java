@@ -15,7 +15,7 @@ import com.example.controlandmonitorlight.R;
 
 public class SplashActivity extends AppCompatActivity {
 
-    private static int SPLASH_SCREEN = 3000;
+    private static int SPLASH_SCREEN = 2500;
 
     // Variables data
     Animation topAnim, bottomAnim;

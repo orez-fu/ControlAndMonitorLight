@@ -30,21 +30,17 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_ROOM_ID = "com.example.controlandmonitorlight.KEY_ROOM_ID";
     public static final String KEY_ROOM_NAME = "com.example.controlandmonitorlight.KEY_ROOM_NAME";
 
-    private FirebaseUser mUser;
     private BottomNavigationView bottomNav;
     private FragmentManager fragmentManager ;
-    private RecyclerView recyclerView ;
-    private TextView mName , mTitle ;
-    private CircleImageView imageUser ;
-    private List<Room> mListRoom = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        Mapping();
+        // mapping
+        bottomNav = findViewById(R.id.navigation);
+
         if(savedInstanceState == null){
             bottomNav.setSelectedItemId(R.id.home);
         }
@@ -53,32 +49,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_place,new HomeFragment()).commit();
-        mName.setText("Hi, "+mUser.getDisplayName()+" !");
-        Glide.with(this)
-                .load(mUser.getPhotoUrl().toString())
-                .apply(RequestOptions.circleCropTransform())
-                .into(imageUser);
-        /*
-            IntroductionViewModel viewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
-            viewModel.SetData();
-            viewModel.LoadDataFireBase(this);
-            viewModel.getIntro().observe(this, new Observer<List<Room>>() {
-                @Override
-                public void onChanged(List<Room> rooms) {
-
-                }
-            });
-
-        */
-
 
     }
-    void Mapping(){
-        imageUser = findViewById(R.id.profile_image);
-        mTitle = findViewById(R.id.txt_title);
-        mName = findViewById(R.id.txt_name);
-        bottomNav = findViewById(R.id.navigation);
-    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
