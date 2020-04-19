@@ -114,6 +114,19 @@ public class TimerModel {
         return String.valueOf(hour) + ":" + String.valueOf(minute);
     }
 
+    public String getTime12() {
+        if(hour == 12) {
+            return String.valueOf(hour) + ":" + String.valueOf(minute) + " pm";
+        }
+        if(hour == 0) {
+            return String.valueOf(12) + ":" + String.valueOf(minute) + " am";
+        }
+        if(hour < 12) {
+            return String.valueOf(hour) + ":" + String.valueOf(minute) + " am";
+        }
+        return String.valueOf(hour) + ":" + String.valueOf(minute) + " pm";
+    }
+
     @Exclude
     public Map<String, Object> toMap(String key) {
         HashMap<String, Object> result = new HashMap<>();

@@ -16,6 +16,8 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.adapter.CustomDateManagement;
 import com.example.controlandmonitorlight.adapter.ItemRoomAdapter;
@@ -27,21 +29,31 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Calendar;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class StaticFragment extends Fragment implements TimeManagement {
 
-    FirebaseUser user;
+    private FirebaseUser user;
+
+    // UI Variables
+    private View header;
+    private TextView tvUserName ;
+    private CircleImageView imageUser ;
     RecyclerView recyclerView ;
     ItemRoomAdapter itemRoomAdapter;
     StaticTotalViewModel staticTotalViewModel ;
     TextView txtCalender;
     LinearLayout layoutPickDate;
+
+    // Data variables
     Calendar mCalender;
     private int day , month, year ;
     private String userId;
+
     public StaticFragment() {
         // Required empty public constructor
     }
@@ -52,6 +64,10 @@ public class StaticFragment extends Fragment implements TimeManagement {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_static, container, false);
 
+        // mapping ui
+        header = view.findViewById(R.id.user_bar_layout);
+        tvUserName = header.findViewById(R.id.txt_username);
+        imageUser = header.findViewById(R.id.img_profile_small);
         recyclerView = view.findViewById(R.id.recycle);
         txtCalender =  view.findViewById(R.id.txt_calendar);
         layoutPickDate = view.findViewById(R.id.layout_pick_date);
@@ -61,9 +77,16 @@ public class StaticFragment extends Fragment implements TimeManagement {
         month = mCalender.get(Calendar.MONTH) ;
         year = mCalender.get(Calendar.YEAR);
 
+        user = FirebaseAuth.getInstance().getCurrentUser() ;
+
+        tvUserName.setText(String.valueOf("Hi, " + user.getDisplayName()));
+        Glide.with(this)
+                .load(user.getPhotoUrl().toString())
+                .apply(RequestOptions.circleCropTransform())
+                .into(imageUser);
         txtCalender.setText(day+"/"+(month+1)+"/"+year);
 
-        user = FirebaseAuth.getInstance().getCurrentUser() ;
+
         userId = user.getUid();
 
         pickDate();

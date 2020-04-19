@@ -13,6 +13,8 @@ public class Room {
     private String name ;
     private String temperature;
     private String userId ;
+    private String imageUrl;
+
     private int notification;
 
     public Room() {
@@ -27,6 +29,14 @@ public class Room {
         this.name = name;
         this.temperature = temperature;
         this.userId = userId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public HashMap<String, DeviceModel> getDevices() {

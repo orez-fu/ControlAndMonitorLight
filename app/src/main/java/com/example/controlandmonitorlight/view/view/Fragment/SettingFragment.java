@@ -53,6 +53,8 @@ public class SettingFragment extends Fragment {
 
     private final int CHOOSE_IMAGE_ID = 101;
 
+
+
     private EditText edtName;
     private CircleImageView imgView;
     private Button btnSave;

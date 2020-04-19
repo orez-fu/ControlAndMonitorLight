@@ -40,13 +40,13 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
         TimerModel currentTimer = mTimers.get(position);
 
         holder.txtLabel.setText(currentTimer.getLabel());
-        holder.txtTime.setText(currentTimer.getTime());
+        holder.txtTime.setText(currentTimer.getTime12());
         if(currentTimer.getStatus() == TimerModel.STATUS_ON) {
             holder.switchCompat.setChecked(true);
         } else {
             holder.switchCompat.setChecked(false);
         }
-        holder.txtAction.setText(currentTimer.getType().concat("  |  " + currentTimer.getRepeat()));
+        holder.txtAction.setText(currentTimer.getType() == TimerModel.TYPE_ON ? "Go on" : "Go off");
     }
 
     @Override
