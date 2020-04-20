@@ -21,6 +21,7 @@ import com.example.controlandmonitorlight.model.DeviceModel;
 import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.model.RoomStatic;
 import com.example.controlandmonitorlight.model.RoomStaticModel;
+import com.example.controlandmonitorlight.utils.ConvertWatt;
 import com.example.controlandmonitorlight.viewmodel.DevicesViewModel;
 
 import java.util.ArrayList;
@@ -49,8 +50,8 @@ public class ItemRoomAdapter extends RecyclerView.Adapter<ItemRoomAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.nameRoom.setText(mListRoom.get(position).getRoomId());
-
+        holder.nameRoom.setText(mListRoom.get(position).getName());
+        holder.numberTotalWalt.setText("Total Watt: "+ConvertWatt.convertWatt(mListRoom.get(position).getTotalWatt()));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
         holder.recyclerView.setLayoutManager(layoutManager);
         holder.recyclerView.setHasFixedSize(true);

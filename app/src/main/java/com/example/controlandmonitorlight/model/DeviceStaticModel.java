@@ -9,9 +9,19 @@ public class DeviceStaticModel implements Parcelable {
     private String deviceId;
     private float totalWatt;
     private int timeOn;
+    private String name;
     private List< RecordModel > records;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     protected DeviceStaticModel(Parcel in) {
+        name = in.readString();
         deviceId = in.readString();
         totalWatt = in.readFloat();
         timeOn = in.readInt();
@@ -64,10 +74,11 @@ public class DeviceStaticModel implements Parcelable {
     public DeviceStaticModel() {
     }
 
-    public DeviceStaticModel(String deviceID, float totalWatt, int timeOn, List<RecordModel> records) {
-        this.deviceId = deviceID;
+    public DeviceStaticModel(String deviceId, float totalWatt, int timeOn, String name, List<RecordModel> records) {
+        this.deviceId = deviceId;
         this.totalWatt = totalWatt;
         this.timeOn = timeOn;
+        this.name = name;
         this.records = records;
     }
 
@@ -78,6 +89,7 @@ public class DeviceStaticModel implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
         dest.writeString(deviceId);
         dest.writeFloat(totalWatt);
         dest.writeInt(timeOn);

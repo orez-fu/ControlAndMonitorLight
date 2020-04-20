@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.DeviceModel;
 import com.example.controlandmonitorlight.model.DeviceStaticModel;
+import com.example.controlandmonitorlight.utils.ConvertTimeOn;
+import com.example.controlandmonitorlight.utils.ConvertWatt;
 import com.example.controlandmonitorlight.view.view.Activity.DeviceStaticActivity;
 import com.google.gson.Gson;
 
@@ -45,9 +47,9 @@ public class SubItemDevicesAdapter extends RecyclerView.Adapter<SubItemDevicesAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
 
-        holder.nameDevice.setText(devices.get(position).getDeviceId());
-        holder.timeOn.setText(String.valueOf(devices.get(position).getTimeOn()));
-        holder.totalWalt.setText(String.valueOf(devices.get(position).getTotalWatt()));
+        holder.nameDevice.setText(devices.get(position).getName());
+        holder.timeOn.setText(ConvertTimeOn.convertTimeOn(devices.get(position).getTimeOn()));
+        holder.totalWalt.setText(ConvertWatt.convertWatt(devices.get(position).getTotalWatt()));
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_static"
     android:elevation="0dp"
     android:orientation="vertical"
     tools:context=".view.view.Activity.DeviceStaticActivity">
@@ -20,44 +21,88 @@
         app:layout_constraintTop_toBottomOf="@id/add_toolbar">
 
         <TextView
+
             android:id="@+id/txt_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="26/04/2020"
-            android:textSize="20sp"
+            android:layout_marginTop="60dp"
+            android:fontFamily="@font/capsulex_romediumuc"
+            android:text="Apr 26, 2020"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
             app:layout_constraintLeft_toLeftOf="parent"
-
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txt_hours_minute"
-            android:layout_width="wrap_content"
+            android:id="@+id/txt_title_power"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="20h 30'"
-            android:textSize="20sp"
+            android:layout_marginTop="32dp"
+            android:text="Power in Watt"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/txt_total_watt"
-            app:layout_constraintTop_toBottomOf="@id/txt_date" />
+            app:layout_constraintRight_toLeftOf="@+id/txt_title_time_on"
+            app:layout_constraintTop_toBottomOf="@+id/txt_date" />
+
+        <TextView
+            android:id="@+id/txt_title_time_on"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="Total time on"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintLeft_toRightOf="@+id/txt_title_power"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_date" />
+
+        <TextView
+            android:id="@+id/txt_hours_minute"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:background="#1b5e20"
+            android:text="20h30m"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toRightOf="@id/txt_total_watt"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txt_title_time_on" />
 
         <TextView
             android:id="@+id/txt_total_watt"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
+
             android:layout_height="wrap_content"
+            android:background="#1b5e20"
             android:text="20 Wh"
-            android:textSize="20sp"
-            app:layout_constraintLeft_toRightOf="@id/txt_hours_minute"
-
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/txt_hours_minute"
+            app:layout_constraintTop_toBottomOf="@id/txt_title_power" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/txt_total_watt"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txt_date" />
+            android:textAlignment="center"
+            android:layout_marginTop="24dp"
+            android:textSize="12sp"
+            android:text="Last Update: Apr 16,2020 11:59 PM"
+            android:textColor="@color/colorWhite" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
-        android:layout_width="360dp"
+        android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:layout_marginTop="30dp"
+        android:padding="16dp"
+        android:layout_marginVertical="16dp"
+        android:layout_marginHorizontal="8dp"
         android:background="@drawable/background_chart"
         android:elevation="20dp"
         app:layout_constraintLeft_toLeftOf="parent"

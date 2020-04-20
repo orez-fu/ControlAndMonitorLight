@@ -21,15 +21,14 @@ public class StaticTotalViewModel extends ViewModel {
     public MutableLiveData<Calendar> mCalendar = new MutableLiveData<>();
 
     public void getStaticData(String userId, int day, int month, int year){
-        Log.d("STATIC_FRAGMENT", "Start call api for user: " + userId);
-
+        Log.d("STATIC_FRAGMENT","Date: " + day + "/" + month + "/" + year);
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month-1, day);
         mCalendar.setValue(calendar);
 
         Map< String, String > parameter = new HashMap<>();
         parameter.put("day", String.valueOf(day));
-        parameter.put("month", String.valueOf(month));
+        parameter.put("month", String.valueOf(month+1));
         parameter.put("year", String.valueOf(year));
         Log.d("STATIC_FRAGMENT", "Params: " + parameter.toString());
 
