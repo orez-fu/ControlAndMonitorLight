@@ -5,6 +5,16 @@ import java.util.List;
 public class RoomStaticModel {
     private String roomId;
     private float totalWatt;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private List< DeviceStaticModel > devices;
 
     public void setRoomId(String roomId) {
@@ -34,9 +44,10 @@ public class RoomStaticModel {
     public RoomStaticModel() {
     }
 
-    public RoomStaticModel(String roomId, float totalWatt, List<DeviceStaticModel> devices) {
+    public RoomStaticModel(String roomId, float totalWatt, String name, List<DeviceStaticModel> devices) {
         this.roomId = roomId;
         this.totalWatt = totalWatt;
+        this.name = name;
         this.devices = devices;
     }
 }
