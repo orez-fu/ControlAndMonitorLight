@@ -84,24 +84,25 @@ public class HomeFragment extends Fragment implements RoomInterface {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         tvUserName.setText(String.valueOf("Hi, " + mUser.getDisplayName()));
-        Glide.with(this)
-                .load(mUser.getPhotoUrl().toString())
-                .apply(RequestOptions.circleCropTransform())
-                .into(imageUser);
+        if (mUser.getPhotoUrl() != null) {
+            Glide.with(this)
+                    .load(mUser.getPhotoUrl().toString())
+                    .apply(RequestOptions.circleCropTransform())
+                    .into(imageUser);
+        }
 
         FoldingCube wave = new FoldingCube();
         progressBar.setIndeterminateDrawable(wave);
         progressBar.setVisibility(View.VISIBLE);
 
         introductionViewModel = ViewModelProviders.of(this).get(IntroductionViewModel.class);
-        introductionViewModel.SetData();
         introductionViewModel.LoadDataFireBase();
 
-        introductionViewModel.getIntro().observe(getActivity(), new Observer<List<Room>>() {
+        introductionViewModel.intro.observe(getActivity(), new Observer<List<Room>>() {
             @Override
             public void onChanged(List<Room> rooms) {
                 nameRooms = rooms;
-                if (!nameRooms.isEmpty()) {
+                if (introductionViewModel.progress.getValue() != 0) {
                     progressBar.setVisibility(View.INVISIBLE);
                 }
                 initRecyclerview(nameRooms);

@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -26,23 +27,11 @@ import java.util.List;
 public class IntroductionViewModel extends ViewModel {
     FirebaseAuth mAuth;
 
-    private MutableLiveData<List<Room>> intro = new MutableLiveData<>() ;
-    public MutableLiveData<List<Room>> getIntro() {
-        return intro;
-    }
+    public MutableLiveData<List<Room>> intro = new MutableLiveData<>();
     public List<Room> list = new ArrayList<>();
     public MutableLiveData<Integer> progress = new MutableLiveData<>(0);
 
-    public List<StaticModel> staticModelList;
-
-    public void SetData()
-    {
-
-       this.intro.setValue(list);
-    }
-
-    public void LoadDataFireBase()
-    {
+    public void LoadDataFireBase() {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -50,7 +39,14 @@ public class IntroductionViewModel extends ViewModel {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot:dataSnapshot.getChildren()){
+                progress.postValue(10);
+
+                if (!dataSnapshot.exists()) {
+                    intro.postValue(list);
+                    return;
+                }
+
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     String roomId = snapshot.getKey();
                     Log.d("INTRODUCTION", snapshot.getKey());
                     DatabaseReference reference1 = FirebaseDatabase.getInstance()
@@ -67,7 +63,7 @@ public class IntroductionViewModel extends ViewModel {
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            Log.d("INTRODUCTION", "Cancel");
                         }
                     });
                 }
@@ -76,7 +72,7 @@ public class IntroductionViewModel extends ViewModel {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.d("INTRODUCTION", "Cancel With no error");
             }
         });
     }

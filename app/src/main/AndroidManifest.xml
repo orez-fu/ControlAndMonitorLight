@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
+        <activity android:name=".view.view.Activity.SignupActivity">
+
+        </activity>
         <activity android:name=".view.view.Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +29,7 @@
         <activity android:name=".view.view.Activity.DeviceStaticActivity" />
         <activity
             android:name=".view.view.Activity.LoginActivity"
-            tools:ignore="InnerclassSeparator">
-
-        </activity>
+            tools:ignore="InnerclassSeparator"></activity>
         <activity
             android:name=".view.view.Activity.AddEditTimerActivity"
             android:parentActivityName=".view.view.Activity.DeviceControlActivity"
