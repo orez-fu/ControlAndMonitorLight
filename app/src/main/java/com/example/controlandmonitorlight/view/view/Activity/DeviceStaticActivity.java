@@ -2,14 +2,17 @@ package com.example.controlandmonitorlight.view.view.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.controlandmonitorlight.MainActivity;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.DeviceStaticModel;
 import com.example.controlandmonitorlight.model.RecordModel;
@@ -37,12 +40,15 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DeviceStaticActivity extends AppCompatActivity {
     private String TAG = "DEVICE_STATIC_ACTIVITY";
-    private TextView txtDate, txtHourMinute, txtTotalWatt;
+    private TextView txtDate, txtHourMinute, txtTotalWatt,txtUpdate;
     private LineChart lineChart;
     private DeviceStaticModel deviceStaticModel;
     private int day, month, year;
@@ -56,6 +62,7 @@ public class DeviceStaticActivity extends AppCompatActivity {
 
         mapping();
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Gson gson = new Gson();
         String gson1 = getIntent().getStringExtra("rules");
@@ -68,15 +75,25 @@ public class DeviceStaticActivity extends AppCompatActivity {
         Log.d("DAY_MONTH_YEAR", day + "." + month + "." + year);
 //        DeviceStaticModel rules = gson.fromGson(gson, type);
         deviceStaticModel = gson.fromJson(gson1, type);
+        getSupportActionBar().setTitle(deviceStaticModel.getName());
         showInformation();
         processData();
         drawLineChart();
         Log.d("DEVICE_STATIC", deviceStaticModel.getDeviceId());
-
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentBack = new Intent(DeviceStaticActivity.this, MainActivity.class);
+                intentBack.putExtra(MainActivity.EXTRA_PAGER, 1);
+                startActivity(intentBack);
+                finish();
+            }
+        });
     }
 
     void showInformation() {
         txtDate.setText(ConvertFormatDate.getFormatDate(day,month,year));
+        txtUpdate.setText("Last Update: "+ConvertFormatDate.getFormatDate(day,month,year) + " 23:59");
         txtHourMinute.setText(ConvertTimeOn.convertTimeOn(deviceStaticModel.getTimeOn()));
         txtTotalWatt.setText(ConvertWatt.convertWatt(deviceStaticModel.getTotalWatt()));
     }
@@ -142,7 +159,18 @@ public class DeviceStaticActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
 //        xAxis.setLabelRotationAngle();
-        xAxis.setAxisMaximum(86400f);
+        float lengthTime = 86400f;
+        Calendar timeNow = Calendar.getInstance();
+
+        if ( timeNow.get(Calendar.YEAR) == year && timeNow.get(Calendar.MONTH) == month && timeNow.get(Calendar.DAY_OF_MONTH)== day)
+        {
+            lengthTime =  (timeNow.getTimeInMillis()-ConvertTime.convertDateTimeToUnix(year, month, day, 0, 0, 0))/1000;
+            Log.d(TAG,timeNow.getTimeInMillis()+" "+ ConvertTime.convertDateTimeToUnix(year, month, day, 0, 0, 0));
+            DateFormat dateFormat =  new SimpleDateFormat("MMM dd, yyyy hh:mm");
+            txtUpdate.setText("Last Update: "+ dateFormat.format(timeNow.getTime()));
+        }
+        Log.d(TAG,lengthTime+"");
+        xAxis.setAxisMaximum(lengthTime);
         xAxis.setAxisMinimum(0f);
         xAxis.setLabelCount(24, false);
         xAxis.setGranularity(3600f);
@@ -171,6 +199,7 @@ public class DeviceStaticActivity extends AppCompatActivity {
         txtTotalWatt = findViewById(R.id.txt_total_watt);
         lineChart = findViewById(R.id.line_chart);
         toolbar = findViewById(R.id.add_toolbar);
+        txtUpdate = findViewById(R.id.txt_update);
     }
 
 }
