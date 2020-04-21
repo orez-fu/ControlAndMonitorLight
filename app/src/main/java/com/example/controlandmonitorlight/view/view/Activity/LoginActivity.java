@@ -27,11 +27,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    private ProgressDialog progressDialog;
     private EditText edtEmail;
     private EditText edtPassword;
     private Button btnLogin;
     private LoadingDialog loadingDialog;
+    private Button btnSignup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +41,25 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edt_email);
         edtPassword = findViewById(R.id.edt_password);
         btnLogin = findViewById(R.id.btn_login);
-//        progressDialog = new ProgressDialog(this);
-        loadingDialog = new LoadingDialog(LoginActivity.this);
+        btnSignup = findViewById(R.id.btn_go_sign_up);
 
+        loadingDialog = new LoadingDialog(LoginActivity.this);
         mAuth = FirebaseAuth.getInstance();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 loginUser();
+            }
+        });
+
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -88,8 +98,6 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-//        progressDialog.setMessage("Please wait...");
-//        progressDialog.show();
         loadingDialog.startLoadingDialog();
 
         mAuth.signInWithEmailAndPassword(email, password)
