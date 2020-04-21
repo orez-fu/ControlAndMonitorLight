@@ -20,6 +20,12 @@ public class User {
         this.id = id;
     }
 
+    public User(String key, String name, String email) {
+        this.id = key;
+        this.email = email;
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
     }
