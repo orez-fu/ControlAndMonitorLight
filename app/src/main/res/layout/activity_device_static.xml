@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_static"
+    android:background="@drawable/bg_static_device"
     android:elevation="0dp"
     android:orientation="vertical"
     tools:context=".view.view.Activity.DeviceStaticActivity">
@@ -64,6 +64,7 @@
             android:layout_height="wrap_content"
             android:background="#1b5e20"
             android:text="20h30m"
+            android:elevation="25dp"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
@@ -74,7 +75,7 @@
         <TextView
             android:id="@+id/txt_total_watt"
             android:layout_width="100dp"
-
+            android:elevation="25dp"
             android:layout_height="wrap_content"
             android:background="#1b5e20"
             android:text="20 Wh"
@@ -85,6 +86,7 @@
             app:layout_constraintRight_toLeftOf="@id/txt_hours_minute"
             app:layout_constraintTop_toBottomOf="@id/txt_title_power" />
         <TextView
+            android:id="@+id/txt_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/txt_total_watt"
@@ -109,7 +111,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/round_device_static" />
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/add_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

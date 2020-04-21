@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -29,10 +30,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainActivity extends AppCompatActivity {
     public static final String KEY_ROOM_ID = "com.example.controlandmonitorlight.KEY_ROOM_ID";
     public static final String KEY_ROOM_NAME = "com.example.controlandmonitorlight.KEY_ROOM_NAME";
-
+    public static final String EXTRA_PAGER = "com.example.controlandmonitorlight.EXTRA_PAGER";
     private BottomNavigationView bottomNav;
     private FragmentManager fragmentManager ;
-
+    private  int pagerPosition;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,15 +41,28 @@ public class MainActivity extends AppCompatActivity {
 
         // mapping
         bottomNav = findViewById(R.id.navigation);
+        Intent intent = getIntent();
+        if ( intent.hasExtra(EXTRA_PAGER)  ){
+            pagerPosition = intent.getIntExtra(EXTRA_PAGER,0);
+        } else pagerPosition = 0;
 
-        if(savedInstanceState == null){
-            bottomNav.setSelectedItemId(R.id.home);
+        if ( pagerPosition == 1 ) {
+            bottomNav.setSelectedItemId(R.id.static1);
+            getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_place,new StaticFragment()).commit();
         }
+        else {
+                if (savedInstanceState == null) {
+                    bottomNav.setSelectedItemId(R.id.home);
+                    getSupportFragmentManager().beginTransaction().
+                            replace(R.id.fragment_place,new HomeFragment()).commit();
+                }
+        }
+
 
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_place,new HomeFragment()).commit();
+
 
     }
 
