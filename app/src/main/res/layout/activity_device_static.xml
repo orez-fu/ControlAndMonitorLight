@@ -64,6 +64,7 @@
             android:layout_height="wrap_content"
             android:background="#1b5e20"
             android:text="20h30m"
+            android:elevation="25dp"
             android:textAlignment="center"
             android:textColor="@color/colorWhite"
             android:textSize="18sp"
@@ -74,7 +75,7 @@
         <TextView
             android:id="@+id/txt_total_watt"
             android:layout_width="100dp"
-
+            android:elevation="25dp"
             android:layout_height="wrap_content"
             android:background="#1b5e20"
             android:text="20 Wh"
@@ -109,7 +110,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/round_device_static" />
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/add_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

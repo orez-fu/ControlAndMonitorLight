@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.DeviceStaticModel;
 import com.example.controlandmonitorlight.model.RecordModel;
+import com.example.controlandmonitorlight.utils.ConvertFormatDate;
 import com.example.controlandmonitorlight.utils.ConvertTime;
 import com.example.controlandmonitorlight.utils.ConvertTimeOn;
 import com.example.controlandmonitorlight.utils.ConvertWatt;
@@ -75,7 +76,7 @@ public class DeviceStaticActivity extends AppCompatActivity {
     }
 
     void showInformation() {
-        txtDate.setText(deviceStaticModel.getDeviceId());
+        txtDate.setText(ConvertFormatDate.getFormatDate(day,month,year));
         txtHourMinute.setText(ConvertTimeOn.convertTimeOn(deviceStaticModel.getTimeOn()));
         txtTotalWatt.setText(ConvertWatt.convertWatt(deviceStaticModel.getTotalWatt()));
     }
@@ -123,7 +124,7 @@ public class DeviceStaticActivity extends AppCompatActivity {
         left.setDrawGridLines(false); // no grid lines
         left.setDrawZeroLine(true); // draw a zero line
         lineChart.getAxisRight().setEnabled(false); // no right axis
-        left.setTextColor(R.color.colorWhite); // color text label
+        left.setTextColor(Color.WHITE); // color text label
         left.setAxisMinimum(-0.25f);
         left.setAxisMaximum(1.25f);
         left.setGranularity(1f); // interval 1
