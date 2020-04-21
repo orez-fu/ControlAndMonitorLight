@@ -29,7 +29,6 @@ public class IntroductionViewModel extends ViewModel {
 
     public MutableLiveData<List<Room>> intro = new MutableLiveData<>();
     public List<Room> list = new ArrayList<>();
-    public MutableLiveData<Integer> progress = new MutableLiveData<>(0);
 
     public void LoadDataFireBase() {
         mAuth = FirebaseAuth.getInstance();
@@ -39,7 +38,6 @@ public class IntroductionViewModel extends ViewModel {
         reference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                progress.postValue(10);
 
                 if (!dataSnapshot.exists()) {
                     intro.postValue(list);

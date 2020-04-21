@@ -102,10 +102,8 @@ public class HomeFragment extends Fragment implements RoomInterface {
             @Override
             public void onChanged(List<Room> rooms) {
                 nameRooms = rooms;
-                if (introductionViewModel.progress.getValue() != 0) {
-                    progressBar.setVisibility(View.INVISIBLE);
-                }
                 initRecyclerview(nameRooms);
+                progressBar.setVisibility(View.INVISIBLE);
             }
         });
 
