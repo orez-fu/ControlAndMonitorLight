@@ -5,6 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.controlandmonitorlight.model.Room;
 import com.example.controlandmonitorlight.model.TimerModel;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -13,7 +14,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 
@@ -22,6 +25,7 @@ public class RealtimeFirebaseRepository {
 
     private static RealtimeFirebaseRepository instance;
     private DatabaseReference reference;
+    private List<Room> rooms = new ArrayList<>();
 
     private RealtimeFirebaseRepository(DatabaseReference reference) {
         this.reference = reference;
@@ -79,4 +83,40 @@ public class RealtimeFirebaseRepository {
         reference.child("rooms").child(roomId).child("notification").setValue(stateNotification);
     }
 
+
+    public List<Room> getRooms(String uid) {
+        reference.child(uid).child("rooms").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                rooms.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    String roomId = snapshot.getKey();
+
+                    DatabaseReference referenceRooms = null;
+                    if (roomId != null) {
+                        referenceRooms = FirebaseDatabase.getInstance()
+                                .getReference("rooms").child(roomId);
+                        referenceRooms.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                Room room = dataSnapshot.getValue(Room.class);
+                                rooms.add(room);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                                Log.d(TAG, "Cancel");
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        return rooms;
+    }
 }
