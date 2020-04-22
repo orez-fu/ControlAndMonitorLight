@@ -7,6 +7,11 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera" />
+
     <application
         android:name=".services.App"
         android:allowBackup="true"
@@ -16,9 +21,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".view.view.Activity.SignupActivity">
-
-        </activity>
+        <activity android:name=".view.view.Activity.ScanCodeActivity"></activity>
+        <activity android:name=".view.view.Activity.SignupActivity"></activity>
         <activity android:name=".view.view.Activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.view.Activity.DeviceStaticActivity"
-            android:parentActivityName=".MainActivity"
-            />
+        <activity
+            android:name=".view.view.Activity.DeviceStaticActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".view.view.Activity.LoginActivity"
             tools:ignore="InnerclassSeparator">

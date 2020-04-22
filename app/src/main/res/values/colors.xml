@@ -7,4 +7,5 @@
     <color name="translucent_grey">#21212150</color>
     <color name="colorHint">#757575</color>
     <color name="colorMainDark">#6200EA</color>
+    <color name="transparentBlack30">#30000000</color>
 </resources>
