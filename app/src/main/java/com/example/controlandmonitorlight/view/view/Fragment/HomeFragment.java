@@ -114,8 +114,6 @@ public class HomeFragment extends Fragment implements RoomInterface {
         itemListRoomAdapter = new CustomListRoomAdapter(rooms, getContext());
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
 
-
-//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         rListRooms.setLayoutManager(gridLayoutManager);
         rListRooms.setAdapter(itemListRoomAdapter);
         itemListRoomAdapter.setClick(this);

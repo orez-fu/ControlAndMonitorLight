@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.controlandmonitorlight.R;
@@ -35,6 +38,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_ID;
@@ -53,13 +57,15 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
     DataViewModel viewModel;
     DevicesViewModel devicesViewModel;
     private SwitchCompat switchCompat;
+    private TextView textWarning;
 
     // Data variables
     private String title;
     private String roomId;
     private Integer hasNotification;
-
     List<DeviceModel> devices;
+
+    private Handler mainHandler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,15 +97,11 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
             }
         });
 
-
-       // devicesViewModel.setData();
-
         devicesViewModel.getData().observe(this, new Observer<List<DeviceModel>>() {
             @Override
             public void onChanged(List<DeviceModel> objectDevices) {
                 devices = objectDevices;
                 initRecyclerviewDevices(objectDevices);
-
             }
         });
 
@@ -115,6 +117,8 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
                 }
             }
         });
+
+        runningWarning();
 
     }
 
@@ -138,6 +142,7 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         recyclerViewData = findViewById(R.id.recycledata);
         recyclerViewRoom = findViewById(R.id.recycleroom);
         switchCompat = findViewById(R.id.switch_notification);
+        textWarning = findViewById(R.id.tv_warning);
     }
 
     @Override
@@ -161,8 +166,6 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
                 String temperature = dataSnapshot.child("temperature").getValue(String.class);
                 String value = humidity + " " + temperature + " " + lux;
                 hasNotification = dataSnapshot.child("notification").getValue(Integer.class);
-                Log.d("ROOM_ACTIVITY", dataSnapshot.toString());
-                Log.d("ROOM_ACTIVITY", "" + hasNotification);
 
                 switchCompat.setChecked(hasNotification.equals(Room.NOTIFICATION_YES));
                 if(hasNotification.equals(Room.NOTIFICATION_YES)) {
@@ -179,4 +182,60 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         });
     }
 
+    private void runningWarning() {
+        final WarningRunnable runnable = new WarningRunnable(roomId);
+        new Thread(runnable).start();
+    }
+
+    class WarningRunnable implements  Runnable {
+        private long timestamp = 0;
+        private String roomId;
+        private boolean isWarning = false;
+
+        public WarningRunnable(String roomId) {
+            this.roomId = roomId;
+        }
+
+        @Override
+        public void run() {
+            FirebaseDatabase.getInstance().getReference("rooms")
+                    .child(roomId)
+                    .child("lastTime").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    timestamp = Math.round(dataSnapshot.getValue(Double.class));
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            while(true) {
+                try {
+                    Thread.sleep(1000);
+                    if(timestamp + 4000 < Calendar.getInstance().getTimeInMillis()) {
+                        textWarning.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textWarning.setVisibility(View.VISIBLE);
+                                isWarning = true;
+                            }
+                        });
+                    } else if(isWarning){
+                        textWarning.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                textWarning.setVisibility(View.GONE);
+                                isWarning = false;
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

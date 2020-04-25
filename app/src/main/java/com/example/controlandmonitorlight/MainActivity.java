@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
@@ -28,12 +29,17 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
+
     public static final String KEY_ROOM_ID = "com.example.controlandmonitorlight.KEY_ROOM_ID";
     public static final String KEY_ROOM_NAME = "com.example.controlandmonitorlight.KEY_ROOM_NAME";
     public static final String EXTRA_PAGER = "com.example.controlandmonitorlight.EXTRA_PAGER";
     private BottomNavigationView bottomNav;
     private FragmentManager fragmentManager ;
     private  int pagerPosition;
+
+    private long backPressedTime;
+    private Toast backToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +98,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        finishAndRemoveTask();
+        if(backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
+
     }
 
 

@@ -41,7 +41,17 @@
                     android:layout_height="match_parent">
                 </androidx.recyclerview.widget.RecyclerView>
             </LinearLayout>
-
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_warning"
+                android:text="Has interupt in device"
+                android:drawableStart="@drawable/ic_warning_yellow"
+                android:drawablePadding="16dp"
+                android:visibility="gone"
+                android:layout_marginLeft="16dp"
+                android:textSize="20sp"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:background="#FAFAFA"
                 android:layout_marginTop="10dp"
