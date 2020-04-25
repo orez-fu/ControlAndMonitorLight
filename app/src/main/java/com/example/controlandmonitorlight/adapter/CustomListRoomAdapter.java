@@ -18,8 +18,14 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.R;
 import com.example.controlandmonitorlight.model.Room;
+import com.example.controlandmonitorlight.view.view.Activity.RoomActivity;
 import com.example.controlandmonitorlight.viewmodel.RoomInterface;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAdapter.ViewHolder> {
@@ -50,7 +56,7 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
 
         holder.roomTitle.setText(nameRooms.get(position).getName());
         holder.numberDevicesRoom.setText(nameRooms.get(position).getDevices().size() + " devices");
-        if(imageUrl != null) {
+        if (imageUrl != null) {
             Glide.with(mContext)
                     .load(imageUrl)
                     .into(holder.imageView);
@@ -63,6 +69,68 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
                 click.setOnclickItem(holder.getAdapterPosition());
             }
         });
+
+        final String roomId = nameRooms.get(position).getId();
+        final Runnable runnable = new Runnable() {
+            private long timestamp = 0;
+            private boolean isWarning = false;
+
+            @Override
+            public void run() {
+                FirebaseDatabase.getInstance().getReference("rooms")
+                        .child(roomId)
+                        .child("lastTime").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        timestamp = Math.round(dataSnapshot.getValue(Double.class));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                while (true) {
+                    try {
+                        Thread.sleep(1000);
+                        if (timestamp + 4000 < Calendar.getInstance().getTimeInMillis()) {
+                            holder.viewStatusOn.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.viewStatusOn.setVisibility(View.GONE);
+                                    isWarning = true;
+                                }
+                            });
+                            holder.viewStatusWarning.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.viewStatusWarning.setVisibility(View.VISIBLE);
+                                }
+                            });
+                        } else if (isWarning) {
+                            holder.viewStatusWarning.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.viewStatusWarning.setVisibility(View.GONE);
+                                }
+                            });
+                            holder.viewStatusOn.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    holder.viewStatusOn.setVisibility(View.VISIBLE);
+                                    isWarning = false;
+                                }
+                            });
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        new Thread(runnable).start();
     }
 
     @Override
@@ -74,6 +142,8 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
         TextView roomTitle, numberDevicesRoom;
         CardView itemCard;
         ImageView imageView;
+        View viewStatusOn;
+        View viewStatusWarning;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -81,6 +151,10 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
             numberDevicesRoom = itemView.findViewById(R.id.txt_number_device);
             itemCard = itemView.findViewById(R.id.cardview);
             imageView = itemView.findViewById(R.id.img_room);
+            viewStatusOn = itemView.findViewById(R.id.view_status_ok);
+            viewStatusWarning = itemView.findViewById(R.id.view_status_warning);
+
         }
     }
+
 }
