@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -20,6 +21,7 @@ public class RecyclerRoomShareAdapter extends RecyclerView.Adapter<RecyclerRoomS
     public RecyclerRoomShareAdapter(List<Room> rooms) {
         this.rooms = rooms;
     }
+    private OnRoomClickListener listener;
 
     @NonNull
     @Override
@@ -31,9 +33,18 @@ public class RecyclerRoomShareAdapter extends RecyclerView.Adapter<RecyclerRoomS
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Room room = rooms.get(position);
+        final Room room = rooms.get(position);
 
         holder.textRoom.setText(room.getName());
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listener != null) {
+                    listener.onItemClick(room);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -51,5 +62,13 @@ public class RecyclerRoomShareAdapter extends RecyclerView.Adapter<RecyclerRoomS
             cardView = itemView.findViewById(R.id.card_view_item_room);
             textRoom = itemView.findViewById(R.id.tv_room_name);
         }
+    }
+
+    public interface OnRoomClickListener {
+        void onItemClick(Room room);
+    }
+
+    public void setOnRoomClickListener(OnRoomClickListener listener) {
+        this.listener = listener;
     }
 }

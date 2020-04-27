@@ -89,7 +89,7 @@
                     android:id="@+id/toolbar_minimum"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:visibility="gone"
+                    android:visibility="invisible"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -156,7 +156,7 @@
                             android:layout_marginTop="22dp"
                             android:fontFamily="@font/bungee_regular"
                             android:includeFontPadding="false"
-                            android:text="2"
+                            android:text="-"
                             android:textSize="24sp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
@@ -199,7 +199,7 @@
                             android:layout_marginTop="22dp"
                             android:fontFamily="@font/bungee_regular"
                             android:includeFontPadding="false"
-                            android:text="4"
+                            android:text="-"
                             android:textSize="24sp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"

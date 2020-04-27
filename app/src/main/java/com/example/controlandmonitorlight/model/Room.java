@@ -14,6 +14,7 @@ public class Room {
     private String temperature;
     private String userId ;
     private String imageUrl;
+    private String qrCodeUrl;
 
     private int notification;
 
@@ -97,5 +98,13 @@ public class Room {
 
     public int getNotification() {
         return notification;
+    }
+
+    public String getQrCodeUrl() {
+        return qrCodeUrl;
+    }
+
+    public void setQrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl;
     }
 }

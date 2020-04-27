@@ -1,7 +1,10 @@
 package com.example.controlandmonitorlight.view.view.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,11 +33,15 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.R;
+import com.example.controlandmonitorlight.Repository.DeviceClient;
 import com.example.controlandmonitorlight.adapter.RecyclerRoomShareAdapter;
 import com.example.controlandmonitorlight.model.Room;
+import com.example.controlandmonitorlight.model.SharedRoomRequest;
+import com.example.controlandmonitorlight.model.SharedRoomResponse;
 import com.example.controlandmonitorlight.repositories.RealtimeFirebaseRepository;
 import com.example.controlandmonitorlight.view.view.Activity.LoginActivity;
 import com.example.controlandmonitorlight.view.view.Activity.ScanCodeActivity;
+import com.example.controlandmonitorlight.view.view.Dialog.ConfirmRoomDialog;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -57,6 +65,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import www.sanju.motiontoast.MotionToast;
 
 import static android.app.Activity.RESULT_OK;
@@ -171,7 +182,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-
         buttonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,6 +217,32 @@ public class SettingFragment extends Fragment {
         recyclerViewRoomShare.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewRoomShare.setAdapter(roomShareAdapter);
 
+        final Dialog mDialog = new Dialog(getActivity());
+        roomShareAdapter.setOnRoomClickListener(new RecyclerRoomShareAdapter.OnRoomClickListener() {
+            @Override
+            public void onItemClick(Room room) {
+                if(!(room.getQrCodeUrl() == null)) {
+                    mDialog.setContentView(R.layout.dialog_qr_code);
+                    mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    ImageView imageQR = mDialog.findViewById(R.id.img_qr_code);
+                    TextView textRoomName = mDialog.findViewById(R.id.tv_room_name);
+
+                    textRoomName.setText(room.getName());
+                    Glide.with(getContext())
+                            .load(room.getQrCodeUrl())
+                            .into(imageQR);
+                    mDialog.show();
+                } else {
+                    MotionToast.Companion.createColorToast(getActivity(),"Room is not setup QR code",
+                            MotionToast.Companion.getTOAST_INFO(),
+                            MotionToast.Companion.getGRAVITY_BOTTOM(),
+                            MotionToast.Companion.getSHORT_DURATION(),
+                            ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+                }
+
+            }
+        });
+
         return view;
     }
 
@@ -221,7 +257,6 @@ public class SettingFragment extends Fragment {
             getActivity().finish();
         }
     }
-
 
     private void loadUserInformation() {
         if (mUser != null) {
@@ -311,6 +346,33 @@ public class SettingFragment extends Fragment {
                 uploadImageToFirebaseStorage();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+            String token = "";
+
+            if(data.hasExtra(ScanCodeActivity.EXTRA_TOKEN)) {
+                token = data.getStringExtra(ScanCodeActivity.EXTRA_TOKEN);
+
+                final ConfirmRoomDialog dialog = new ConfirmRoomDialog(getActivity(), mUser.getUid(), token);
+                dialog.setOnActionClick(new ConfirmRoomDialog.OnActionClick() {
+                    @Override
+                    public void onPositiveClick() {
+                        dialog.dismissDialog();
+                    }
+
+                    @Override
+                    public void onNagetiveClick() {
+                        dialog.dismissDialog();
+
+//                        MotionToast.Companion.createColorToast(getActivity(),"No information is changed",
+//                                MotionToast.Companion.getTOAST_INFO(),
+//                                MotionToast.Companion.getGRAVITY_BOTTOM(),
+//                                MotionToast.Companion.getLONG_DURATION(),
+//                                ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+                    }
+                });
+                dialog.showDialog();
             }
         }
     }
