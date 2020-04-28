@@ -1,5 +1,7 @@
 package com.example.controlandmonitorlight.view.view.Fragment;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
@@ -64,6 +66,8 @@ public class TimerFragment extends Fragment {
     private String deviceId;
     private String roomId;
     private String roomName;
+    private Context mContext;
+    private Activity activity;
 
     public static TimerFragment newInstance() {
         return new TimerFragment();
@@ -85,6 +89,8 @@ public class TimerFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_timer, container, false);
 
+        mContext = getContext();
+        activity = getActivity();
 
         Intent intent = getActivity().getIntent();
         deviceId = intent.getStringExtra(KEY_DEVICE_ID);
@@ -109,8 +115,6 @@ public class TimerFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     timers = new ArrayList<>();
                     for(DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                        Log.d(TAG, snapshot.toString());
-                        Log.d(TAG, snapshot.getValue(TimerModel.class).getLabel() + ": " + snapshot.getValue(TimerModel.class).getTime());
                         timers.add(snapshot.getValue(TimerModel.class));
                     }
                     timerAdapter = new TimerAdapter(timers);

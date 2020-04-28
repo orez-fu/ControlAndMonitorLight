@@ -266,8 +266,8 @@ public class AddEditTimerActivity extends AppCompatActivity implements AdapterVi
             mMinute = minute;
         }
 
-        Log.d(TAG, "TIME NOW: " + hour + ":" + minute);
-        Log.d(TAG, "TIME Pick: " + mHour + ":" + mMinute);
+//        Log.d(TAG, "TIME NOW: " + hour + ":" + minute);
+//        Log.d(TAG, "TIME Pick: " + mHour + ":" + mMinute);
 
         int nowMinutes = hour * 60 + minute;
         int changeMinutes = mHour * 60 + mMinute;
