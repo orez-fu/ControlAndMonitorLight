@@ -3,6 +3,9 @@ package com.example.controlandmonitorlight.Repository;
 import android.util.Log;
 
 import com.example.controlandmonitorlight.model.DeviceStatic;
+import com.example.controlandmonitorlight.model.SharedRoomRequest;
+import com.example.controlandmonitorlight.model.SharedRoomResponse;
+import com.example.controlandmonitorlight.model.SimpleResponse;
 import com.example.controlandmonitorlight.model.StaticModel;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.gson.Gson;
@@ -24,7 +27,11 @@ import retrofit2.http.QueryMap;
 
 public class DeviceClient {
     private String BASE_URL = "https://us-central1-luxremote-zm.cloudfunctions.net/webApi/api/v1/";
+
     private static DeviceInterface deviceInterface;
+    private static SharedRoomInterface sharedRoomInterface;
+
+
     private static DeviceClient Instance;
 
     private DeviceClient() {
@@ -56,6 +63,7 @@ public class DeviceClient {
                 .build();
 
         deviceInterface = retrofit.create(DeviceInterface.class);
+        sharedRoomInterface = retrofit.create(SharedRoomInterface.class);
     }
 
     public static DeviceClient getInstance() {
@@ -73,5 +81,13 @@ public class DeviceClient {
 
     public Call<StaticModel> getStaticModel(String id, Map<String, String> parameters) {
         return this.deviceInterface.getStaticModel(id, parameters);
+    }
+
+    public Call<SharedRoomResponse> getRoomInfo(SharedRoomRequest body) {
+        return this.sharedRoomInterface.getRoomInfo(body);
+    }
+
+    public Call<SimpleResponse> addRoomByToken(String id, SharedRoomRequest body) {
+        return this.sharedRoomInterface.addRoomByToken(id, body);
     }
 }

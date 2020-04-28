@@ -56,7 +56,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:background="@drawable/background_view_status"
-                android:visibility="visible"/>
+                android:visibility="invisible"
+                />
             <View
                 android:id="@+id/view_status_warning"
                 android:layout_width="16dp"

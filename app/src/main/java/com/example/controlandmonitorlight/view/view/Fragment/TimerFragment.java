@@ -145,7 +145,7 @@ public class TimerFragment extends Fragment {
                         @Override
                         public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                             new RecyclerViewSwipeDecorator.Builder(getContext(), c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorAccent))
+                                    .addSwipeLeftBackgroundColor(ContextCompat.getColor(getContext(), R.color.colorDelete))
                                     .addSwipeLeftActionIcon(R.drawable.ic_delete_black_24dp)
                                     .create()
                                     .decorate();

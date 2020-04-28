@@ -93,8 +93,8 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
 
                 while (true) {
                     try {
-                        Thread.sleep(1000);
-                        if (timestamp + 4000 < Calendar.getInstance().getTimeInMillis()) {
+
+                        if (timestamp + 3000 < Calendar.getInstance().getTimeInMillis()) {
                             holder.viewStatusOn.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -123,6 +123,7 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
                                 }
                             });
                         }
+                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

@@ -1,7 +1,11 @@
 package com.example.controlandmonitorlight.view.view.Fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,11 +34,18 @@ import androidx.viewpager.widget.ViewPager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.controlandmonitorlight.R;
+import com.example.controlandmonitorlight.Repository.DeviceClient;
 import com.example.controlandmonitorlight.adapter.RecyclerRoomShareAdapter;
 import com.example.controlandmonitorlight.model.Room;
+import com.example.controlandmonitorlight.model.SharedRoomRequest;
+import com.example.controlandmonitorlight.model.SharedRoomResponse;
+import com.example.controlandmonitorlight.model.SimpleResponse;
 import com.example.controlandmonitorlight.repositories.RealtimeFirebaseRepository;
+import com.example.controlandmonitorlight.utils.CustomAlertDialog;
 import com.example.controlandmonitorlight.view.view.Activity.LoginActivity;
 import com.example.controlandmonitorlight.view.view.Activity.ScanCodeActivity;
+import com.example.controlandmonitorlight.view.view.Dialog.ConfirmRoomDialog;
+import com.github.ybq.android.spinkit.style.FoldingCube;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -57,6 +69,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import www.sanju.motiontoast.MotionToast;
 
 import static android.app.Activity.RESULT_OK;
@@ -66,6 +81,8 @@ import static android.view.View.GONE;
 public class SettingFragment extends Fragment {
 
     private final String TAG = "SETTING_ACTIVITY";
+
+
 
     private final int CHOOSE_IMAGE_ID = 101;
     public static final int REQUEST_CODE_SCAN = 102;
@@ -91,6 +108,8 @@ public class SettingFragment extends Fragment {
     private RecyclerRoomShareAdapter roomShareAdapter;
     private TextView textNumberRoom;
     private TextView textNumberDevice;
+    private Dialog dialogLoading;
+    private ConfirmRoomDialog dialogInfo;
 
     // Data variables
     private int expandableValue;
@@ -98,6 +117,7 @@ public class SettingFragment extends Fragment {
     private String profileImageUrl;
     private List<Room> mListRoom;
     private int numberDevices;
+    private SharedRoomResponse sharedRoom;
 
     public SettingFragment() {
         // Required empty public constructor
@@ -114,6 +134,10 @@ public class SettingFragment extends Fragment {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         expandableValue = 0;
         numberDevices = 0;
+        dialogLoading = new Dialog(getActivity());
+        dialogLoading.setContentView(R.layout.dialog_loading);
+        dialogLoading.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
 
         // mapping UI
         appBarLayout = view.findViewById(R.id.appbar_layout);
@@ -171,7 +195,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-
         buttonChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,6 +230,32 @@ public class SettingFragment extends Fragment {
         recyclerViewRoomShare.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewRoomShare.setAdapter(roomShareAdapter);
 
+        final Dialog mDialog = new Dialog(getActivity());
+        roomShareAdapter.setOnRoomClickListener(new RecyclerRoomShareAdapter.OnRoomClickListener() {
+            @Override
+            public void onItemClick(Room room) {
+                if(!(room.getQrCodeUrl() == null)) {
+                    mDialog.setContentView(R.layout.dialog_qr_code);
+                    mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    ImageView imageQR = mDialog.findViewById(R.id.img_qr_code);
+                    TextView textRoomName = mDialog.findViewById(R.id.tv_room_name);
+
+                    textRoomName.setText(room.getName());
+                    Glide.with(getContext())
+                            .load(room.getQrCodeUrl())
+                            .into(imageQR);
+                    mDialog.show();
+                } else {
+                    MotionToast.Companion.createColorToast(getActivity(),"Room is not setup QR code",
+                            MotionToast.Companion.getTOAST_INFO(),
+                            MotionToast.Companion.getGRAVITY_BOTTOM(),
+                            MotionToast.Companion.getSHORT_DURATION(),
+                            ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+                }
+
+            }
+        });
+
         return view;
     }
 
@@ -221,7 +270,6 @@ public class SettingFragment extends Fragment {
             getActivity().finish();
         }
     }
-
 
     private void loadUserInformation() {
         if (mUser != null) {
@@ -255,6 +303,9 @@ public class SettingFragment extends Fragment {
         }
 
         if (mUser != null && profileImageUrl != null) {
+            if(!dialogLoading.isShowing()) {
+                dialogLoading.show();
+            }
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
                     .setDisplayName(displayName)
                     .setPhotoUri(Uri.parse(profileImageUrl))
@@ -263,29 +314,31 @@ public class SettingFragment extends Fragment {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            if(dialogLoading.isShowing()) {
+                                dialogLoading.dismiss();
+                            }
+
                             if (task.isSuccessful()) {
-                                MotionToast.Companion.createColorToast(getActivity(),"Profile updating completed!",
-                                        MotionToast.Companion.getTOAST_SUCCESS(),
-                                        MotionToast.Companion.getGRAVITY_BOTTOM(),
-                                        MotionToast.Companion.getLONG_DURATION(),
-                                        ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+                                CustomAlertDialog.showAlertDialog(getActivity(),
+                                        CustomAlertDialog.SUCCESS_DIALOG,
+                                        "Update profile",
+                                        "Your profile has updated successful");
                                 mUser = FirebaseAuth.getInstance().getCurrentUser();
                                 edtName.setText(mUser.getDisplayName());
                             } else {
-                                MotionToast.Companion.createColorToast(getActivity(),"Profile updating failed!",
-                                        MotionToast.Companion.getTOAST_ERROR(),
-                                        MotionToast.Companion.getGRAVITY_BOTTOM(),
-                                        MotionToast.Companion.getLONG_DURATION(),
-                                        ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+                                CustomAlertDialog.showAlertDialog(getActivity(),
+                                        CustomAlertDialog.ERROR_DIALOG,
+                                        "Update profile",
+                                        "Your profile has updated failed");
                             }
+
                         }
                     });
         } else {
-            MotionToast.Companion.createColorToast(getActivity(),"No information is changed",
-                    MotionToast.Companion.getTOAST_INFO(),
-                    MotionToast.Companion.getGRAVITY_BOTTOM(),
-                    MotionToast.Companion.getLONG_DURATION(),
-                    ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+            CustomAlertDialog.showAlertDialog(getActivity(),
+                    CustomAlertDialog.WARNING_DIALOG,
+                    "Update profile",
+                    "Can't not update profile");
         }
     }
 
@@ -311,6 +364,34 @@ public class SettingFragment extends Fragment {
                 uploadImageToFirebaseStorage();
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+        if (requestCode == REQUEST_CODE_SCAN && resultCode == RESULT_OK) {
+
+            if(data.hasExtra(ScanCodeActivity.EXTRA_TOKEN)) {
+                final String token = data.getStringExtra(ScanCodeActivity.EXTRA_TOKEN);
+                dialogLoading.show();
+                loadRoomFromToken(token);
+
+            } else {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_warning, null);
+                builder.setView(view);
+                ((TextView) view.findViewById(R.id.tv_title)).setText("QR Code reader");
+                ((TextView) view.findViewById(R.id.tv_content)).setText("QR code is invalid");
+
+                final AlertDialog alertDialog = builder.create();
+                view.findViewById(R.id.btn_accept).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                if (alertDialog.getWindow() != null) {
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialog.show();
             }
         }
     }
@@ -395,4 +476,141 @@ public class SettingFragment extends Fragment {
             }
         });
     }
+
+    private void loadRoomFromToken(final String token) {
+        DeviceClient.getInstance().getRoomInfo(new SharedRoomRequest(token)).enqueue(new Callback<SharedRoomResponse>() {
+            @Override
+            public void onResponse(Call<SharedRoomResponse> call, Response<SharedRoomResponse> response) {
+                sharedRoom = response.body();
+                if(sharedRoom.getSuccess() == SharedRoomResponse.SUCCESS_OK) {
+                    dialogInfo = new ConfirmRoomDialog(getActivity(), mUser.getUid(), token, sharedRoom);
+
+                    dialogInfo.setOnActionClick(new ConfirmRoomDialog.OnActionClick() {
+                        @Override
+                        public void onPositiveClick() {
+                            dialogInfo.dismissDialog();
+                            if (!dialogLoading.isShowing()) {
+                                dialogLoading.show();
+                            }
+                            DeviceClient.getInstance().addRoomByToken(mUser.getUid(), new SharedRoomRequest(token)).enqueue(new Callback<SimpleResponse>() {
+                                @Override
+                                public void onResponse(Call<SimpleResponse> call, Response<SimpleResponse> response) {
+                                    if (dialogInfo.isShowing()) {
+                                        dialogInfo.dismissDialog();
+                                    }
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                                    View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_success, null);
+                                    builder.setView(view);
+                                    ((TextView) view.findViewById(R.id.tv_title)).setText("Add new room successful");
+                                    ((TextView) view.findViewById(R.id.tv_content)).setText(sharedRoom.getName() + " has already to use");
+
+                                    final AlertDialog alertDialog = builder.create();
+                                    view.findViewById(R.id.btn_accept).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            alertDialog.dismiss();
+                                        }
+                                    });
+
+                                    if (alertDialog.getWindow() != null) {
+                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                    }
+                                    if (dialogLoading.isShowing()) {
+                                        dialogLoading.dismiss();
+                                    }
+                                    alertDialog.show();
+                                }
+
+                                @Override
+                                public void onFailure(Call<SimpleResponse> call, Throwable t) {
+                                    if (dialogInfo.isShowing()) {
+                                        dialogInfo.dismissDialog();
+                                    }
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                                    View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_error, null);
+                                    builder.setView(view);
+                                    ((TextView) view.findViewById(R.id.tv_title)).setText("Add new room failed");
+                                    ((TextView) view.findViewById(R.id.tv_content)).setText("Has error while adding room");
+
+                                    final AlertDialog alertDialog = builder.create();
+                                    view.findViewById(R.id.btn_accept).setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            alertDialog.dismiss();
+                                        }
+                                    });
+
+                                    if (alertDialog.getWindow() != null) {
+                                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                                    }
+                                    if (dialogLoading.isShowing()) {
+                                        dialogLoading.dismiss();
+                                    }
+                                    alertDialog.show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onNegativeClick() {
+                            dialogInfo.dismissDialog();
+                        }
+                    });
+                    if(dialogLoading.isShowing()) {
+                        dialogLoading.dismiss();
+                    }
+                    dialogInfo.showDialog();
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                    View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_warning, null);
+                    builder.setView(view);
+                    ((TextView) view.findViewById(R.id.tv_title)).setText("QR Code reader");
+                    ((TextView) view.findViewById(R.id.tv_content)).setText("QR code is invalid");
+
+                    final AlertDialog alertDialog = builder.create();
+                    view.findViewById(R.id.btn_accept).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                    if (alertDialog.getWindow() != null) {
+                        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                    }
+                    if (dialogLoading.isShowing()) {
+                        dialogLoading.dismiss();
+                    }
+                    alertDialog.show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SharedRoomResponse> call, Throwable t) {
+                sharedRoom = null;
+                if(dialogLoading.isShowing()) {
+                    dialogLoading.dismiss();
+                }
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AlertDialogTheme);
+                View view = LayoutInflater.from(getContext()).inflate(R.layout.dialog_error, null);
+                builder.setView(view);
+                ((TextView) view.findViewById(R.id.tv_title)).setText("Add new room failed");
+                ((TextView) view.findViewById(R.id.tv_content)).setText("Has error while adding room");
+
+                final AlertDialog alertDialog = builder.create();
+                view.findViewById(R.id.btn_accept).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+
+                if (alertDialog.getWindow() != null) {
+                    alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+                }
+                alertDialog.show();
+            }
+        });
+    }
+
 }

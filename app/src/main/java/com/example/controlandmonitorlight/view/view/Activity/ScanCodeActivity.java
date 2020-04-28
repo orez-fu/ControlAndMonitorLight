@@ -24,6 +24,7 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+    public static final String EXTRA_TOKEN = "com.example.controlandmonitorlight.view.view.Activity.EXTRA_TOKEN";
 
     private ZXingScannerView scannerView;
 
@@ -82,10 +83,13 @@ public class ScanCodeActivity extends AppCompatActivity implements ZXingScannerV
     @Override
     public void handleResult(Result rawResult) {
         Intent intent = new Intent();
-        intent.putExtra("token", rawResult.getText());
-        setResult(RESULT_OK, intent);
+        if(rawResult.getText().startsWith("ZETTABYTES")) {
+            Log.d("SCAN_CODE_ACTIVITY", rawResult.getText().substring(11));
+            intent.putExtra(EXTRA_TOKEN, rawResult.getText().substring(11));
+        }
         scannerView.stopCamera();
-        Log.d("SETTING_FRAGMENT", "From handle: " + rawResult.getText());
+
+        setResult(RESULT_OK, intent);
         finish();
     }
 }

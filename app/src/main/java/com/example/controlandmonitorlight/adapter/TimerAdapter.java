@@ -46,7 +46,10 @@ public class TimerAdapter extends RecyclerView.Adapter<TimerAdapter.ViewHolder> 
         } else {
             holder.switchCompat.setChecked(false);
         }
-        holder.txtAction.setText(currentTimer.getType() == TimerModel.TYPE_ON ? "Go on" : "Go off");
+        String info = String.valueOf(currentTimer.getType().equals(TimerModel.TYPE_ON) ? "Go on" : "Go off");
+        info += " | ";
+        info += currentTimer.getRepeat().equals(TimerModel.REPEAT_ONCE) ? " once " : " every day";
+        holder.txtAction.setText(info);
     }
 
     @Override
