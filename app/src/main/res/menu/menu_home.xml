@@ -9,6 +9,6 @@
         android:icon="@drawable/ic_trending_up_black_24dp"
         android:title="Static"></item>
     <item android:id="@+id/profile"
-        android:icon="@drawable/ic_people_black_24dp"
-        android:title="Settings"></item>
+        android:icon="@drawable/ic_person_black_24dp"
+        android:title="Profile"></item>
 </menu>
