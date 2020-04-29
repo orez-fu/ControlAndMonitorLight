@@ -219,7 +219,7 @@ public class TimerFragment extends Fragment {
 
             RealtimeFirebaseRepository.getInstance().addNewTimer(deviceId,
                     new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
-            MotionToast.Companion.createColorToast(getActivity(),"Note adding completed!",
+            MotionToast.Companion.createColorToast(getActivity(),"Timer adding completed!",
                     MotionToast.Companion.getTOAST_SUCCESS(),
                     MotionToast.Companion.getGRAVITY_BOTTOM(),
                     MotionToast.Companion.getLONG_DURATION(),
@@ -228,7 +228,7 @@ public class TimerFragment extends Fragment {
         } else if (EDIT_TIMER_REQUEST == requestCode && RESULT_OK == resultCode) {
             String id = data.getStringExtra(AddEditTimerActivity.EXTRA_ID);
             if(id == null) {
-                Toast.makeText(getActivity(), "Note can't be update", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Timer can't be update", Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -241,7 +241,7 @@ public class TimerFragment extends Fragment {
 
             RealtimeFirebaseRepository.getInstance().updateTimer(deviceId, id,
                     new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
-            MotionToast.Companion.createColorToast(getActivity(),"Note updated!",
+            MotionToast.Companion.createColorToast(getActivity(),"Timer updated!",
                     MotionToast.Companion.getTOAST_SUCCESS(),
                     MotionToast.Companion.getGRAVITY_BOTTOM(),
                     MotionToast.Companion.getLONG_DURATION(),

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -56,6 +55,36 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
 
         holder.roomTitle.setText(nameRooms.get(position).getName());
         holder.numberDevicesRoom.setText(nameRooms.get(position).getDevices().size() + " devices");
+
+        long lastTime = Math.round(nameRooms.get(position).getLastTime());
+        if (lastTime + 4000 < Calendar.getInstance().getTimeInMillis()) {
+            holder.viewStatusOn.post(new Runnable() {
+                @Override
+                public void run() {
+                    holder.viewStatusOn.setVisibility(View.GONE);
+                }
+            });
+            holder.viewStatusWarning.post(new Runnable() {
+                @Override
+                public void run() {
+                    holder.viewStatusWarning.setVisibility(View.VISIBLE);
+                }
+            });
+        } else {
+            holder.viewStatusWarning.post(new Runnable() {
+                @Override
+                public void run() {
+                    holder.viewStatusWarning.setVisibility(View.GONE);
+                }
+            });
+            holder.viewStatusOn.post(new Runnable() {
+                @Override
+                public void run() {
+                    holder.viewStatusOn.setVisibility(View.VISIBLE);
+                }
+            });
+        }
+
         if (imageUrl != null) {
             Glide.with(mContext)
                     .load(imageUrl)
@@ -65,7 +94,6 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
         holder.itemCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, "" + holder.getAdapterPosition(), Toast.LENGTH_SHORT).show();
                 click.setOnclickItem(holder.getAdapterPosition());
             }
         });
@@ -73,7 +101,7 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
         final String roomId = nameRooms.get(position).getId();
         final Runnable runnable = new Runnable() {
             private long timestamp = 0;
-            private boolean isWarning = false;
+            private boolean isWarning = true;
 
             @Override
             public void run() {
@@ -93,8 +121,8 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
 
                 while (true) {
                     try {
-
-                        if (timestamp + 3000 < Calendar.getInstance().getTimeInMillis()) {
+                        Thread.sleep(1000);
+                        if (timestamp + 4000 < Calendar.getInstance().getTimeInMillis()) {
                             holder.viewStatusOn.post(new Runnable() {
                                 @Override
                                 public void run() {
@@ -123,7 +151,6 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
                                 }
                             });
                         }
-                        Thread.sleep(1000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
