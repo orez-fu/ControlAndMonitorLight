@@ -85,7 +85,7 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
         viewModel = ViewModelProviders.of(this).get(DataViewModel.class);
         devicesViewModel = ViewModelProviders.of(this).get(DevicesViewModel.class);
         Log.d("roomId",roomId) ;
-        Toast.makeText(getApplicationContext(),""+roomId,Toast.LENGTH_SHORT).show();
+
         loadingData(roomId);
 
         devicesViewModel.LoadDevicesFireBase(roomId);
@@ -167,6 +167,24 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
                 String value = humidity + " " + temperature + " " + lux;
                 hasNotification = dataSnapshot.child("notification").getValue(Integer.class);
 
+
+                long lastTime = Math.round(dataSnapshot.child("lastTime").getValue(Double.class));
+                if(lastTime + 4000 < Calendar.getInstance().getTimeInMillis()) {
+                    textWarning.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            textWarning.setVisibility(View.VISIBLE);
+                        }
+                    });
+                } else {
+                    textWarning.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            textWarning.setVisibility(View.GONE);
+                        }
+                    });
+                }
+
                 switchCompat.setChecked(hasNotification.equals(Room.NOTIFICATION_YES));
                 if(hasNotification.equals(Room.NOTIFICATION_YES)) {
                     FirebaseMessaging.getInstance().subscribeToTopic(roomId);
@@ -190,7 +208,7 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
     class WarningRunnable implements  Runnable {
         private long timestamp = 0;
         private String roomId;
-        private boolean isWarning = false;
+        private boolean isWarning = true;
 
         public WarningRunnable(String roomId) {
             this.roomId = roomId;
@@ -213,8 +231,10 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
             });
 
             while(true) {
+
                 try {
-                    if(timestamp + 3000 < Calendar.getInstance().getTimeInMillis()) {
+                    Thread.sleep(1000);
+                    if(timestamp + 4000 < Calendar.getInstance().getTimeInMillis()) {
                         textWarning.post(new Runnable() {
                             @Override
                             public void run() {
@@ -231,7 +251,6 @@ public class RoomActivity extends AppCompatActivity implements Comunication {
                             }
                         });
                     }
-                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

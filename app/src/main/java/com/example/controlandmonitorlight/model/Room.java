@@ -15,6 +15,15 @@ public class Room {
     private String userId ;
     private String imageUrl;
     private String qrCodeUrl;
+    private Double lastTime;
+
+    public Double getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Double lastTime) {
+        this.lastTime = lastTime;
+    }
 
     private int notification;
 
