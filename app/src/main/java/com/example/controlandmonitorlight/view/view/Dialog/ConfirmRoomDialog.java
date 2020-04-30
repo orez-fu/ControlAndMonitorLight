@@ -27,7 +27,6 @@ import com.example.controlandmonitorlight.model.SimpleResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import www.sanju.motiontoast.MotionToast;
 
 public class ConfirmRoomDialog {
     // Data
