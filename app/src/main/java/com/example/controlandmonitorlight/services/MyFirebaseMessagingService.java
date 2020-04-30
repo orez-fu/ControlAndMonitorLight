@@ -3,6 +3,7 @@ package com.example.controlandmonitorlight.services;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 
@@ -47,6 +48,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
+                        R.mipmap.ic_launcher))
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
