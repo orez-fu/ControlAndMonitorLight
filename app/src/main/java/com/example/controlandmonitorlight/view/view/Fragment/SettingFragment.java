@@ -246,7 +246,7 @@ public class SettingFragment extends Fragment {
                             .into(imageQR);
                     mDialog.show();
                 } else {
-                    Toasty.success(getContext(), "This room is not setup QR Code", Toast.LENGTH_SHORT, true).show();
+                    Toasty.info(getContext(), "This room is not setup QR Code", Toast.LENGTH_SHORT, true).show();
                 }
 
             }
