@@ -7,7 +7,7 @@
         android:title="Home"></item>
     <item android:id="@+id/static1"
         android:icon="@drawable/ic_trending_up_black_24dp"
-        android:title="Static"></item>
+        android:title="Statistic"></item>
     <item android:id="@+id/profile"
         android:icon="@drawable/ic_person_black_24dp"
         android:title="Profile"></item>
