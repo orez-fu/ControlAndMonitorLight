@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.controlandmonitorlight.MainActivity;
 import com.example.controlandmonitorlight.R;
@@ -29,7 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 
-import www.sanju.motiontoast.MotionToast;
+import es.dmoral.toasty.Toasty;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -136,20 +137,9 @@ public class SignupActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if(task.isSuccessful()) {
-                                            MotionToast.Companion.createColorToast(SignupActivity.this,
-                                                    "Sign up successful!",
-                                                    MotionToast.Companion.getTOAST_SUCCESS(),
-                                                    MotionToast.Companion.getGRAVITY_BOTTOM(),
-                                                    MotionToast.Companion.getSHORT_DURATION(),
-                                                    ResourcesCompat.getFont(getApplicationContext(), R.font.helvetica_regular));
+                                            Toasty.success(getApplicationContext(), "Sign up successful!!", Toast.LENGTH_SHORT, true).show();
                                         } else {
-                                            MotionToast.Companion.createColorToast(SignupActivity.this,
-                                                    "Sign up failed!",
-                                                    MotionToast.Companion.getTOAST_ERROR(),
-                                                    MotionToast.Companion.getGRAVITY_BOTTOM(),
-                                                    MotionToast.Companion.getSHORT_DURATION(),
-                                                    ResourcesCompat.getFont(getApplicationContext(), R.font.helvetica_regular));
-
+                                            Toasty.error(getApplicationContext(), "Sign up failed!!", Toast.LENGTH_SHORT, true).show();
                                         }
 
                                         if(dialog.isShowing()) {

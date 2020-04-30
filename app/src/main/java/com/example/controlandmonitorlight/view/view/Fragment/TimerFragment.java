@@ -39,9 +39,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
-import www.sanju.motiontoast.MotionToast;
-
 import static android.app.Activity.RESULT_OK;
 import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_ID;
 import static com.example.controlandmonitorlight.MainActivity.KEY_ROOM_NAME;
@@ -219,11 +218,7 @@ public class TimerFragment extends Fragment {
 
             RealtimeFirebaseRepository.getInstance().addNewTimer(deviceId,
                     new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
-            MotionToast.Companion.createColorToast(getActivity(),"Timer adding completed!",
-                    MotionToast.Companion.getTOAST_SUCCESS(),
-                    MotionToast.Companion.getGRAVITY_BOTTOM(),
-                    MotionToast.Companion.getLONG_DURATION(),
-                    ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+            Toasty.success(getContext(), "Timer adding completed!", Toast.LENGTH_SHORT, true).show();
 
         } else if (EDIT_TIMER_REQUEST == requestCode && RESULT_OK == resultCode) {
             String id = data.getStringExtra(AddEditTimerActivity.EXTRA_ID);
@@ -241,12 +236,9 @@ public class TimerFragment extends Fragment {
 
             RealtimeFirebaseRepository.getInstance().updateTimer(deviceId, id,
                     new TimerModel(roomId, deviceId, hour, minute, repeat, label, type, status));
-            MotionToast.Companion.createColorToast(getActivity(),"Timer updated!",
-                    MotionToast.Companion.getTOAST_SUCCESS(),
-                    MotionToast.Companion.getGRAVITY_BOTTOM(),
-                    MotionToast.Companion.getLONG_DURATION(),
-                    ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
 
+            Toasty.success(getContext(), "Timer updated!", Toast.LENGTH_SHORT, true).show();
         }
     }
+
 }

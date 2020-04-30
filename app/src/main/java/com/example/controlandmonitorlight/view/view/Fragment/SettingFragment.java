@@ -69,10 +69,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import www.sanju.motiontoast.MotionToast;
 
 import static android.app.Activity.RESULT_OK;
 import static android.view.View.GONE;
@@ -246,11 +246,7 @@ public class SettingFragment extends Fragment {
                             .into(imageQR);
                     mDialog.show();
                 } else {
-                    MotionToast.Companion.createColorToast(getActivity(),"Room is not setup QR code",
-                            MotionToast.Companion.getTOAST_INFO(),
-                            MotionToast.Companion.getGRAVITY_BOTTOM(),
-                            MotionToast.Companion.getSHORT_DURATION(),
-                            ResourcesCompat.getFont(getContext(), R.font.helvetica_regular));
+                    Toasty.success(getContext(), "This room is not setup QR Code", Toast.LENGTH_SHORT, true).show();
                 }
 
             }
