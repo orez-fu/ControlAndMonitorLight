@@ -57,7 +57,7 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
         holder.numberDevicesRoom.setText(nameRooms.get(position).getDevices().size() + " devices");
 
         long lastTime = Math.round(nameRooms.get(position).getLastTime());
-        if (lastTime + 4000 < Calendar.getInstance().getTimeInMillis()) {
+        if (lastTime + 6000 < Calendar.getInstance().getTimeInMillis()) {
             holder.viewStatusOn.post(new Runnable() {
                 @Override
                 public void run() {
@@ -122,7 +122,7 @@ public class CustomListRoomAdapter extends RecyclerView.Adapter<CustomListRoomAd
                 while (true) {
                     try {
                         Thread.sleep(1000);
-                        if (timestamp + 4000 < Calendar.getInstance().getTimeInMillis()) {
+                        if (timestamp + 6000 < Calendar.getInstance().getTimeInMillis()) {
                             holder.viewStatusOn.post(new Runnable() {
                                 @Override
                                 public void run() {
